@@ -59,7 +59,7 @@ public class Animation {
         if (!this.isPlaying) return;
         if (System.currentTimeMillis() - lastFrameTime > frameInterval){
             currentFrameIndex++;
-            if (currentFrameIndex >= frameCount)
+            if (currentFrameIndex >=  frameCount)
                 currentFrameIndex =  0;
             lastFrameTime = System.currentTimeMillis();
         }
