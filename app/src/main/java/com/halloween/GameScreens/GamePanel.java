@@ -1,24 +1,18 @@
-package com.halloween;
+package com.halloween.GameScreens;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import com.halloween.GameObjects.MainCharacter;
+import com.halloween.MainThread;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private MainThread mainThread;
-    private MainCharacter mainCharacter = new MainCharacter();
-//    private SceneManager manager;
+    private ScreenManager screenManager;
 
     public GamePanel(Context context){
         super(context);
-//        manager = new SceneManager();
+        screenManager = new ScreenManager();
         getHolder().addCallback(this);
         mainThread = new MainThread(getHolder(), this);
         setFocusable(true);
@@ -49,21 +43,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public boolean onTouchEvent(MotionEvent event){
-//        manager.recieveTouch(event);
+        screenManager.receiveTouch(event);
         return true;
         //return super.onTouchEvent(event);
     }
 
     public void update(){
-//        manager.update();
-        mainCharacter.update();
+        screenManager.update();
     }
 
     public void draw(Canvas canvas){
         super.draw(canvas);
-        canvas.drawColor(Color.WHITE);
-        mainCharacter.draw(canvas);
-//        manager.draw(canvas);
+//        canvas.drawColor(Color.WHITE);
+//        mainCharacter.draw(canvas);
+        screenManager.draw(canvas);
     }
-
 }
