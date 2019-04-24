@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import com.halloween.GameObjects.MainCharacter;
 
-public class MainScreen implements GameScreen{
+public class PlayingScreen implements GameScreen{
     private MainCharacter mainCharacter;
 
-    public MainScreen() {
+    public PlayingScreen() {
         this.reset();
     }
 

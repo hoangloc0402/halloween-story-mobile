@@ -2,16 +2,15 @@ package com.halloween.GameScreens;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
-import java.util.ArrayList;
 
 public class ScreenManager {
     public static String ACTIVE_SCENE;
-    private MainScreen mainScreen;
+    private PlayingScreen mainScreen;
 
 
     public ScreenManager() {
         ACTIVE_SCENE = "mainScreen";
-        mainScreen = new MainScreen();
+        mainScreen = new PlayingScreen();
     }
 
     public GameScreen getScreenByName(String name){
