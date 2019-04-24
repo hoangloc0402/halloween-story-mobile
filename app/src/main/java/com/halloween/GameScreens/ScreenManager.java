@@ -3,35 +3,39 @@ package com.halloween.GameScreens;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
+import com.halloween.Constants;
+
 public class ScreenManager {
-    public static String ACTIVE_SCENE;
-    private PlayingScreen mainScreen;
+    private PlayingScreen playingScreen;
+    private MainMenuScreen mainMenuScreen;
 
 
     public ScreenManager() {
-        ACTIVE_SCENE = "mainScreen";
-        mainScreen = new PlayingScreen();
+        playingScreen = new PlayingScreen();
+        mainMenuScreen = new MainMenuScreen();
     }
 
-    public GameScreen getScreenByName(String name){
-        switch (name){
-            case "mainScreen":
-                return  mainScreen;
+    public GameScreen getActiveScreen(){
+        switch (Constants.CURRENT_GAME_STATE){
+            case PLAY:
+                return playingScreen;
+            case MAIN_MENU:
+                return mainMenuScreen;
             default:
                 return null;
         }
     }
 
     public void receiveTouch(MotionEvent event){
-        this.getScreenByName(ACTIVE_SCENE).receiveTouch(event);
+        this.getActiveScreen().receiveTouch(event);
     }
 
     public void update(){
-        this.getScreenByName(ACTIVE_SCENE).update();
+        this.getActiveScreen().update();
     }
 
     public void draw(Canvas canvas){
-        this.getScreenByName(ACTIVE_SCENE).draw(canvas);
+        this.getActiveScreen().draw(canvas);
     }
 
 
