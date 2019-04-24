@@ -47,8 +47,12 @@ public class Animation {
         RectF whereToDraw = new RectF(position.x, position.y,position.x + frameWidth,position.y + frameHeight);
         if (isFlip){
             canvas.scale(-1, 1, frameHeight/2,frameWidth/2);
+            canvas.drawBitmap(sourceBitmap, whatToDraw, whereToDraw, new Paint());
+            canvas.scale(-1, 1, frameHeight/2,frameWidth/2);
         }
-        canvas.drawBitmap(sourceBitmap, whatToDraw, whereToDraw, new Paint());
+        else {
+            canvas.drawBitmap(sourceBitmap, whatToDraw, whereToDraw, new Paint());
+        }
     }
 
     public void update(){
