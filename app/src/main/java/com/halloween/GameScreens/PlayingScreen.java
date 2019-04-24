@@ -19,7 +19,6 @@ public class PlayingScreen implements GameScreen{
     @Override
     public void update() {
         mainCharacter.update();
-
     }
 
     @Override
@@ -29,7 +28,6 @@ public class PlayingScreen implements GameScreen{
 
     @Override
     public void terminate() {
-
 
     }
 
