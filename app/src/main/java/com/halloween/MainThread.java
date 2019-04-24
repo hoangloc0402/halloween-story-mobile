@@ -2,6 +2,8 @@ package com.halloween;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import com.halloween.GameScreens.GamePanel;
+
 public class MainThread extends Thread{
     public static final int MAX_FPS = 30;
     private double averageFPS;

@@ -2,9 +2,10 @@ package com.halloween;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.halloween.GameScreens.GamePanel;
 
 public class MainActivity extends Activity {
 
