@@ -1,6 +1,5 @@
 package com.halloween.GameObjects;
 
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -35,8 +34,8 @@ public class MainCharacter implements GameObject {
 
     @Override
     public void update() {
-        this.position.x +=10;
-        this.position.y +=15;
+//        this.position.x +=10;
+//        this.position.y +=15;
         currentAnimation.update();
     }
 

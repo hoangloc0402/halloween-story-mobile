@@ -8,11 +8,12 @@ import com.halloween.Constants;
 public class ScreenManager {
     private PlayingScreen playingScreen;
     private MainMenuScreen mainMenuScreen;
-
+    private PauseScreen pauseScreen;
 
     public ScreenManager() {
         playingScreen = new PlayingScreen();
         mainMenuScreen = new MainMenuScreen();
+        pauseScreen = new PauseScreen();
     }
 
     public GameScreen getActiveScreen(){
@@ -21,6 +22,8 @@ public class ScreenManager {
                 return playingScreen;
             case MAIN_MENU:
                 return mainMenuScreen;
+            case PAUSE:
+                return pauseScreen;
             default:
                 return null;
         }

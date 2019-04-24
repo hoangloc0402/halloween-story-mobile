@@ -29,37 +29,36 @@ public class MainMenuScreen implements GameScreen{
 
         this.playGameButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.play_button_hover);
         this.playGameButtonHover = Bitmap.createScaledBitmap(playGameButtonHover, Constants.SCREEN_WIDTH/5, Constants.SCREEN_HEIGHT/10, false);
-        this.playGameButtonPosition = new Point((background.getWidth() - playGameButton.getWidth())/2, 3*background.getHeight()/5);
+        this.playGameButtonPosition = new Point((Constants.SCREEN_WIDTH - playGameButton.getWidth())/2, 3*Constants.SCREEN_HEIGHT/5);
+
+        paint = new Paint();
         this.reset();
     }
 
     @Override
     public void reset() {
         currentMenuState = MENU_STATE.LOADING;
-        currentPlayGameButton = playGameButton;
-        paint = new Paint();
         paint.setAlpha(0);
+        currentPlayGameButton = playGameButton;
     }
 
     @Override
     public void update() {
         switch (currentMenuState){
+            case WAITING:
+                break;
             case LOADING:
-                if (this.paint.getAlpha() < 255){
-                    this.paint.setAlpha(this.paint.getAlpha() + 3);
-                }
-                if (this.paint.getAlpha() >= 255){
+                this.paint.setAlpha(this.paint.getAlpha() + 8);
+                if (this.paint.getAlpha() >= 245){
                     this.paint.setAlpha(255);
-                    this.currentMenuState = MENU_STATE.LOADING;
+                    this.currentMenuState = MENU_STATE.WAITING;
                 }
                 break;
             case CLOSING:
-                if (this.paint.getAlpha() > 0){
-                    this.paint.setAlpha(this.paint.getAlpha() - 5);
-                }
-                if (this.paint.getAlpha() <= 0){
-                    this.reset();
+                this.paint.setAlpha(this.paint.getAlpha() - 15);
+                if (this.paint.getAlpha() <= 10){
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PLAY;
+                    this.reset();
                 }
                 break;
         }
@@ -78,14 +77,14 @@ public class MainMenuScreen implements GameScreen{
 
     @Override
     public void receiveTouch(MotionEvent event) {
+        if (currentMenuState != MENU_STATE.WAITING)
+            return;
         float x = event.getX();
         float y = event.getY();
-        if (isInRangeOfPlayButton(x, y)) {
+        if (isInRangeOfPlayButton(x, y))
             currentPlayGameButton = playGameButtonHover;
-        }
-        else{
+        else
             currentPlayGameButton = playGameButton;
-        }
 
         switch(event.getAction())
         {
@@ -101,10 +100,11 @@ public class MainMenuScreen implements GameScreen{
     }
 
     public boolean isInRangeOfPlayButton(float x, float y){
-        if( x > playGameButtonPosition.x &&
-                x < playGameButtonPosition.x + playGameButton.getWidth() &&
+        if (
+                x > playGameButtonPosition.x &&
+                x < playGameButtonPosition.x + currentPlayGameButton.getWidth() &&
                 y > playGameButtonPosition.y &&
-                y < playGameButtonPosition.y + playGameButton.getHeight() )
+                y < playGameButtonPosition.y + currentPlayGameButton.getHeight())
             return true;
         else return false;
     }
