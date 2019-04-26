@@ -8,4 +8,5 @@ public class Constants {
     public static Context CURRENT_CONTEXT;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER}
     public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
+    public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
 }
