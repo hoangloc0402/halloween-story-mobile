@@ -35,8 +35,6 @@ public class MainCharacter implements GameObject {
 
     @Override
     public void update() {
-        this.position.x +=10;
-        this.position.y +=15;
         currentAnimation.update();
     }
 

@@ -1,5 +1,8 @@
 package com.halloween;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.view.SurfaceHolder;
 
 import com.halloween.GameScreens.GamePanel;
@@ -16,6 +19,10 @@ public class MainThread extends Thread{
         super();
         this.surfaceHolder = surfaceHolder;
         this.gamePanel = gamePanel;
+        this.surfaceHolder.setFormat(0x00000004);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
     }
 
     public void setRunning(boolean isRunning){
