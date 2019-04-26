@@ -9,11 +9,13 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
+import com.halloween.GameContents.JoyStick;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
 
 public class PlayingScreen implements GameScreen{
     private MainCharacter mainCharacter;
+    private JoyStick joyStick;
     private Bitmap pauseButton;
     private Point pauseButtonPosition;
 
@@ -23,6 +25,7 @@ public class PlayingScreen implements GameScreen{
         this.pauseButtonPosition = new Point(Constants.SCREEN_WIDTH - 200, 50);
 
         this.reset();
+        this.joyStick = new JoyStick();
     }
 
     @Override
@@ -32,14 +35,17 @@ public class PlayingScreen implements GameScreen{
 
     @Override
     public void update() {
-        mainCharacter.update();
+//        mainCharacter.update();
+        joyStick.backToCenter();
     }
 
     @Override
     public void draw(Canvas canvas) {
+
         canvas.drawColor(Color.WHITE);
         this.mainCharacter.draw(canvas);
         canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
+        this.joyStick.draw(canvas);
     }
 
     @Override
@@ -51,6 +57,9 @@ public class PlayingScreen implements GameScreen{
     public void receiveTouch(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
+        if (joyStick.isInRange(x, y)) {
+            joyStick.updatePosition(x, y);
+        }
         switch(event.getAction())
         {
             case MotionEvent.ACTION_UP:
