@@ -17,9 +17,14 @@ public class PlayingScreen implements GameScreen{
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
     private Bitmap pauseButton;
+    private  Bitmap background;
     private Point pauseButtonPosition;
 
+
     public PlayingScreen() {
+        this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.main_menu_background);
+        this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
+
         this.pauseButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_button);
         this.pauseButton = Bitmap.createScaledBitmap(pauseButton, 150, 150, false);
         this.pauseButtonPosition = new Point(Constants.SCREEN_WIDTH - 200, 50);
@@ -31,21 +36,24 @@ public class PlayingScreen implements GameScreen{
     @Override
     public void reset() {
         this.mainCharacter = new MainCharacter();
+
     }
 
     @Override
     public void update() {
-//        mainCharacter.update();
+        mainCharacter.update();
         joyStick.backToCenter();
     }
 
     @Override
     public void draw(Canvas canvas) {
-
         canvas.drawColor(Color.WHITE);
-        this.mainCharacter.draw(canvas);
+        canvas.drawBitmap(background, 0, 0 , new Paint());
         canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
+        this.mainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
+
+
     }
 
     @Override
