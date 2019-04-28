@@ -22,14 +22,19 @@ public class PlayingScreen implements GameScreen{
     private Bitmap jumpButton;
     private Bitmap atkButton;
     private Bitmap background;
+    private Bitmap backgroundBlock;
+    private float backgroundBlockXAxis = 0;
     private Point pauseButtonPosition;
     private Point jumpButtonPosition;
     private Point atkButtonPosition;
 
 
     public PlayingScreen() {
-        this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.main_menu_background);
+        this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
+
+        this.backgroundBlock = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.block);
+        this.backgroundBlock = Bitmap.createScaledBitmap(backgroundBlock, Constants.SCREEN_HEIGHT / 780 * 13500, Constants.SCREEN_HEIGHT, false);
 
         this.pauseButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_button);
         this.pauseButton = Bitmap.createScaledBitmap(pauseButton, 150, 150, false);
@@ -60,12 +65,13 @@ public class PlayingScreen implements GameScreen{
     public void update() {
         mainCharacter.update();
         joyStick.update();
+        backgroundBlockXAxis -= 10.0;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawColor(Color.WHITE);
-        canvas.drawBitmap(background, 0, 0 , new Paint());
+        canvas.drawBitmap(background, 0, 0, new Paint());
+        canvas.drawBitmap(backgroundBlock, backgroundBlockXAxis, 0, new Paint());
         canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
         this.mainCharacter.draw(canvas);
         this.joyStick.draw(canvas);

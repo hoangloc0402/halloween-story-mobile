@@ -98,6 +98,9 @@ public class JoyStick implements GameObject {
         } else {
             Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.RIGHT;
         }
+        Log.d("JOYSTICK STATE", Constants.CURRENT_JOYSTICK_STATE + "");
+        Log.d("JUMP STATE", Constants.JOYSTICK_JUMP_STATE + "");
+        Log.d("ATK STATE", Constants.JOYSTICK_ATK_STATE + "");
     }
 
     @Override
