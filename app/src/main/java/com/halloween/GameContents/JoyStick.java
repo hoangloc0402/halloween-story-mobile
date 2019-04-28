@@ -23,8 +23,6 @@ public class JoyStick implements GameObject {
     private PointF joystickCenterPosition = new PointF((float)(joystickBasePosition.x + 0.5*baseSize), (float) (joystickBasePosition.y + 0.5*baseSize));
     private PointF joystickButtonPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
     private PointF joystickButtonOriginalPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
-    private final PointF LOWBOUND = new PointF((float) Math.min(offset - 0.5*buttonSize, 0.0), (float)(Constants.SCREEN_HEIGHT - offset - baseSize - 0.5*buttonSize));
-    private final PointF HIGHBOUND = new PointF((float) (offset + baseSize - 0.5*buttonSize), (float)(Constants.SCREEN_HEIGHT - offset - 0.5*buttonSize));
 
     public JoyStick() {
         this.joystickBase = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.joystick_base);
@@ -68,16 +66,38 @@ public class JoyStick implements GameObject {
 //        joystickButtonPosition.set(xV, yV);
         joystickButtonPosition.set(joystickButtonOriginalPosition.x, joystickButtonOriginalPosition.y);
         isPressed = false;
+        Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.MIDDLE;
+    }
+
+    private float getAngle(float x, float y) {
+        float angle = (float) Math.toDegrees(Math.atan2(y - joystickCenterPosition.y, x - joystickCenterPosition.x));
+        angle = angle < 0 ? angle + 360 : angle;
+        return 360 - angle;
     }
 
     public void updatePosition(float x, float y) {
         isPressed = true;
-        float newX = (x - buttonSize / 2), newY = (y - buttonSize /2);
-        if (newX > HIGHBOUND.x) newX = HIGHBOUND.x;
-        if (newX < LOWBOUND.x) newX = LOWBOUND.x;
-        if (newY > HIGHBOUND.y) newY = HIGHBOUND.y;
-        if (newY < LOWBOUND.y) newY = LOWBOUND.y;
+        float angle = getAngle(x, y);
+        float angleRadians = (float) Math.toRadians(angle);
+        float xBound = (float) Math.abs(Math.cos(angleRadians) * baseSize * 0.5);
+        float yBound = (float) Math.abs(Math.sin(angleRadians) * baseSize * 0.5);
+        float newX = (float) (x - buttonSize*0.5), newY = (float) (y - buttonSize*0.5);
+        if (Math.abs(x - joystickCenterPosition.x) > xBound)
+            if (x > joystickCenterPosition.x)
+                newX = (float) (joystickCenterPosition.x + xBound - buttonSize*0.5);
+            else
+                newX = (float) (joystickCenterPosition.x - xBound - buttonSize*0.5);
+        if (Math.abs(y - joystickCenterPosition.y) > yBound)
+            if (y > joystickCenterPosition.y)
+                newY = (float) (joystickCenterPosition.y + yBound - buttonSize*0.5);
+            else
+                newY = (float) (joystickCenterPosition.y - yBound - buttonSize*0.5);
         joystickButtonPosition.set(newX, newY);
+        if (angle > 90 && angle < 270) {
+            Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.LEFT;
+        } else {
+            Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.RIGHT;
+        }
     }
 
     @Override

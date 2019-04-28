@@ -21,7 +21,7 @@ public class PlayingScreen implements GameScreen{
     private Bitmap pauseButton;
     private Bitmap jumpButton;
     private Bitmap atkButton;
-    private  Bitmap background;
+    private Bitmap background;
     private Point pauseButtonPosition;
     private Point jumpButtonPosition;
     private Point atkButtonPosition;
@@ -95,6 +95,12 @@ public class PlayingScreen implements GameScreen{
                     joyStick.backToCenter();
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
                 }
+                if (isInRangeOfAtkButton(x, y)) {
+                    Constants.JOYSTICK_ATK_STATE = false;
+                }
+                if (isInRangeOfJumpButton(x, y)) {
+                    Constants.JOYSTICK_JUMP_STATE = false;
+                }
                 if (joyStick.isInRange(x, y)) {
                     joyStick.backToCenter();
                 }
@@ -103,6 +109,12 @@ public class PlayingScreen implements GameScreen{
                 Log.d("MOTION:", "ACTION_DOWN" + x + " " + y);
                 if (joyStick.isInRange(x, y)) {
                     joyStick.updatePosition(x, y);
+                }
+                if (isInRangeOfJumpButton(x, y)) {
+                    Constants.JOYSTICK_JUMP_STATE = true;
+                }
+                if (isInRangeOfAtkButton(x, y)) {
+                    Constants.JOYSTICK_ATK_STATE = true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -114,11 +126,23 @@ public class PlayingScreen implements GameScreen{
                         joyStick.backToCenter();
                     }
                 }
+                if (isInRangeOfJumpButton(x, y)) {
+                    Constants.JOYSTICK_JUMP_STATE = true;
+                }
+                if (isInRangeOfAtkButton(x, y)) {
+                    Constants.JOYSTICK_ATK_STATE = true;
+                }
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 Log.d("MOTION:", "ACTION_POINTER_DOWN" + x + " " + y);
                 if (joyStick.isInRange(x, y)) {
                     joyStick.updatePosition(x, y);
+                }
+                if (isInRangeOfJumpButton(x, y)) {
+                    Constants.JOYSTICK_JUMP_STATE = true;
+                }
+                if (isInRangeOfAtkButton(x, y)) {
+                    Constants.JOYSTICK_ATK_STATE = true;
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -130,14 +154,21 @@ public class PlayingScreen implements GameScreen{
                 if (joyStick.isInRange(x, y)) {
                     joyStick.backToCenter();
                 }
+                if (isInRangeOfJumpButton(x, y)) {
+                    Constants.JOYSTICK_JUMP_STATE = false;
+                }
+                if (isInRangeOfAtkButton(x, y)) {
+                    Constants.JOYSTICK_ATK_STATE = false;
+                }
                 break;
             case MotionEvent.ACTION_OUTSIDE:
                 Log.d("MOTION:", "ACTION_OUTSIDE" + x + " " + y);
                 break;
             case MotionEvent.ACTION_CANCEL:
                 Log.d("MOTION:", "ACTION_CANCEL" + x + " " + y);
+                Constants.JOYSTICK_ATK_STATE = false;
+                Constants.JOYSTICK_JUMP_STATE = false;
                 break;
-
         }
     }
 
@@ -149,6 +180,22 @@ public class PlayingScreen implements GameScreen{
                 y < pauseButtonPosition.y + pauseButton.getHeight())
             return true;
         else return false;
+    }
+
+    public boolean isInRangeOfAtkButton(float x, float y) {
+        if ( x > atkButtonPosition.x && x < atkButtonPosition.x + atkButton.getWidth() &&
+             y > atkButtonPosition.y && y < atkButtonPosition.y + atkButton.getHeight())
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isInRangeOfJumpButton(float x, float y) {
+        if ( x > jumpButtonPosition.x && x < jumpButtonPosition.x + jumpButton.getWidth() &&
+                y > jumpButtonPosition.y && y < jumpButtonPosition.y + jumpButton.getHeight())
+            return true;
+        else
+            return false;
     }
 
 }
