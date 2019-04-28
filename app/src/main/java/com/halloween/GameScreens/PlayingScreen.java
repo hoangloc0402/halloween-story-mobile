@@ -65,7 +65,13 @@ public class PlayingScreen implements GameScreen{
     public void update() {
         mainCharacter.update();
         joyStick.update();
-        backgroundBlockXAxis -= 10.0;
+        if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT) {
+            backgroundBlockXAxis -= 10.0;
+        } else
+            if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
+                backgroundBlockXAxis += 10.0;
+            }
+
     }
 
     @Override
