@@ -13,4 +13,5 @@ public class Constants {
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
     public static boolean JOYSTICK_ATK_STATTE = false;
     public static boolean JOYSTICK_JUMP_STATTE = false;
+    public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
 }

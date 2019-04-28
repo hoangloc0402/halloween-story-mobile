@@ -18,11 +18,11 @@ public class MainThread extends Thread{
     public MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel){
         super();
         this.surfaceHolder = surfaceHolder;
-        this.gamePanel = gamePanel;
         this.surfaceHolder.setFormat(0x00000004);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         options.inPreferredConfig = Bitmap.Config.RGB_565;
+        this.gamePanel = gamePanel;
     }
 
     public void setRunning(boolean isRunning){
@@ -41,7 +41,7 @@ public class MainThread extends Thread{
             startTime = System.nanoTime();
             canvas = null;
             try{
-                canvas = this.surfaceHolder.lockCanvas();
+                canvas = this.surfaceHolder.lockHardwareCanvas();
                 synchronized (surfaceHolder){
                     this.gamePanel.update();
                     this.gamePanel.draw(canvas);
