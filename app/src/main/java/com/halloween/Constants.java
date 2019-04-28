@@ -11,7 +11,7 @@ public class Constants {
     public static GAME_STATE PREVIOUS_GAME_STATE;
     public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE};
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
-    public static boolean JOYSTICK_ATK_STATTE = false;
-    public static boolean JOYSTICK_JUMP_STATTE = false;
+    public static boolean JOYSTICK_ATK_STATE = false;
+    public static boolean JOYSTICK_JUMP_STATE = false;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
 }
