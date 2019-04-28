@@ -8,7 +8,7 @@ import android.view.SurfaceHolder;
 import com.halloween.GameScreens.GamePanel;
 
 public class MainThread extends Thread{
-    public static final int MAX_FPS = 30;
+    public static final int MAX_FPS = 60;
     private double averageFPS;
     private boolean isRunning;
     private SurfaceHolder surfaceHolder;
@@ -71,7 +71,7 @@ public class MainThread extends Thread{
                 averageFPS = 1000/((totalTime/frameCount)/1000000);
                 frameCount = 0;
                 totalTime = 0;
-                System.out.println(averageFPS);
+//                System.out.println(averageFPS);
             }
         }
     }

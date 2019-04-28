@@ -12,17 +12,17 @@ public class MainCharacter implements GameObject {
 
     private Animation currentAnimation;
     private Point position;
-    private  Rect surroundingBox;
+    private Rect surroundingBox;
     private Animation idleAnimation;
     private Animation walkAnimation;
     private Animation jumpAnimation;
     private Animation attackAnimation;
 
-    public MainCharacter(){
-        this.idleAnimation = new Animation(R.drawable.attack_83x97x4, 830,970,4, 100);
+    public MainCharacter(int x, int y){
+        this.idleAnimation = new Animation(R.drawable.attack_83x97x4, 166,194,4, 100);
         this.currentAnimation = idleAnimation;
         this.surroundingBox = new Rect();
-        this.position = new Point(50,50);
+        this.position = new Point(x,y);
         this.currentAnimation.play();
     }
 
