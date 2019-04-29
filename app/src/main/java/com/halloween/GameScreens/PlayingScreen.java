@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class PlayingScreen implements GameScreen{
     private Paint paint;
 
 //  comment this and use main char pos
-    private Point tempWatchPosition;
+//    private Point tempWatchPosition;
 
     public PlayingScreen() {
         this.paint = new Paint();
@@ -69,7 +70,7 @@ public class PlayingScreen implements GameScreen{
         this.atkButton = Bitmap.createScaledBitmap(atkButton, 150, 150, false);
         this.atkButtonPosition = new Point(Constants.SCREEN_WIDTH - 400, Constants.SCREEN_HEIGHT - 200);
 
-        this.tempWatchPosition = new Point(50,50);
+//        this.tempWatchPosition = new Point(50,50);
 
         this.reset();
         this.joyStick = new JoyStick();
@@ -86,18 +87,19 @@ public class PlayingScreen implements GameScreen{
         joyStick.update();
 
         // This is just a template for watch position, comment this & use the Main Character Position
-        if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT) {
-            tempWatchPosition.x += 10.0;
-        } else
-            if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
-                tempWatchPosition.x -= 10.0;
-            }
-
+//        if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT) {
+//            tempWatchPosition.x += 10.0;
+//        } else
+//            if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
+//                tempWatchPosition.x -= 10.0;
+//            }
+//        tempWatchPosition = mainCharacter.getCurrentPosition();
         // Update background X axis pos
-        if (tempWatchPosition.x < backgroundXAxis + Constants.SCREEN_WIDTH * 0.15) {
-            backgroundXAxis = (float) (tempWatchPosition.x - Constants.SCREEN_WIDTH * 0.15);
-        } else if (tempWatchPosition.x > backgroundXAxis + Constants.SCREEN_WIDTH * 0.45) {
-            backgroundXAxis = (float) (tempWatchPosition.x - Constants.SCREEN_WIDTH * 0.45);
+        PointF mainPosition = mainCharacter.getCurrentPosition();
+        if (mainPosition.x < backgroundXAxis + Constants.SCREEN_WIDTH * 0.15) {
+            backgroundXAxis = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.15);
+        } else if (mainPosition.x > backgroundXAxis + Constants.SCREEN_WIDTH * 0.45) {
+            backgroundXAxis = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.45);
         }
         backgroundXAxis = Math.max(backgroundXAxis, (float) 0.0);
         backgroundXAxis = Math.min(backgroundXAxis, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
