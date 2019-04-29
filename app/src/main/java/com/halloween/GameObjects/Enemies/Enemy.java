@@ -1,7 +1,9 @@
 package com.halloween.GameObjects.Enemies;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
 
 import com.halloween.Animation;
@@ -11,7 +13,7 @@ import com.halloween.GameObjects.GameObject;
 
 public class Enemy implements GameObject {
 
-    int HP;
+    int currentHP;
     public Animation currentAnimation;
     Animation diedAnimation;
     Animation moveAnimation;
@@ -20,31 +22,35 @@ public class Enemy implements GameObject {
     Animation hurtAnimation;
     Animation ultimateAttackAnimation;
 
+    boolean isAlive, isActive;
 
-    Point currentPosition;
-    Point leftLandMark;
+    PointF currentPosition;
+    PointF leftLandMark;
+    PointF rightLandMark;
+    RectF surroundingBox;
 
+    public Enemy(int currentHP, PointF leftLandMark, PointF rightLandMark) {
+        this.currentHP = currentHP;
+        this.leftLandMark = leftLandMark;
+        this.rightLandMark = rightLandMark;
+        isAlive = true;
+        isActive = true;
+    }
 
-    Point rightLandMark;
-    Rect surroundingBox;
+    boolean isMovingForward;
 
     //Check if the object is in the playing screen
     public boolean isInScreen(){
-//        return Constants.BACKGROUND_X_AXIS <= initPosition.x + currentPosition.x &&
-//                initPosition.x + currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
-
         return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
     }
 
-    public Point getCurrentPosition() {
+    public PointF getCurrentPosition() {
         return currentPosition;
     }
 
-    boolean isAlive, isMovingForward;
-
-    public Enemy(){
-        isAlive = true;
-    }
+//    public boolean IsAlive(){
+//        return currentHP > 0;
+//    }
 
     public enum State { Move , Attack, Defense , UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
     protected State currentState, previousState;
@@ -57,7 +63,7 @@ public class Enemy implements GameObject {
 
     }
 
-    public Rect getSurroundingBox(){
+    public RectF getSurroundingBox(){
         this.surroundingBox.left = currentPosition.x;
         this.surroundingBox.top =  currentPosition.y;
         this.surroundingBox.right = currentPosition.x + currentAnimation.frameWidth;
