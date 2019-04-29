@@ -16,17 +16,17 @@ public class JoyStick implements GameObject {
 
     public boolean isPressed = false;
     private float offset = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.05);
-    private float baseSize = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.3);
+    private float baseSize = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.32);
     private float buttonSize = (float)(baseSize * 0.5);
     private Paint paint = new Paint();
-    private PointF joystickBasePosition = new PointF(offset, (float) (Constants.SCREEN_HEIGHT - offset - baseSize));
+    private PointF joystickBasePosition = new PointF(offset * 2, (float) (Constants.SCREEN_HEIGHT - offset - baseSize * 0.8));
     private PointF joystickCenterPosition = new PointF((float)(joystickBasePosition.x + 0.5*baseSize), (float) (joystickBasePosition.y + 0.5*baseSize));
     private PointF joystickButtonPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
     private PointF joystickButtonOriginalPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
 
     public JoyStick() {
-        this.joystickBase = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.joystick_base);
-        this.joystickBase = Bitmap.createScaledBitmap(joystickBase, (int) baseSize, (int) baseSize, false);
+//        this.joystickBase = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.joystick_base);
+//        this.joystickBase = Bitmap.createScaledBitmap(joystickBase, (int) baseSize, (int) baseSize, false);
         this.joystickButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.joystick_button);
         this.joystickButton = Bitmap.createScaledBitmap(joystickButton, (int) buttonSize, (int) buttonSize, false);
         this.paint.setAlpha(255);
@@ -105,7 +105,12 @@ public class JoyStick implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(joystickBase, joystickBasePosition.x, joystickBasePosition.y, paint);
+//        canvas.drawBitmap(joystickBase, joystickBasePosition.x, joystickBasePosition.y, paint);
+        if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.MIDDLE) {
+            paint.setAlpha(185);
+        } else {
+            paint.setAlpha(255);
+        }
         canvas.drawBitmap(joystickButton, joystickButtonPosition.x, joystickButtonPosition.y, paint);
     }
 
