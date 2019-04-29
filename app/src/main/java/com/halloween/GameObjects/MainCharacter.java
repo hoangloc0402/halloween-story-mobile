@@ -46,8 +46,8 @@ public class MainCharacter implements GameObject {
     }
 
     public void loadAnimation(){
-        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*3,97*3,8, 100);
-        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*3,97*3,4, 100);
+//        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*3,97*3,8, 100);
+//        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*3,97*3,4, 100);
         this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*3,97*3,1, 300);
         this.dieAnimation = new Animation(R.drawable.main_character_die_12, 103*3,97*3,12, 100);
         this.attackAnimation = new Animation[4];
