@@ -19,11 +19,12 @@ public class Zombie extends Enemy {
         this.leftLandMark = leftLandMark;
         this.rightLandMark = rightLandMark;
 //        currentHP = Constants.ZOMBIE_STARTING_HP;
-        this.idleAnimation = new Animation(R.drawable.attack_83x97x4, 83,97,4, 100);
-        this.currentAnimation = idleAnimation;
+        this.currentAnimation = new Animation(R.drawable.attack_83x97x4, 83,97,4, 100);
+//        this.currentAnimation = idleAnimation;
         this.surroundingBox = new Rect();
-        this.position = new Point(800,100);
+        this.position = new Point(700,100);
         this.currentAnimation.play();
+        this.isMovingForward = false;
         currentState = previousState = State.Move;
     }
 
@@ -38,13 +39,13 @@ public class Zombie extends Enemy {
                 position.x -= Constants.ZOMBIE_V_X;
             }
 
-            if (position.x < leftLandMark.x){
+            if (position.x <= leftLandMark.x){
                 isMovingForward = true;
             }
-            else if(position.x > rightLandMark.x){
+            else if(position.x >= rightLandMark.x){
                 isMovingForward = false;
             }
-            currentAnimation.flip(isMovingForward);
+            this.currentAnimation.flip(isMovingForward);
         }
     }
 
@@ -52,16 +53,14 @@ public class Zombie extends Enemy {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        currentAnimation.draw(canvas, new PointF(this.position.x, this.position.y));
+        this.currentAnimation.draw(canvas, new PointF(this.position.x, this.position.y));
     }
 
     @Override
     public void update() {
         super.update();
         UpdateMovement();
-        currentAnimation.update();
-
-
+        this.currentAnimation.update();
     }
 
     public void hit(int attack){

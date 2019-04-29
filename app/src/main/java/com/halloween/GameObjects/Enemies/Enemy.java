@@ -20,7 +20,14 @@ public class Enemy implements GameObject {
     protected Animation ultimateAttackAnimation;
 
 
-    Point position, leftLandMark, rightLandMark;
+    Point position;
+    Point leftLandMark;
+
+    public Point getPosition() {
+        return position;
+    }
+
+    Point rightLandMark;
     Rect surroundingBox;
 
     boolean isAlive, isMovingForward;
