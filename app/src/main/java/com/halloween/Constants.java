@@ -13,6 +13,9 @@ public class Constants {
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
     public static boolean JOYSTICK_ATK_STATE = false;
     public static boolean JOYSTICK_JUMP_STATE = false;
+
+    public static float BACKGROUND_X_AXIS = 0.0f;
+
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
 
     public final static int ZOMBIE_ATTACK= 30;
@@ -22,7 +25,7 @@ public class Constants {
     public final static int ZOMBIE_V_X = 2;
     public final static int ZOMBIE_SCALE = 2;
 
-    public static final float MAIN_CHARACTER_V_X = 5f;
+    public static final float MAIN_CHARACTER_V_X = 10f;
     public static final float MAIN_CHARACTER_V_Y = 21f;
     public static final float MAIN_CHARACTER_JUMP_HEIGHT = 300f;
     public static final float GRAVITY = 9.81f;
