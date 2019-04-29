@@ -105,6 +105,7 @@ public class PlayingScreen implements GameScreen{
         mainCharacter.update();
         joyStick.update();
         healthBarMainCharacter.update();
+        this.healthBarBoss.update();
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
 //        Log.d("POS 1", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);

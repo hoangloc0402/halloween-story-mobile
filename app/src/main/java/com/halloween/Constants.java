@@ -28,9 +28,8 @@ public class Constants {
     public final static int ZOMBIE_SCALE = 2;
 
     public static final float MAIN_CHARACTER_V_X = 10f;
-    public static final float MAIN_CHARACTER_V_Y = 21f;
-    public static final float MAIN_CHARACTER_JUMP_HEIGHT = 300f;
-    public static final float GRAVITY = 9.81f;
+    public static final float MAIN_CHARACTER_V_Y = -50f;
+    public static final float GRAVITY = 20f;
 
     public static int  MAIN_CHARACTER_ATTACK_POWER = 10;
     public static final double INVINCIBLE_TIME = 1500;
