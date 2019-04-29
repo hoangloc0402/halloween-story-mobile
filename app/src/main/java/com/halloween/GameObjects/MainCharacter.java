@@ -29,9 +29,9 @@ public class MainCharacter implements GameObject {
 
     public MainCharacter(){
         this.loadAnimation();
-        this.currentAnimation = attackAnimation[0];
+        this.currentAnimation = idleAnimation;
         this.surroundingBox = new Rect();
-        this.position = new PointF(250,50);
+        this.position = new PointF(250,500);
         this.velocity = new PointF(0,0);
         this.currentAnimation.play();
         this.currentAnimation.flip(true);
@@ -64,6 +64,8 @@ public class MainCharacter implements GameObject {
 
     @Override
     public void update() {
+        this.updateMovement();
+        this.updateAnimation();
         currentAnimation.update();
     }
 
@@ -81,7 +83,7 @@ public class MainCharacter implements GameObject {
             }
             if (isJumping){
                 long elapsed_time = (System.nanoTime() - this.jumpTime) / 100000000;
-                this.velocity.y += Math.sqrt(2*Constants.GRAVITY*Constants.MAIN_CHARACTER_JUMP_HEIGHT) - Constants.GRAVITY*elapsed_time;
+//                this.velocity.y += Math.sqrt(2*Constants.GRAVITY*Constants.MAIN_CHARACTER_JUMP_HEIGHT) - Constants.GRAVITY*elapsed_time;
             }
             else this.velocity.y = 0;
 
@@ -98,9 +100,38 @@ public class MainCharacter implements GameObject {
 
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
+
+            if (this.position.y > 500)
+                this.position.y = 500;
         }
         else {
 
+        }
+    }
+
+    private void updateAnimation(){
+//        if (this.currentHP < 0){
+//            currentHP = 0;
+//            this.isAlive = false;
+//            this.currentAnimation = this.dieAnimation;
+//            if (this.dieAnimation.isLastFrame())
+//                this.isActive = false;
+//        }
+//        else if (this.isAttacking){
+//
+//        }
+//        else if (!this.isJumping && this.velocity.x !=0) {
+//            this.currentAnimation = this.walkAnimation;
+//        }
+//        else if (this.isJumping){
+//            this.currentAnimation = this.jumpAnimation;
+//        }
+//        else this.currentAnimation = this.idleAnimation;
+
+        if (this.velocity.x > 0){
+            this.currentAnimation.flip(true);
+        } else if (this.velocity.x <0){
+            this.currentAnimation.flip(false);
         }
     }
 
@@ -111,6 +142,8 @@ public class MainCharacter implements GameObject {
         this.surroundingBox.bottom = (int)position.y + currentAnimation.frameHeight;
         return this.surroundingBox;
     }
+
+    public PointF getCurrentPosition(){ return this.position;}
 
     public Boolean collide(Rect targetBox){
         return targetBox.intersect(this.getSurroundingBox());

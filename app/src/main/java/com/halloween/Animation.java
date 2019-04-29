@@ -44,7 +44,12 @@ public class Animation {
     public void draw(Canvas canvas, PointF position, Paint paint){
         if (!this.isPlaying) return;
         Rect whatToDraw = getCurrentFrame();
-        RectF whereToDraw = new RectF(position.x, position.y,position.x + this.frameWidth,position.y + this.frameHeight);
+        RectF whereToDraw;
+        if (this.isFlip){
+            float x = (float)(position.x + 0.4*this.frameWidth);
+            whereToDraw = new RectF(x, position.y,x + this.frameWidth,position.y + this.frameHeight);
+        }
+        else whereToDraw = new RectF(position.x, position.y,position.x + this.frameWidth,position.y + this.frameHeight);
         canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
     }
 
