@@ -77,7 +77,7 @@ public class PlayingScreen implements GameScreen{
 
     @Override
     public void reset() {
-        this.mainCharacter = new MainCharacter(50, 50);
+        this.mainCharacter = new MainCharacter();
     }
 
     @Override
