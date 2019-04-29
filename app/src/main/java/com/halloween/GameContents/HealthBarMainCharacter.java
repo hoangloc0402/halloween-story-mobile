@@ -14,11 +14,12 @@ import com.halloween.GameObjects.GameObject;
 import com.halloween.R;
 
 public class HealthBarMainCharacter implements GameObject {
-    private static enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
+    private enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
 
-    ;
+    private enum SCORE_STATE {INCREASING, NORMAL}
 
     private PointF healthBarBase = new PointF();
+    private PointF scoreBarBase = new PointF();
     private double scale;
     private int healthBarWidth;
     private int healthBarHeight;
@@ -30,6 +31,14 @@ public class HealthBarMainCharacter implements GameObject {
     private int redHealth;
     private int yellowHealth;
     private int greyHealth;
+    private int scoreBarWidth;
+    private int scoreBarHeight;
+    private int currentScore;
+    private int newScore;
+    private int increasingScore;
+    private int greenScore;
+    private int greyScore;
+    private SCORE_STATE scoreBarState;
     private HEALTH_STATE healthBarState;
     private Bitmap healthBarBorder;
     private Paint paint;
@@ -41,19 +50,31 @@ public class HealthBarMainCharacter implements GameObject {
         int healthBarBorderHeight = (int) (this.healthBarBorder.getHeight() * scale);
         this.healthBarBorder = Bitmap.createScaledBitmap(this.healthBarBorder, healthBarBorderWidth, healthBarBorderHeight, false);
 
-        healthBarWidth = this.healthBarBorder.getWidth() * 330 / 432;
-        healthBarHeight = this.healthBarBorder.getHeight() * 28 / 92;
+        this.healthBarWidth = this.healthBarBorder.getWidth() * 330 / 432;
+        this.healthBarHeight = this.healthBarBorder.getHeight() * 28 / 92;
 
         this.healthBarBase.x = (float) (this.healthBarBorder.getWidth() * 85 / 432);
         this.healthBarBase.y = (float) (this.healthBarBorder.getHeight() * 30 / 92);
 
         this.currentHealth = 0;
+        this.newHealth = 0;
         this.decreasingHealth = 0;
         this.increasingHealth = 0;
         this.redHealth = 0;
         this.yellowHealth = 0;
         this.greyHealth = Constants.MAX_HEALTH_MAIN_CHARACTER;
         this.healthBarState = HEALTH_STATE.NORMAL;
+
+        this.scoreBarWidth = this.healthBarBorder.getWidth() * 353 / 432;
+        this.scoreBarHeight = this.healthBarBorder.getHeight() * 28 / 92;
+
+        this.scoreBarBase.x = (float) (this.healthBarBorder.getWidth() * 65 / 432);
+        this.scoreBarBase.y = (float) (this.healthBarBorder.getHeight() * 62 / 92);
+
+        this.currentScore = 0;
+        this.newScore = 0;
+        this.increasingScore = 0;
+        this.scoreBarState = SCORE_STATE.NORMAL;
 
         this.lastUpdateTime = System.currentTimeMillis();
         this.paint = new Paint();
@@ -80,6 +101,19 @@ public class HealthBarMainCharacter implements GameObject {
                 healthBarBase.y, healthBarBase.x + redHeathWidth + yellowHealthWidth, healthBarBase.y + this.healthBarHeight, yellowHealthBarPaint, canvas);
         drawRectWithOneRounded(healthBarBase.x, healthBarBase.y, healthBarBase.x + redHeathWidth, healthBarBase.y + this.healthBarHeight, redHealthBarPaint, canvas);
 
+        Paint greenScoreBarPaint = new Paint();
+        Paint greyScoreBarPaint = new Paint();
+
+        greenScoreBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(218, 255, 187), Color.rgb(77, 170, 0), Shader.TileMode.CLAMP));
+        greyScoreBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(230, 214, 255), Color.rgb(122, 118, 119), Shader.TileMode.CLAMP));
+
+        float greenScoreWidth = this.scoreBarWidth * this.greenScore / Constants.MAX_SCORE;
+        float greyScoreWidth = this.scoreBarWidth * this.greyScore / Constants.MAX_SCORE;
+
+        drawRectWithOneRounded(scoreBarBase.x + greenScoreWidth,
+                scoreBarBase.y, scoreBarBase.x + greenScoreWidth + greyScoreWidth, scoreBarBase.y + this.scoreBarHeight, greyScoreBarPaint, canvas);
+        drawRectWithOneRounded(scoreBarBase.x, scoreBarBase.y, scoreBarBase.x + greenScoreWidth, scoreBarBase.y + this.scoreBarHeight, greenScoreBarPaint, canvas);
+
         canvas.drawBitmap(this.healthBarBorder, 0, 0, paint);
     }
 
@@ -93,9 +127,27 @@ public class HealthBarMainCharacter implements GameObject {
     public void update() {
         if (this.newHealth != this.currentHealth)
             updateNewHealth();
+        if (this.newScore != this.currentScore)
+            updateNewScore();
         if (System.currentTimeMillis() - this.lastUpdateTime > 1000 / 60) {
             updateHealthBar();
+            updateScoreBar();
             this.lastUpdateTime = System.currentTimeMillis();
+        }
+    }
+
+    public void updateScoreBar() {
+        switch ((this.healthBarState)) {
+            case INCREASING:
+                this.increasingScore -= 5;
+                this.greenScore += 5;
+                this.greyScore = this.increasingScore;
+                if (this.increasingScore == 0) this.healthBarState = HEALTH_STATE.NORMAL;
+                break;
+            case NORMAL:
+                break;
+            default:
+                break;
         }
     }
 
@@ -116,6 +168,22 @@ public class HealthBarMainCharacter implements GameObject {
                 if (this.decreasingHealth == 0) this.healthBarState = HEALTH_STATE.NORMAL;
                 break;
             case NORMAL:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void updateNewScore() {
+        switch (this.scoreBarState) {
+            case NORMAL:
+                this.increasingScore = this.newScore - this.currentScore;
+                this.currentScore = this.newScore;
+                this.scoreBarState = SCORE_STATE.INCREASING;
+                break;
+            case INCREASING:
+                this.increasingScore += this.newScore - this.currentScore;
+                this.currentScore = this.newScore;
                 break;
             default:
                 break;
@@ -184,5 +252,13 @@ public class HealthBarMainCharacter implements GameObject {
 
     public void setNewHealth(int newHealth) {
         this.newHealth = newHealth;
+    }
+
+    public void setNewScore(int newScore) {
+        this.newScore = newScore;
+    }
+
+    public int getCurrentScore() {
+        return currentScore;
     }
 }
