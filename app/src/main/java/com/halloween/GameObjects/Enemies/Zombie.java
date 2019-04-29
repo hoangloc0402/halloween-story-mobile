@@ -16,16 +16,26 @@ public class Zombie extends Enemy {
 
     public Zombie(Point leftLandMark, Point rightLandMark){
         super();
+        loadAnimation();
+        currentAnimation = idleAnimation;
         this.leftLandMark = leftLandMark;
         this.rightLandMark = rightLandMark;
 //        currentHP = Constants.ZOMBIE_STARTING_HP;
-        this.currentAnimation = new Animation(R.drawable.attack_83x97x4, 83,97,4, 100);
 //        this.currentAnimation = idleAnimation;
         this.surroundingBox = new Rect();
         this.position = new Point(700,100);
         this.currentAnimation.play();
         this.isMovingForward = false;
         currentState = previousState = State.Move;
+    }
+
+    public void loadAnimation() {
+        this.idleAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE, 97 * Constants.ZOMBIE_SCALE, 4, 100);
+        this.defenseAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE, 97 * Constants.ZOMBIE_SCALE, 4, 100);
+        this.attackAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE, 97 * Constants.ZOMBIE_SCALE, 4, 300);
+        this.diedAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE, 97 * Constants.ZOMBIE_SCALE, 4, 100);
+        this.hurtAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE, 97 * Constants.ZOMBIE_SCALE, 4, 100);
+        this.ultimateAttackAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE, 97 * Constants.ZOMBIE_SCALE, 4, 100);
     }
 
     public void UpdateMovement(){
