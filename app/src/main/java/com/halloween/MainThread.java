@@ -40,8 +40,9 @@ public class MainThread extends Thread{
         while(isRunning){
             startTime = System.nanoTime();
             canvas = null;
-            try{
+            try {
                 canvas = this.surfaceHolder.lockHardwareCanvas();
+//                System.out.println(canvas.isHardwareAccelerated());
                 synchronized (surfaceHolder){
                     this.gamePanel.update();
                     this.gamePanel.draw(canvas);
