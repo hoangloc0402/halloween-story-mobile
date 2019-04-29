@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 
 import com.halloween.Animation;
+import com.halloween.Constants;
 import com.halloween.GameObjects.GameObject;
 
 
@@ -20,15 +21,24 @@ public class Enemy implements GameObject {
     protected Animation ultimateAttackAnimation;
 
 
-    Point position;
+    Point currentPosition;
     Point leftLandMark;
 
-    public Point getPosition() {
-        return position;
-    }
 
     Point rightLandMark;
     Rect surroundingBox;
+
+    //Check if the object is in the playing screen
+    public boolean isInScreen(){
+//        return Constants.BACKGROUND_X_AXIS <= initPosition.x + currentPosition.x &&
+//                initPosition.x + currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
+
+        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
+    }
+
+    public Point getCurrentPosition() {
+        return currentPosition;
+    }
 
     boolean isAlive, isMovingForward;
 
@@ -48,10 +58,10 @@ public class Enemy implements GameObject {
     }
 
     public Rect getSurroundingBox(){
-        this.surroundingBox.left = position.x;
-        this.surroundingBox.top =  position.y;
-        this.surroundingBox.right = position.x + currentAnimation.frameWidth;
-        this.surroundingBox.bottom = position.y + currentAnimation.frameHeight;
+        this.surroundingBox.left = currentPosition.x;
+        this.surroundingBox.top =  currentPosition.y;
+        this.surroundingBox.right = currentPosition.x + currentAnimation.frameWidth;
+        this.surroundingBox.bottom = currentPosition.y + currentAnimation.frameHeight;
         return this.surroundingBox;
     }
 
@@ -63,6 +73,13 @@ public class Enemy implements GameObject {
             switch (currentState){
                 case Idle:
                     currentAnimation = idleAnimation;
+                    if (currentPosition.x <= leftLandMark.x - Constants.BACKGROUND_X_AXIS){
+                        isMovingForward = true;
+                    }
+                    else if(currentPosition.x >= rightLandMark.x - Constants.BACKGROUND_X_AXIS){
+                        isMovingForward = false;
+                    }
+                    this.currentAnimation.flip(isMovingForward);
                     break;
                 case Died:
                     currentAnimation = diedAnimation;
@@ -79,6 +96,8 @@ public class Enemy implements GameObject {
                 case UltimateAttack:
                     currentAnimation = ultimateAttackAnimation;
                     break;
+                case Move:
+                    currentAnimation = idleAnimation;
                 default:
                     break;
 
