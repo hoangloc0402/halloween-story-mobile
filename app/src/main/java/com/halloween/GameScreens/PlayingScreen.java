@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
+import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
@@ -34,6 +35,7 @@ public class PlayingScreen implements GameScreen{
     private Point pauseButtonPosition;
     private Point jumpButtonPosition;
     private Point atkButtonPosition;
+    private HealthBarMainCharacter healthBarMainCharacter;
 
     private Paint paint;
 
@@ -74,6 +76,9 @@ public class PlayingScreen implements GameScreen{
 
         this.reset();
         this.joyStick = new JoyStick();
+
+        this.healthBarMainCharacter = new HealthBarMainCharacter();
+        this.healthBarMainCharacter.setNewHealth(1000);
     }
 
     @Override
@@ -85,6 +90,7 @@ public class PlayingScreen implements GameScreen{
     public void update() {
         mainCharacter.update();
         joyStick.update();
+        healthBarMainCharacter.update();
 
         // This is just a template for watch position, comment this & use the Main Character Position
 //        if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT) {
@@ -115,6 +121,7 @@ public class PlayingScreen implements GameScreen{
         canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
         this.mainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
+        this.healthBarMainCharacter.draw(canvas);
         canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paint);
         canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
     }
