@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -15,14 +16,14 @@ public class Animation {
     private boolean isFlip;
     private int currentFrameIndex;
     private boolean isPlaying = false;
-    private float frameInterval;
+    private long frameInterval;
     private long lastFrameTime;
     private int frameCount;
     public int frameWidth;
     public int frameHeight;
     private Rect sourceRect;
 
-    public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, float animTime){
+    public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime){
         this.sourceBitmap = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), drawable);
         this.sourceBitmap = Bitmap.createScaledBitmap(sourceBitmap, frameWidth * frameCount, frameHeight, false);
         this.isFlip = false;
@@ -30,10 +31,9 @@ public class Animation {
         this.frameCount = frameCount;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
-
-        sourceRect = new Rect(0,0,frameWidth, frameHeight);
-        frameInterval = animTime / frameCount;
-        lastFrameTime = System.currentTimeMillis();
+        this.sourceRect = new Rect(0,0,frameWidth, frameHeight);
+        this.frameInterval = animTime *1000000;
+        this.lastFrameTime = System.nanoTime();
     }
 
     public boolean isPlaying(){ return this.isPlaying; }
@@ -41,34 +41,43 @@ public class Animation {
     public void play(){this.isPlaying = true; }
     public void stop(){this.isPlaying = false; }
 
-    public void draw(Canvas canvas, Point position){
+    public void draw(Canvas canvas, PointF position, Paint paint){
         if (!this.isPlaying) return;
         Rect whatToDraw = getCurrentFrame();
-        RectF whereToDraw = new RectF(position.x, position.y,position.x + frameWidth,position.y + frameHeight);
-        if (isFlip){
-            canvas.scale(-1, 1, frameHeight/2,frameWidth/2);
-            canvas.drawBitmap(sourceBitmap, whatToDraw, whereToDraw, new Paint());
-            canvas.scale(-1, 1, frameHeight/2,frameWidth/2);
-        }
-        else {
-            canvas.drawBitmap(sourceBitmap, whatToDraw, whereToDraw, new Paint());
-        }
+        RectF whereToDraw = new RectF(position.x, position.y,position.x + this.frameWidth,position.y + this.frameHeight);
+        canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
+    }
+
+    public void draw(Canvas canvas, PointF position){
+        this.draw(canvas, position, new Paint());
     }
 
     public void update(){
         if (!this.isPlaying) return;
-        if (System.currentTimeMillis() - lastFrameTime > frameInterval){
-            currentFrameIndex++;
-            if (currentFrameIndex >=  frameCount)
-                currentFrameIndex =  0;
-            lastFrameTime = System.currentTimeMillis();
+        if (System.nanoTime()- this.lastFrameTime > this.frameInterval){
+            this.currentFrameIndex++;
+            if (this.currentFrameIndex >=  this.frameCount)
+                this.currentFrameIndex =  0;
+            this.lastFrameTime = System.nanoTime();
         }
     }
 
     public Rect getCurrentFrame(){
-        this.sourceRect.left = this.currentFrameIndex * frameWidth;
-        this.sourceRect.right = this.sourceRect.left + frameWidth;
+        if (isFlip){
+            this.sourceRect.left = (this.currentFrameIndex +1 ) * this.frameWidth;
+            this.sourceRect.right = this.sourceRect.left - this.frameWidth;
+        }
+        else {
+            this.sourceRect.left = this.currentFrameIndex * this.frameWidth;
+            this.sourceRect.right = this.sourceRect.left + this.frameWidth;
+        }
         return sourceRect;
     }
-
+    public boolean isLastFrame(){
+        return this.currentFrameIndex == this.frameCount;
+    }
+    public void reset(){
+        this.currentFrameIndex = 0;
+        this.lastFrameTime = System.nanoTime();
+    }
 }
