@@ -19,7 +19,7 @@ public class Constants {
     public final static int ZOMBIE_DAMAGE = 20;
     public final static int ZOMBIE_STARTING_HP = 50;
     public final static int ZOMBIE_POINT = 100;
-    public final static float ZOMBIE_V_X = 0.8f;
+    public final static int ZOMBIE_V_X = 2;
 
     public static final float MAIN_CHARACTER_V_X = 5f;
     public static final float MAIN_CHARACTER_V_Y = 21f;
