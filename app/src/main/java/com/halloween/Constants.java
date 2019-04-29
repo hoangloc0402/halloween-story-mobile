@@ -16,7 +16,7 @@ public class Constants {
 
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
 
-    public static final float MAIN_CHARACTER_V_X = 5f;
+    public static final float MAIN_CHARACTER_V_X = 10f;
     public static final float MAIN_CHARACTER_V_Y = 21f;
     public static final float MAIN_CHARACTER_JUMP_HEIGHT = 300f;
     public static final float GRAVITY = 9.81f;
