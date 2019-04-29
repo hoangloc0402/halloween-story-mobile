@@ -13,7 +13,6 @@ import java.util.Random;
 
 public class MainCharacter{
     private Animation currentAnimation;
-    private Rect surroundingBox;
     private Animation idleAnimation, walkAnimation, jumpAnimation, dieAnimation;
     private Animation[] attackAnimation;
     private PointF position, velocity;
@@ -22,10 +21,8 @@ public class MainCharacter{
     private boolean isJumping, isAttacking , isAlive, isActive, isInvincible;
     private boolean isFlip;
     private boolean allowLeft, allowRight, hit;
-//    KeyboardState previousKeyState;
-//    KeyboardState currentKeyState;
     private double elapsedTime;
-    private Color color;
+    private Paint paint;
     private int attackIndex = -1;
     private Random rand = new Random();
     private long jumpTime;
@@ -33,7 +30,6 @@ public class MainCharacter{
     public MainCharacter(){
         this.loadAnimation();
         this.currentAnimation = idleAnimation;
-        this.surroundingBox = new Rect();
         this.position = new PointF(0,0.8f*Constants.SCREEN_HEIGHT - currentAnimation.frameHeight);
         this.velocity = new PointF(0,0);
         this.currentAnimation.flip(true);
@@ -44,12 +40,13 @@ public class MainCharacter{
         this.isActive = this.isAlive = true;
         this.isJumping = this.isAttacking =  this.isInvincible =  false;
         this.isFlip = true;
+        this.paint = new Paint();
         hit = false;
         elapsedTime = 0;
     }
 
     public void loadAnimation(){
-        int SCALE = 3;
+        int SCALE = 2;
         this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*SCALE,97*SCALE,8, 100, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
         this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*SCALE,97*SCALE,4, 100, new PointF(SCALE*60, SCALE*22), new PointF(0,0));
         this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*SCALE,97*SCALE,1, 300, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
@@ -64,6 +61,7 @@ public class MainCharacter{
 
     public void draw(Canvas canvas) {
         this.currentAnimation.draw(canvas, new PointF(this.position.x - Constants.BACKGROUND_X_AXIS, this.position.y));
+//        canvas.drawRect(currentAnimation.getSurroundingBox(this.position), this.paint);
 //        System.out.println(this.position);
     }
 
@@ -166,17 +164,11 @@ public class MainCharacter{
         this.currentAnimation.update();
     }
 
-    public Rect getSurroundingBox(){
-        this.surroundingBox.left = (int)position.x;
-        this.surroundingBox.top =  (int)position.y;
-        this.surroundingBox.right = (int)position.x + currentAnimation.frameWidth;
-        this.surroundingBox.bottom = (int)position.y + currentAnimation.frameHeight;
-        return this.surroundingBox;
-    }
+
 
     public PointF getCurrentPosition(){ return this.position;}
 
-    public Boolean collide(Rect targetBox){
-        return targetBox.intersect(this.getSurroundingBox());
-    }
+//    public Boolean collide(Rect targetBox){
+//        return targetBox.intersect(this.getSurroundingBox());
+//    }
 }
