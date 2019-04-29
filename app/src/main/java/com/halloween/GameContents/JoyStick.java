@@ -14,6 +14,7 @@ import com.halloween.R;
 public class JoyStick implements GameObject {
     private Bitmap joystickBase, joystickButton;
 
+    public boolean isPressed = false;
     private float offset = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.05);
     private float baseSize = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.3);
     private float buttonSize = (float)(baseSize * 0.5);
@@ -28,12 +29,12 @@ public class JoyStick implements GameObject {
         this.joystickBase = Bitmap.createScaledBitmap(joystickBase, (int) baseSize, (int) baseSize, false);
         this.joystickButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.joystick_button);
         this.joystickButton = Bitmap.createScaledBitmap(joystickButton, (int) buttonSize, (int) buttonSize, false);
-        this.paint.setAlpha(100);
+        this.paint.setAlpha(255);
     }
 
     public boolean isInRange(float x, float y) {
         float range = (float) (Math.sqrt(Math.pow(x-joystickCenterPosition.x, 2) + Math.pow(y-joystickCenterPosition.y, 2)));
-        if (range <= (baseSize + buttonSize) / 2) {
+        if (range <= (baseSize + buttonSize + Constants.SCREEN_WIDTH / 2) / 2) {
             return true;
         } else {
             return false;
@@ -41,32 +42,65 @@ public class JoyStick implements GameObject {
     }
 
     public void backToCenter() {
-        float xV;
-        float yV;
-        if (joystickButtonPosition.x > joystickButtonOriginalPosition.x) {
-            xV = (float) -1;
-        } else {
-            xV = (float) 0.75;
-        }
-        if (joystickButtonPosition.y > joystickButtonOriginalPosition.y) {
-            yV = (float) -1;
-        } else {
-            yV = (float) 0.75;
-        }
-        xV = joystickButtonPosition.x + 15 * xV;
-        yV = joystickButtonPosition.y + 15 * yV;
+//        float xV;
+//        float yV;
+//        if (joystickButtonPosition.x > joystickButtonOriginalPosition.x) {
+//            xV = (float) -1;
+//        } else {
+//            xV = (float) 0.75;
+//        }
+//        if (joystickButtonPosition.y > joystickButtonOriginalPosition.y) {
+//            yV = (float) -1;
+//        } else {
+//            yV = (float) 0.75;
+//        }
+//        xV = joystickButtonPosition.x + 15 * xV;
+//        yV = joystickButtonPosition.y + 15 * yV;
+//
+//        if (Math.abs(joystickButtonOriginalPosition.x - joystickButtonPosition.x) < 20) {
+//            xV = joystickButtonOriginalPosition.x;
+//        }
+//        if (Math.abs(joystickButtonOriginalPosition.y - joystickButtonPosition.y) < 20) {
+//            yV = joystickButtonOriginalPosition.y;
+//        }
+//        joystickButtonPosition.set(xV, yV);
+        joystickButtonPosition.set(joystickButtonOriginalPosition.x, joystickButtonOriginalPosition.y);
+        isPressed = false;
+        Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.MIDDLE;
+    }
 
-        if (Math.abs(joystickButtonOriginalPosition.x - joystickButtonPosition.x) < 20) {
-            xV = joystickButtonOriginalPosition.x;
-        }
-        if (Math.abs(joystickButtonOriginalPosition.y - joystickButtonPosition.y) < 20) {
-            yV = joystickButtonOriginalPosition.y;
-        }
-        joystickButtonPosition.set(xV, yV);
+    private float getAngle(float x, float y) {
+        float angle = (float) Math.toDegrees(Math.atan2(y - joystickCenterPosition.y, x - joystickCenterPosition.x));
+        angle = angle < 0 ? angle + 360 : angle;
+        return 360 - angle;
     }
 
     public void updatePosition(float x, float y) {
-        joystickButtonPosition.set((x - buttonSize / 2), (y - buttonSize /2));
+        isPressed = true;
+        float angle = getAngle(x, y);
+        float angleRadians = (float) Math.toRadians(angle);
+        float xBound = (float) Math.abs(Math.cos(angleRadians) * baseSize * 0.5);
+        float yBound = (float) Math.abs(Math.sin(angleRadians) * baseSize * 0.5);
+        float newX = (float) (x - buttonSize*0.5), newY = (float) (y - buttonSize*0.5);
+        if (Math.abs(x - joystickCenterPosition.x) > xBound)
+            if (x > joystickCenterPosition.x)
+                newX = (float) (joystickCenterPosition.x + xBound - buttonSize*0.5);
+            else
+                newX = (float) (joystickCenterPosition.x - xBound - buttonSize*0.5);
+        if (Math.abs(y - joystickCenterPosition.y) > yBound)
+            if (y > joystickCenterPosition.y)
+                newY = (float) (joystickCenterPosition.y + yBound - buttonSize*0.5);
+            else
+                newY = (float) (joystickCenterPosition.y - yBound - buttonSize*0.5);
+        joystickButtonPosition.set(newX, newY);
+        if (angle > 90 && angle < 270) {
+            Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.LEFT;
+        } else {
+            Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.RIGHT;
+        }
+        // Log.d("JOYSTICK STATE", Constants.CURRENT_JOYSTICK_STATE + "");
+        // Log.d("JUMP STATE", Constants.JOYSTICK_JUMP_STATE + "");
+        // Log.d("ATK STATE", Constants.JOYSTICK_ATK_STATE + "");
     }
 
     @Override
@@ -77,6 +111,5 @@ public class JoyStick implements GameObject {
 
     @Override
     public void update() {
-
     }
 }
