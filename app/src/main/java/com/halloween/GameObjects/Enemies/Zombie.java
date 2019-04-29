@@ -49,8 +49,8 @@ public class Zombie extends Enemy {
 
     @Override
     public void draw(Canvas canvas) {
-        super.draw(canvas);
-        currentAnimation.draw(canvas, this.position);
+//        super.draw(canvas);
+//        currentAnimation.draw(canvas, this.position);
     }
 
     @Override
