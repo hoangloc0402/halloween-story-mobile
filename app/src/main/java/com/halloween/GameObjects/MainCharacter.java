@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import com.halloween.Animation;
 import com.halloween.Constants;
 import com.halloween.R;
+import java.util.Random;
 
 public class MainCharacter{
     private Animation currentAnimation;
@@ -19,17 +20,19 @@ public class MainCharacter{
     public int current_score;
     public int currentHP, previousHP, attackPower;
     private boolean isJumping, isAttacking , isAlive, isActive, isInvincible;
+    private boolean isFlip;
     private boolean allowLeft, allowRight, hit;
 //    KeyboardState previousKeyState;
 //    KeyboardState currentKeyState;
     private double elapsedTime;
     private Color color;
     private int attackIndex = -1;
+    private Random rand = new Random();
     private long jumpTime;
 
     public MainCharacter(){
         this.loadAnimation();
-        this.currentAnimation = walkAnimation;
+        this.currentAnimation = idleAnimation;
         this.surroundingBox = new Rect();
         this.position = new PointF(0,0.8f*Constants.SCREEN_HEIGHT - currentAnimation.frameHeight);
         this.velocity = new PointF(0,0);
@@ -40,20 +43,22 @@ public class MainCharacter{
         this.attackPower = Constants.MAIN_CHARACTER_ATTACK_POWER;
         this.isActive = this.isAlive = true;
         this.isJumping = this.isAttacking =  this.isInvincible =  false;
+        this.isFlip = true;
         hit = false;
         elapsedTime = 0;
     }
 
     public void loadAnimation(){
-        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*3,97*3,8, 100);
-        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*3,97*3,4, 100);
-        this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*3,97*3,1, 300);
-        this.dieAnimation = new Animation(R.drawable.main_character_die_12, 103*3,97*3,12, 100);
+        int SCALE = 3;
+        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*SCALE,97*SCALE,8, 100, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
+        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*SCALE,97*SCALE,4, 100, new PointF(SCALE*60, SCALE*22), new PointF(0,0));
+        this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*SCALE,97*SCALE,1, 300, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
+        this.dieAnimation = new Animation(R.drawable.main_character_die_12, 103*SCALE,97*SCALE,12, 100, new PointF(SCALE*47, SCALE*26), new PointF(0,0));
         this.attackAnimation = new Animation[4];
-        this.attackAnimation[0] = new Animation(R.drawable.main_character_attack_6, 103*3,97*3,6, 75);
-        this.attackAnimation[1] = new Animation(R.drawable.main_character_attack2_4, 103*3,97*3,4, 75);
-        this.attackAnimation[2] = new Animation(R.drawable.main_character_attack4_4, 103*3,97*3,4, 75);
-        this.attackAnimation[3] = new Animation(R.drawable.main_character_attack3_7, 103*3,97*3,7, 75);
+        this.attackAnimation[0] = new Animation(R.drawable.main_character_attack_6, 103*SCALE,97*SCALE,6, 75, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
+        this.attackAnimation[1] = new Animation(R.drawable.main_character_attack2_4, 120*SCALE,73*SCALE,4, 75, new PointF(SCALE*60, SCALE*0), new PointF(SCALE*17,SCALE*2));
+        this.attackAnimation[2] = new Animation(R.drawable.main_character_attack4_4, 131*SCALE,85*SCALE,4, 25, new PointF(SCALE*54, SCALE*13), new PointF(SCALE*35,0));
+        this.attackAnimation[3] = new Animation(R.drawable.main_character_attack3_7, 180*SCALE,102*SCALE,7, 75, new PointF(SCALE*84, SCALE*14), new PointF(SCALE*56,SCALE*13));
     }
 
 
@@ -76,16 +81,26 @@ public class MainCharacter{
             else if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT)
                 this.allowRight = true;
 
-//            if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
-//                this.velocity.y = -Constants.MAIN_CHARACTER_V_Y;
-//                this.isJumping = true;
-//                this.jumpTime = System.nanoTime();
-//            }
-//            if (isJumping){
-//                long elapsed_time = (System.nanoTime() - this.jumpTime) / 100000000;
-////                this.velocity.y += Math.sqrt(2*Constants.GRAVITY*Constants.MAIN_CHARACTER_JUMP_HEIGHT) - Constants.GRAVITY*elapsed_time;
-//            }
-//            else
+            if(Constants.JOYSTICK_ATK_STATE)
+                this.isAttacking = true;
+            else this.isAttacking = false;
+
+            if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
+                this.velocity.y = Constants.MAIN_CHARACTER_V_Y;
+                this.isJumping = true;
+                this.jumpTime = System.nanoTime();
+            }
+            if (isJumping){
+                long elapsed_time = (System.nanoTime() - this.jumpTime) / 100000000;
+                this.velocity.y =  (Constants.GRAVITY*elapsed_time + Constants.MAIN_CHARACTER_V_Y);
+//                if (this.velocity.y < 3 && this.velocity.y > 0){
+//                    this.jumpTime = System.nanoTime();
+//                    this.velocity.y = 0;
+//                }
+
+                System.out.println(this.velocity.y);
+            }
+            else
             this.velocity.y = 0;
 
 //            isJumping = true;
@@ -102,8 +117,10 @@ public class MainCharacter{
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
 
-            if (this.position.y > 600)
+            if (this.position.y > 600){
                 this.position.y = 600;
+                this.isJumping = false;
+            }
         }
         else {
 
@@ -119,7 +136,17 @@ public class MainCharacter{
                 this.isActive = false;
         }
         else if (this.isAttacking){
-
+            if (this.currentAnimation != this.attackAnimation[0] &&
+                this.currentAnimation != this.attackAnimation[1] &&
+                this.currentAnimation != this.attackAnimation[2] &&
+                this.currentAnimation != this.attackAnimation[3]){
+                this.currentAnimation = this.attackAnimation[rand.nextInt(4)];
+            }
+            else if (this.currentAnimation.isLastFrame()){
+                this.currentAnimation.reset();
+                this.isAttacking = false;
+                this.currentAnimation = this.attackAnimation[rand.nextInt(4)];
+            }
         }
         else if (!this.isJumping && this.velocity.x !=0) {
             this.currentAnimation = this.walkAnimation;
@@ -131,10 +158,11 @@ public class MainCharacter{
             this.currentAnimation = this.idleAnimation;
 
         if (this.velocity.x > 0){
-            this.currentAnimation.flip(true);
+            this.isFlip = true;
         } else if (this.velocity.x <0){
-            this.currentAnimation.flip(false);
+            this.isFlip = false;
         }
+        this.currentAnimation.flip(this.isFlip);
         this.currentAnimation.update();
     }
 
