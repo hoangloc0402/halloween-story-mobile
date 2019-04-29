@@ -27,22 +27,32 @@ public class PlayingScreen implements GameScreen{
     private Bitmap backgroundBlock;
     private Rect backgroundBlockWhat;
     private RectF backgroundBlockWhere;
+    private Bitmap backgroundMoon;
+    private Bitmap backgroundTree;
     private float backgroundXAxis = 0;
     private Point pauseButtonPosition;
     private Point jumpButtonPosition;
     private Point atkButtonPosition;
 
+    private Paint paint;
+
 //  comment this and use main char pos
     private Point tempWatchPosition;
 
     public PlayingScreen() {
+        this.paint = new Paint();
+
         // Map Stuff
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
 
-        this.backgroundBlock = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_merged_small);
-        this.backgroundBlock = Bitmap.createScaledBitmap(backgroundBlock, 10000, 578, false);
+        this.backgroundMoon = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_moon);
+        this.backgroundMoon = Bitmap.createScaledBitmap(backgroundMoon, (int) (Constants.SCREEN_HEIGHT * 156 * 0.2 / 137), (int) (Constants.SCREEN_HEIGHT * 0.2), false);
+        this.backgroundTree = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_tree);
+        this.backgroundTree = Bitmap.createScaledBitmap(backgroundTree, 1200, 220, false);
 
+        this.backgroundBlock = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_merged);
+        this.backgroundBlock = Bitmap.createScaledBitmap(backgroundBlock, 10000, 578, false);
         this.backgroundBlockWhat = new Rect(0, 0, (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ), backgroundBlock.getHeight());
         this.backgroundBlockWhere = new RectF((float)0.0, (float)0.0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
@@ -96,13 +106,15 @@ public class PlayingScreen implements GameScreen{
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(background, 0, 0, new Paint());
-        canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, new Paint());
-        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
+        canvas.drawBitmap(background, 0, 0, paint);
+        canvas.drawBitmap(backgroundMoon, (float) (Constants.SCREEN_WIDTH * 0.7), (float) (Constants.SCREEN_HEIGHT * 0.2), paint);
+//        canvas.drawBitmap(backgroundTree, 0, 0, paint);
+        canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
+        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
         this.mainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
-        canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, new Paint());
-        canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, new Paint());
+        canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paint);
+        canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
     }
 
     @Override
@@ -112,6 +124,7 @@ public class PlayingScreen implements GameScreen{
 
     @Override
     public void receiveTouch(MotionEvent event) {
+        Log.d("MOON: ", backgroundMoon.getWidth() + " " + backgroundMoon.getHeight());
         int pointerIndex = event.getActionIndex();
         int pointerId = event.getPointerId(pointerIndex);
         int maskedAction = event.getActionMasked();
