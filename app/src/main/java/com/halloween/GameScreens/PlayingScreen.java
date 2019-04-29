@@ -29,8 +29,7 @@ public class PlayingScreen implements GameScreen{
     private Rect backgroundBlockWhat;
     private RectF backgroundBlockWhere;
     private Bitmap backgroundMoon;
-    private Bitmap backgroundTree;
-    private float backgroundXAxis = 0;
+//    private float backgroundXAxis = 0;
     private Point pauseButtonPosition;
     private Point jumpButtonPosition;
     private Point atkButtonPosition;
@@ -49,8 +48,6 @@ public class PlayingScreen implements GameScreen{
 
         this.backgroundMoon = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_moon);
         this.backgroundMoon = Bitmap.createScaledBitmap(backgroundMoon, (int) (Constants.SCREEN_HEIGHT * 156 * 0.2 / 137), (int) (Constants.SCREEN_HEIGHT * 0.2), false);
-        this.backgroundTree = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_tree);
-        this.backgroundTree = Bitmap.createScaledBitmap(backgroundTree, 1200, 220, false);
 
         this.backgroundBlock = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_merged);
         this.backgroundBlock = Bitmap.createScaledBitmap(backgroundBlock, 10000, 578, false);
@@ -96,21 +93,23 @@ public class PlayingScreen implements GameScreen{
 //        tempWatchPosition = mainCharacter.getCurrentPosition();
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
-        if (mainPosition.x < backgroundXAxis + Constants.SCREEN_WIDTH * 0.15) {
-            backgroundXAxis = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.15);
-        } else if (mainPosition.x > backgroundXAxis + Constants.SCREEN_WIDTH * 0.45) {
-            backgroundXAxis = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.45);
+        Log.d("POS 1", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
+        if (mainPosition.x < Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.15) {
+            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.15);
+        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.7) {
+            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.7);
         }
-        backgroundXAxis = Math.max(backgroundXAxis, (float) 0.0);
-        backgroundXAxis = Math.min(backgroundXAxis, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
-        this.backgroundBlockWhat.set((int) backgroundXAxis, (int) 0, (int) (backgroundXAxis + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )), backgroundBlock.getHeight());
+        Log.d("POS 2", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
+        Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
+        Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
+
+        this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )), backgroundBlock.getHeight());
     }
 
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, paint);
         canvas.drawBitmap(backgroundMoon, (float) (Constants.SCREEN_WIDTH * 0.7), (float) (Constants.SCREEN_HEIGHT * 0.2), paint);
-//        canvas.drawBitmap(backgroundTree, 0, 0, paint);
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
         canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
         this.mainCharacter.draw(canvas);
