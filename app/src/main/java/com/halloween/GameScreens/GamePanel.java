@@ -1,10 +1,14 @@
 package com.halloween.GameScreens;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+
 import com.halloween.MainThread;
+
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private MainThread mainThread;
@@ -12,6 +16,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     public GamePanel(Context context){
         super(context);
+        setLayerType(View.LAYER_TYPE_HARDWARE, null);
         screenManager = new ScreenManager();
         getHolder().addCallback(this);
         mainThread = new MainThread(getHolder(), this);
