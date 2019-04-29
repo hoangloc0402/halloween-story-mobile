@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
+import com.halloween.GameContents.HealthBarBoss;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
 import com.halloween.GameObjects.MainCharacter;
@@ -23,6 +24,7 @@ public class PlayingScreen implements GameScreen{
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
     private HealthBarMainCharacter healthBarMainCharacter;
+    private HealthBarBoss healthBarBoss;
 
     private Bitmap pauseButton, jumpButton, jumpButtonHover, atkButton, atkButtonHover;
     private Point pauseButtonPosition, jumpButtonPosition, atkButtonPosition;
@@ -83,6 +85,9 @@ public class PlayingScreen implements GameScreen{
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
         this.healthBarMainCharacter.setNewHealth(1000);
+        this.healthBarMainCharacter.setNewScore(1000);
+        this.healthBarBoss = new HealthBarBoss();
+        this.healthBarBoss.setNewHealth(1000);
     }
 
     @Override
@@ -130,6 +135,8 @@ public class PlayingScreen implements GameScreen{
         this.mainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
+        this.healthBarBoss.draw(canvas);
+
         if (Constants.JOYSTICK_ATK_STATE) {
             canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paint);
         } else {

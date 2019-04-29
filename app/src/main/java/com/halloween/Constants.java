@@ -17,12 +17,15 @@ public class Constants {
     public static float BACKGROUND_X_AXIS = 0.0f;
 
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
+    public static final int MAX_HEALTH_BOSS = 1000;
+    public static final int MAX_SCORE = 1000;
 
     public final static int ZOMBIE_ATTACK= 30;
     public final static int ZOMBIE_DAMAGE = 20;
     public final static int ZOMBIE_STARTING_HP = 50;
     public final static int ZOMBIE_POINT = 100;
     public final static int ZOMBIE_V_X = 2;
+    public final static int ZOMBIE_SCALE = 2;
 
     public static final float MAIN_CHARACTER_V_X = 10f;
     public static final float MAIN_CHARACTER_V_Y = 21f;
