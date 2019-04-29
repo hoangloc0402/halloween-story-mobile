@@ -24,7 +24,7 @@ public class Constants {
     public final static int ZOMBIE_POINT = 100;
     public final static int ZOMBIE_V_X = 2;
 
-    public static final float MAIN_CHARACTER_V_X = 5f;
+    public static final float MAIN_CHARACTER_V_X = 10f;
     public static final float MAIN_CHARACTER_V_Y = 21f;
     public static final float MAIN_CHARACTER_JUMP_HEIGHT = 300f;
     public static final float GRAVITY = 9.81f;

@@ -10,7 +10,7 @@ import com.halloween.Animation;
 import com.halloween.Constants;
 import com.halloween.R;
 
-public class MainCharacter implements GameObject {
+public class MainCharacter{
     private Animation currentAnimation;
     private Rect surroundingBox;
     private Animation idleAnimation, walkAnimation, jumpAnimation, dieAnimation;
@@ -29,25 +29,24 @@ public class MainCharacter implements GameObject {
 
     public MainCharacter(){
         this.loadAnimation();
-        this.currentAnimation = idleAnimation;
+        this.currentAnimation = walkAnimation;
         this.surroundingBox = new Rect();
-        this.position = new PointF(250,500);
+        this.position = new PointF(0,0.8f*Constants.SCREEN_HEIGHT - currentAnimation.frameHeight);
         this.velocity = new PointF(0,0);
-        this.currentAnimation.play();
         this.currentAnimation.flip(true);
         this.current_score = 0;
         this.currentHP = Constants.MAX_HEALTH_MAIN_CHARACTER;
         this.previousHP = this.currentHP;
         this.attackPower = Constants.MAIN_CHARACTER_ATTACK_POWER;
-        this.isJumping = this.isActive = this.isAlive = true;
-        this.isAttacking =  this.isInvincible =  false;
+        this.isActive = this.isAlive = true;
+        this.isJumping = this.isAttacking =  this.isInvincible =  false;
         hit = false;
         elapsedTime = 0;
     }
 
     public void loadAnimation(){
-//        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*3,97*3,8, 100);
-//        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*3,97*3,4, 100);
+        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*3,97*3,8, 100);
+        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*3,97*3,4, 100);
         this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*3,97*3,1, 300);
         this.dieAnimation = new Animation(R.drawable.main_character_die_12, 103*3,97*3,12, 100);
         this.attackAnimation = new Animation[4];
@@ -57,17 +56,18 @@ public class MainCharacter implements GameObject {
         this.attackAnimation[3] = new Animation(R.drawable.main_character_attack3_7, 103*3,97*3,7, 75);
     }
 
-    @Override
+
     public void draw(Canvas canvas) {
-        currentAnimation.draw(canvas, this.position);
+        this.currentAnimation.draw(canvas, new PointF(this.position.x - Constants.BACKGROUND_X_AXIS, this.position.y));
+//        System.out.println(this.position);
     }
 
-    @Override
+
     public void update() {
         this.updateMovement();
         this.updateAnimation();
-        currentAnimation.update();
     }
+
 
     private void updateMovement(){
         if (this.isAlive){
@@ -76,16 +76,17 @@ public class MainCharacter implements GameObject {
             else if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT)
                 this.allowRight = true;
 
-            if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
-                this.velocity.y = -Constants.MAIN_CHARACTER_V_Y;
-                this.isJumping = true;
-                this.jumpTime = System.nanoTime();
-            }
-            if (isJumping){
-                long elapsed_time = (System.nanoTime() - this.jumpTime) / 100000000;
-//                this.velocity.y += Math.sqrt(2*Constants.GRAVITY*Constants.MAIN_CHARACTER_JUMP_HEIGHT) - Constants.GRAVITY*elapsed_time;
-            }
-            else this.velocity.y = 0;
+//            if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
+//                this.velocity.y = -Constants.MAIN_CHARACTER_V_Y;
+//                this.isJumping = true;
+//                this.jumpTime = System.nanoTime();
+//            }
+//            if (isJumping){
+//                long elapsed_time = (System.nanoTime() - this.jumpTime) / 100000000;
+////                this.velocity.y += Math.sqrt(2*Constants.GRAVITY*Constants.MAIN_CHARACTER_JUMP_HEIGHT) - Constants.GRAVITY*elapsed_time;
+//            }
+//            else
+            this.velocity.y = 0;
 
 //            isJumping = true;
 
@@ -101,8 +102,8 @@ public class MainCharacter implements GameObject {
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
 
-            if (this.position.y > 500)
-                this.position.y = 500;
+            if (this.position.y > 600)
+                this.position.y = 600;
         }
         else {
 
@@ -110,29 +111,31 @@ public class MainCharacter implements GameObject {
     }
 
     private void updateAnimation(){
-//        if (this.currentHP < 0){
-//            currentHP = 0;
-//            this.isAlive = false;
-//            this.currentAnimation = this.dieAnimation;
-//            if (this.dieAnimation.isLastFrame())
-//                this.isActive = false;
-//        }
-//        else if (this.isAttacking){
-//
-//        }
-//        else if (!this.isJumping && this.velocity.x !=0) {
-//            this.currentAnimation = this.walkAnimation;
-//        }
-//        else if (this.isJumping){
-//            this.currentAnimation = this.jumpAnimation;
-//        }
-//        else this.currentAnimation = this.idleAnimation;
+        if (this.currentHP < 0){
+            currentHP = 0;
+            this.isAlive = false;
+            this.currentAnimation = this.dieAnimation;
+            if (this.dieAnimation.isLastFrame())
+                this.isActive = false;
+        }
+        else if (this.isAttacking){
+
+        }
+        else if (!this.isJumping && this.velocity.x !=0) {
+            this.currentAnimation = this.walkAnimation;
+        }
+        else if (this.isJumping){
+            this.currentAnimation = this.jumpAnimation;
+        }
+        else
+            this.currentAnimation = this.idleAnimation;
 
         if (this.velocity.x > 0){
             this.currentAnimation.flip(true);
         } else if (this.velocity.x <0){
             this.currentAnimation.flip(false);
         }
+        this.currentAnimation.update();
     }
 
     public Rect getSurroundingBox(){

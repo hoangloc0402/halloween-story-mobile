@@ -33,10 +33,10 @@ public class Zombie extends Enemy {
             ChangeState(State.Move);
 
             if(isMovingForward){
-                position.x += Constants.ZOMBIE_V_X;
+//                position.x += Constants.ZOMBIE_V_X;
             }
             else{
-                position.x -= Constants.ZOMBIE_V_X;
+//                position.x -= Constants.ZOMBIE_V_X;
             }
 
             if (position.x <= leftLandMark.x){

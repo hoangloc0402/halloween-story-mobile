@@ -99,13 +99,13 @@ public class PlayingScreen implements GameScreen{
 //        tempWatchPosition = mainCharacter.getCurrentPosition();
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
-        Log.d("POS 1", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
+//        Log.d("POS 1", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
         if (mainPosition.x < Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.15) {
             Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.15);
         } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.7) {
             Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.7);
         }
-        Log.d("POS 2", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
+//        Log.d("POS 2", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
         Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
         Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
 
@@ -132,7 +132,6 @@ public class PlayingScreen implements GameScreen{
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        Log.d("MOON: ", backgroundMoon.getWidth() + " " + backgroundMoon.getHeight());
         int pointerIndex = event.getActionIndex();
         int pointerId = event.getPointerId(pointerIndex);
         int maskedAction = event.getActionMasked();
