@@ -15,7 +15,7 @@ public class Animation {
     private Bitmap sourceBitmap;
     private boolean isFlip;
     private int currentFrameIndex;
-    private boolean isPlaying = false;
+    private boolean isPlaying = true;
     private long frameInterval;
     private long lastFrameTime;
     private int frameCount;
