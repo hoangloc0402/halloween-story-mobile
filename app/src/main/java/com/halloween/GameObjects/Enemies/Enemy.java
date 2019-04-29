@@ -13,12 +13,12 @@ public class Enemy implements GameObject {
 
     int HP;
     public Animation currentAnimation;
-    protected Animation idleAnimation;
-    protected Animation diedAnimation;
-    protected Animation attackAnimation;
-    protected Animation defenseAnimation;
-    protected Animation hurtAnimation;
-    protected Animation ultimateAttackAnimation;
+    Animation diedAnimation;
+    Animation moveAnimation;
+    Animation attackAnimation;
+    Animation defenseAnimation;
+    Animation hurtAnimation;
+    Animation ultimateAttackAnimation;
 
 
     Point currentPosition;
@@ -46,7 +46,7 @@ public class Enemy implements GameObject {
         isAlive = true;
     }
 
-    public enum State { Appear, Idle, Move , Attack, Defense , UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
+    public enum State { Move , Attack, Defense , UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
     protected State currentState, previousState;
 
     @Override
@@ -71,15 +71,8 @@ public class Enemy implements GameObject {
 
         if (currentState != previousState){
             switch (currentState){
-                case Idle:
-                    currentAnimation = idleAnimation;
-                    if (currentPosition.x <= leftLandMark.x - Constants.BACKGROUND_X_AXIS){
-                        isMovingForward = true;
-                    }
-                    else if(currentPosition.x >= rightLandMark.x - Constants.BACKGROUND_X_AXIS){
-                        isMovingForward = false;
-                    }
-                    this.currentAnimation.flip(isMovingForward);
+                case Move:
+                    currentAnimation = moveAnimation;
                     break;
                 case Died:
                     currentAnimation = diedAnimation;
@@ -96,8 +89,6 @@ public class Enemy implements GameObject {
                 case UltimateAttack:
                     currentAnimation = ultimateAttackAnimation;
                     break;
-                case Move:
-                    currentAnimation = idleAnimation;
                 default:
                     break;
 
