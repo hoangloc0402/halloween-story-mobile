@@ -1,12 +1,9 @@
 package com.halloween.GameScreens;
 
-import android.app.usage.ConfigurationStats;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -14,9 +11,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
-import com.halloween.GameContents.HealthBarBoss;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
+import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
 
@@ -24,12 +21,7 @@ public class PlayingScreen implements GameScreen{
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
     private HealthBarMainCharacter healthBarMainCharacter;
-    private HealthBarBoss healthBarBoss;
-
-    private Bitmap pauseButton, jumpButton, jumpButtonHover, atkButton, atkButtonHover;
-    private Point pauseButtonPosition, jumpButtonPosition, atkButtonPosition;
-    private float offset = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.05);
-    private float buttonSize;
+    private Portal portal;
 
     private Bitmap background, backgroundBlock, backgroundCloud, backgroundCloudSmall, backgroundMoon;
     private Rect backgroundBlockWhat;
@@ -62,32 +54,14 @@ public class PlayingScreen implements GameScreen{
         this.backgroundCloudSmall = Bitmap.createScaledBitmap(backgroundCloudSmall, (int) (Constants.SCREEN_HEIGHT * 1818 * 0.3 / 158), (int) (Constants.SCREEN_HEIGHT * 0.3), false);
         this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 1;
 
-        // button
-        this.buttonSize = Constants.SCREEN_HEIGHT * 0.16f;
-        this.pauseButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_button);
-        this.pauseButton = Bitmap.createScaledBitmap(pauseButton, 150, 150, false);
-        this.pauseButtonPosition = new Point(Constants.SCREEN_WIDTH - 200, 50);
-
-        this.jumpButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.jump_button);
-        this.jumpButton = Bitmap.createScaledBitmap(jumpButton, (int) buttonSize, (int) buttonSize, false);
-        this.jumpButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.jump_button_hover);
-        this.jumpButtonHover = Bitmap.createScaledBitmap(jumpButtonHover, (int) buttonSize, (int) buttonSize, false);
-        this.jumpButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - jumpButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - 1.5 * offset - jumpButton.getHeight() * 2));
-
-        this.atkButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.attack_button);
-        this.atkButton = Bitmap.createScaledBitmap(atkButton, (int) buttonSize , (int) buttonSize, false);
-        this.atkButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.attack_button_hover);
-        this.atkButtonHover = Bitmap.createScaledBitmap(atkButtonHover, (int) buttonSize   , (int) buttonSize, false);
-        this.atkButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - jumpButton.getWidth() - atkButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - offset - atkButton.getHeight()));
-
         this.reset();
         this.joyStick = new JoyStick();
+        this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
         this.healthBarMainCharacter.setNewHealth(1000);
         this.healthBarMainCharacter.setNewScore(1000);
-        this.healthBarBoss = new HealthBarBoss();
-        this.healthBarBoss.setNewHealth(1000);
+
     }
 
     @Override
@@ -104,25 +78,24 @@ public class PlayingScreen implements GameScreen{
 
         mainCharacter.update();
         joyStick.update();
+        if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
-        this.healthBarBoss.update();
+
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
-//        Log.d("POS 1", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
         if (mainPosition.x < Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.15) {
             Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.15);
         } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.5) {
             Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.5);
         }
-//        Log.d("POS 2", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
         Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
         Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
-
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )), backgroundBlock.getHeight());
     }
 
     @Override
     public void draw(Canvas canvas) {
+        Log.d("BG: ", Constants.BACKGROUND_X_AXIS + " " + backgroundBlock.getWidth() + " " + mainCharacter.getCurrentPosition().x);
         canvas.drawBitmap(background, 0, 0, paint);
         canvas.drawBitmap(backgroundMoon, (float) (Constants.SCREEN_WIDTH * 0.7), (float) (Constants.SCREEN_HEIGHT * 0.125), paint);
         for (int i = 0; i < backgroundCloudCount; i ++) {
@@ -132,24 +105,10 @@ public class PlayingScreen implements GameScreen{
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-
         this.mainCharacter.draw(canvas);
-
+        if (portal.isInRange()) {this.portal.draw(canvas);}
         this.healthBarMainCharacter.draw(canvas);
-        this.healthBarBoss.draw(canvas);
-
         this.joyStick.draw(canvas);
-        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
-        if (Constants.JOYSTICK_ATK_STATE) {
-            canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paint);
-        } else {
-            canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paint);
-        }
-        if (Constants.JOYSTICK_JUMP_STATE) {
-            canvas.drawBitmap(jumpButtonHover, jumpButtonPosition.x, jumpButtonPosition.y, paint);
-        } else {
-            canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
-        }
     }
 
     @Override
@@ -170,8 +129,9 @@ public class PlayingScreen implements GameScreen{
         {
             case MotionEvent.ACTION_UP:
                 // Log.d("MOTION:", "ACTION_UP" + x + " " + y );
-                if (isInRangeOfPauseButton(x, y)) {
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
                     joyStick.backToCenter();
+                    joyStick.isPressedPause = false;
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
                 }
 //                if (isInRangeOfAtkButton(x, y)) {
@@ -180,28 +140,31 @@ public class PlayingScreen implements GameScreen{
 //                if (isInRangeOfJumpButton(x, y)) {
                     Constants.JOYSTICK_JUMP_STATE = false;
 //                }
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.backToCenter();
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
                 // Log.d("MOTION:", "ACTION_DOWN" + x + " " + y);
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.updatePosition(x, y);
                 }
-                if (isInRangeOfJumpButton(x, y)) {
+                if (joyStick.isInRangeOfJumpButton(x, y)) {
                     Constants.JOYSTICK_JUMP_STATE = true;
                 }
-                if (isInRangeOfAtkButton(x, y)) {
+                if (joyStick.isInRangeOfAtkButton(x, y)) {
                     Constants.JOYSTICK_ATK_STATE = true;
+                }
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
+                    joyStick.isPressedPause = true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 // Log.d("MOTION:", "ACTION_MOVE" + x + " " + y);
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.updatePosition(x, y);
                 } else {
-                    if (joyStick.isPressed) {
+                    if (joyStick.isPressedJoyStick) {
                         joyStick.backToCenter();
                     }
                 }
@@ -214,23 +177,27 @@ public class PlayingScreen implements GameScreen{
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 // Log.d("MOTION:", "ACTION_POINTER_DOWN" + x + " " + y);
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.updatePosition(x, y);
                 }
-                if (isInRangeOfJumpButton(x, y)) {
+                if (joyStick.isInRangeOfJumpButton(x, y)) {
                     Constants.JOYSTICK_JUMP_STATE = true;
                 }
-                if (isInRangeOfAtkButton(x, y)) {
+                if (joyStick.isInRangeOfAtkButton(x, y)) {
                     Constants.JOYSTICK_ATK_STATE = true;
+                }
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
+                    joyStick.isPressedPause = true;
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 // Log.d("MOTION:", "ACTION_POINTER_UP" + x + " " + y);
-                if (isInRangeOfPauseButton(x, y)) {
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
                     joyStick.backToCenter();
+                    joyStick.isPressedPause = false;
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
                 }
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.backToCenter();
                 }
 //                if (isInRangeOfJumpButton(x, y)) {
@@ -241,40 +208,16 @@ public class PlayingScreen implements GameScreen{
 //                }
                 break;
             case MotionEvent.ACTION_OUTSIDE:
-                // Log.d("MOTION:", "ACTION_OUTSIDE" + x + " " + y);
                 break;
             case MotionEvent.ACTION_CANCEL:
-                // Log.d("MOTION:", "ACTION_CANCEL" + x + " " + y);
                 Constants.JOYSTICK_ATK_STATE = false;
                 Constants.JOYSTICK_JUMP_STATE = false;
+                joyStick.isPressedJoyStick = false;
+                joyStick.isPressedPause = false;
                 break;
         }
     }
 
-    public boolean isInRangeOfPauseButton(float x, float y){
-        if (
-                x >pauseButtonPosition.x &&
-                x < pauseButtonPosition.x + pauseButton.getWidth() &&
-                y > pauseButtonPosition.y &&
-                y < pauseButtonPosition.y + pauseButton.getHeight())
-            return true;
-        else return false;
-    }
 
-    public boolean isInRangeOfAtkButton(float x, float y) {
-        if ( x > atkButtonPosition.x && x < atkButtonPosition.x + atkButton.getWidth() &&
-             y > atkButtonPosition.y && y < atkButtonPosition.y + atkButton.getHeight())
-            return true;
-        else
-            return false;
-    }
-
-    public boolean isInRangeOfJumpButton(float x, float y) {
-        if ( x > jumpButtonPosition.x && x < jumpButtonPosition.x + jumpButton.getWidth() &&
-                y > jumpButtonPosition.y && y < jumpButtonPosition.y + jumpButton.getHeight())
-            return true;
-        else
-            return false;
-    }
 
 }
