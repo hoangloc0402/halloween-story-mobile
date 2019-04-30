@@ -16,6 +16,7 @@ import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.MainCharacter;
+import com.halloween.GameObjects.Traps.FireTrap;
 import com.halloween.R;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class PlayingScreen implements GameScreen{
     private Paint paint;
 
     private Zombie zombie;
+
+    private FireTrap fireTrap;
 
     public PlayingScreen() {
         this.paint = new Paint();
@@ -68,6 +71,8 @@ public class PlayingScreen implements GameScreen{
         this.healthBarMainCharacter.setNewHealth(1000);
         this.healthBarMainCharacter.setNewScore(1000);
 
+        this.fireTrap = new FireTrap(new PointF(100f, 200f),2000);
+
     }
 
     @Override
@@ -88,6 +93,7 @@ public class PlayingScreen implements GameScreen{
         joyStick.update();
         if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
+        fireTrap.update();
 
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
@@ -121,6 +127,7 @@ public class PlayingScreen implements GameScreen{
         }
         this.mainCharacter.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
+        this.fireTrap.draw(canvas);
         this.joyStick.draw(canvas);
         this.zombie.draw(canvas);
     }
