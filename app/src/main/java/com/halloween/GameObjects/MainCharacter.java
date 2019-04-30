@@ -6,9 +6,13 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
+
 import com.halloween.Animation;
 import com.halloween.Constants;
 import com.halloween.R;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MainCharacter{
@@ -30,7 +34,7 @@ public class MainCharacter{
     public MainCharacter(){
         this.loadAnimation();
         this.currentAnimation = idleAnimation;
-        this.position = new PointF(0,0.8f*Constants.SCREEN_HEIGHT - currentAnimation.frameHeight);
+        this.position = new PointF(600,300);
         this.velocity = new PointF(0,0);
         this.currentAnimation.flip(true);
         this.current_score = 0;
@@ -66,18 +70,22 @@ public class MainCharacter{
     }
 
 
-    public void update() {
-        this.updateMovement();
+    public void update(ArrayList<RectF> boxes) {
+        this.updateMovement(boxes);
         this.updateAnimation();
     }
 
-
-    private void updateMovement(){
+    private void updateMovement(ArrayList<RectF> boxes){
         if (this.isAlive){
-            if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT)
+            if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
+                this.velocity.x = - Constants.MAIN_CHARACTER_V_X;
                 this.allowLeft = true;
-            else if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT)
+            }
+            else if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT){
+                this.velocity.x = Constants.MAIN_CHARACTER_V_X;
                 this.allowRight = true;
+            }
+            else this.velocity.x = 0;
 
             if(Constants.JOYSTICK_ATK_STATE)
                 this.isAttacking = true;
@@ -86,39 +94,48 @@ public class MainCharacter{
             if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
                 this.velocity.y = Constants.MAIN_CHARACTER_V_Y;
                 this.isJumping = true;
-                this.jumpTime = System.nanoTime();
             }
             if (isJumping){
-                long elapsed_time = (System.nanoTime() - this.jumpTime) / 100000000;
-                this.velocity.y =  (Constants.GRAVITY*elapsed_time + Constants.MAIN_CHARACTER_V_Y);
-//                if (this.velocity.y < 3 && this.velocity.y > 0){
-//                    this.jumpTime = System.nanoTime();
-//                    this.velocity.y = 0;
-//                }
-
-                System.out.println(this.velocity.y);
+                this.position.y += this.velocity.y;
+                this.velocity.y = Constants.GRAVITY + this.velocity.y;
             }
-            else
-            this.velocity.y = 0;
 
-//            isJumping = true;
+
+            RectF surroundingBox = this.currentAnimation.getSurroundingBox(this.position);
+            for (RectF box: boxes){
+                if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom) {
+                    if (surroundingBox.right > box.left && surroundingBox.centerX() < box.left)
+                        allowRight = false;
+                    else if (surroundingBox.left < box.right && surroundingBox.centerX() > box.right)
+                        allowLeft = false;
+                }
+                if (surroundingBox.right > box.left + 3  && surroundingBox.left < box.right - 3 ){
+                    if (surroundingBox.bottom >= box.top && surroundingBox.centerY() < box.top) {
+                        this.position.y = box.top - surroundingBox.height();
+                        this.velocity.y = 0;
+                        this.isJumping = false;
+                        break;
+                    }
+                    else if (surroundingBox.top <= box.bottom && surroundingBox.centerY() > box.bottom){
+                        this.position.y = box.bottom + 1;
+                        this.velocity.y = 0;
+                        break;
+                    }
+                }
+                else this.isJumping = true;
+            }
 
 //            Check va chạm
-            if (this.allowLeft){
-                this.velocity.x = - Constants.MAIN_CHARACTER_V_X;
-                this.allowLeft = false;
-            } else if (this.allowRight){
-                this.velocity.x = Constants.MAIN_CHARACTER_V_X;
-                this.allowRight = false;
-            } else this.velocity.x = 0;
-
-            this.position.x += this.velocity.x;
+            if (this.allowLeft || this.allowRight){
+                this.position.x += this.velocity.x;
+                this.allowLeft = this.allowRight =  false;
+            }
             this.position.y += this.velocity.y;
 
-            if (this.position.y > 600){
-                this.position.y = 600;
-                this.isJumping = false;
-            }
+//            if (this.position.y > 600){
+//                this.position.y = 600;
+//                this.isJumping = false;
+//            }
         }
         else {
 

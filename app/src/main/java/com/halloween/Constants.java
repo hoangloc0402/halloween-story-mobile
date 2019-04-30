@@ -23,14 +23,18 @@ public class Constants {
 
     public final static int ZOMBIE_ATTACK= 30;
     public final static int ZOMBIE_DAMAGE = 20;
-    public final static int ZOMBIE_STARTING_HP = 50;
+    public final static float ZOMBIE_STARTING_HP = 50;
     public final static int ZOMBIE_POINT = 100;
     public final static int ZOMBIE_V_X = 2;
     public final static int ZOMBIE_SCALE = 2;
+    public final static float ZOMBIE_FOLLOW_DISTANCE = 40000;
+    public final static float ZOMBIE_ATTACK_DISTANCE = 10000;
+
+
 
     public static final float MAIN_CHARACTER_V_X = 10f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
-    public static final float GRAVITY = 20f;
+    public static final float GRAVITY = 10f;
 
     public static int  MAIN_CHARACTER_ATTACK_POWER = 10;
     public static final double INVINCIBLE_TIME = 1500;

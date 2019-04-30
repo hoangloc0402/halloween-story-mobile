@@ -45,10 +45,10 @@ public class Animation {
     public boolean isPlaying(){ return this.isPlaying; }
     public void flip(boolean isFlip){this.isFlip = isFlip;}
     public void play(){this.isPlaying = true; }
-    public void stop(){this.isPlaying = false; }
+    public void stop(){this.isPlaying = false;}
 
     public void draw(Canvas canvas, PointF position, Paint paint){
-        if (!this.isPlaying) return;
+        if (!this.isPlaying) currentFrameIndex = 0;
         Rect whatToDraw = getCurrentFrame();
         RectF whereToDraw = getDestinationRect(position);
         canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);

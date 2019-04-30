@@ -17,6 +17,8 @@ import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
 
+import java.util.ArrayList;
+
 public class PlayingScreen implements GameScreen{
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
@@ -28,12 +30,13 @@ public class PlayingScreen implements GameScreen{
     private RectF backgroundBlockWhere;
     private float backgroundCloudOffset, backgroundCloudSmallOffset;
     private int backgroundCloudCount, backgroundCloudSmallCount;
-
+    private ArrayList<RectF> boxes;
     private Paint paint;
 
     public PlayingScreen() {
         this.paint = new Paint();
-
+        this.boxes = new ArrayList<>();
+        this.initBoxes();
         // Map Stuff
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
@@ -76,7 +79,7 @@ public class PlayingScreen implements GameScreen{
         if (backgroundCloudOffset > backgroundCloud.getWidth()) backgroundCloudOffset = 0f;
         if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth()) backgroundCloudSmallOffset = 0f;
 
-        mainCharacter.update();
+        mainCharacter.update(boxes);
         joyStick.update();
         if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
@@ -105,15 +108,49 @@ public class PlayingScreen implements GameScreen{
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
+<<<<<<< HEAD
         this.mainCharacter.draw(canvas);
         if (portal.isInRange()) {this.portal.draw(canvas);}
         this.healthBarMainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
+=======
+        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
+        this.mainCharacter.draw(canvas);
+
+        RectF temp = new RectF();
+        for (RectF box: boxes){
+            temp.set(box.left-Constants.BACKGROUND_X_AXIS, box.top, box.right-Constants.BACKGROUND_X_AXIS, box.bottom);
+            canvas.drawRect(temp, paint);
+        }
+
+        this.joyStick.draw(canvas);
+        this.healthBarMainCharacter.draw(canvas);
+        this.healthBarBoss.draw(canvas);
+
+        if (Constants.JOYSTICK_ATK_STATE) {
+            canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paint);
+        } else {
+            canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paint);
+        }
+        if (Constants.JOYSTICK_JUMP_STATE) {
+            canvas.drawBitmap(jumpButtonHover, jumpButtonPosition.x, jumpButtonPosition.y, paint);
+        } else {
+            canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
+        }
+
+
+>>>>>>> eb9ca42f2bfee0340fe79f6a6f86ab189efa8c0e
     }
 
     @Override
     public void terminate() {
 
+    }
+
+    private void initBoxes(){
+        this.boxes.add(new RectF(0, 800, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(500, 400, 1000, 500));
+//        this.boxes.add(new RectF(1200, 500, 1900, 1000));
     }
 
     @Override
@@ -123,7 +160,7 @@ public class PlayingScreen implements GameScreen{
         int maskedAction = event.getActionMasked();
         float x = event.getX(pointerIndex);
         float y = event.getY(pointerIndex);
-        
+
 
         switch(maskedAction)
         {
