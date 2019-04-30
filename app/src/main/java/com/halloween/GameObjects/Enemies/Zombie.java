@@ -80,10 +80,12 @@ public class Zombie extends Enemy {
     public void update() {
         super.update();
         if(isActive){
+            if (!isAlive){
+                currentState = State.Died;
+            }
             switch (currentState){
                 case Died:
                     ChangeState(State.Died);
-                    isAlive = false;
                     break;
                 case Hurt:
                     ChangeState(State.Hurt);
@@ -95,7 +97,7 @@ public class Zombie extends Enemy {
                 case Move:
                     ChangeState(State.Move);
                     if(isAlive && isInScreen()){
-                        currentHP -= 0.000001f;
+                        currentHP -= 0.01f;
                         if(isMovingForward){
                             currentPosition.x =  currentPosition.x + Constants.ZOMBIE_V_X;
                         }
@@ -124,7 +126,11 @@ public class Zombie extends Enemy {
         if (isAlive){
             currentHP -= attack;
             isAlive = currentHP > 0;
-            ChangeState(State.Hurt);
+            if(isAlive){
+                ChangeState(State.Hurt);
+            }else {
+                ChangeState(State.Died);
+            }
             update();
         }
     }
