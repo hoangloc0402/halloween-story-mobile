@@ -1,7 +1,6 @@
 package com.halloween;
 
 import android.content.Context;
-import android.util.Log;
 
 public class Constants {
     public static int SCREEN_WIDTH;
@@ -30,6 +29,15 @@ public class Constants {
     public final static float ZOMBIE_FOLLOW_DISTANCE = 40000;
     public final static float ZOMBIE_ATTACK_DISTANCE = 10000;
 
+    public final static int GARGOYLE_ATTACK= 30;
+    public final static int GARGOYLE_DAMAGE = 20;
+    public final static float GARGOYLE_STARTING_HP = 50;
+    public final static int GARGOYLE_POINT = 100;
+    public final static float GARGOYLE_V_X = 2;
+    public final static float GARGOYLE_V_Y = 2;
+    public final static int GARGOYLE_SCALE = 2;
+    public final static float GARGOYLE_FOLLOW_DISTANCE = 4000000;
+    public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
 
 
     public static final float MAIN_CHARACTER_V_X = 10f;

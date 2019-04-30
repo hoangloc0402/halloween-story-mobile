@@ -185,6 +185,10 @@ public class MainCharacter{
 
     public PointF getCurrentPosition(){ return this.position;}
 
+    public RectF getSurroundingBox(){
+        return currentAnimation.getSurroundingBox(this.position);
+    }
+
 //    public Boolean collide(Rect targetBox){
 //        return targetBox.intersect(this.getSurroundingBox());
 //    }
