@@ -33,7 +33,7 @@ public class Constants {
 
     public static final float MAIN_CHARACTER_V_X = 10f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
-    public static final float GRAVITY = 20f;
+    public static final float GRAVITY = 10f;
 
     public static int  MAIN_CHARACTER_ATTACK_POWER = 10;
     public static final double INVINCIBLE_TIME = 1500;

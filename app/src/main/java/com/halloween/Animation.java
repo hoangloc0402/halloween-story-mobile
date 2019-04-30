@@ -48,6 +48,7 @@ public class Animation {
     public void stop(){this.isPlaying = false;}
 
     public void draw(Canvas canvas, PointF position, Paint paint){
+        if (!this.isPlaying) currentFrameIndex = 0;
         Rect whatToDraw = getCurrentFrame();
         RectF whereToDraw = getDestinationRect(position);
         canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
