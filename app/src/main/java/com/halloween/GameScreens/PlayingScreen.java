@@ -132,12 +132,14 @@ public class PlayingScreen implements GameScreen{
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
+
         this.mainCharacter.draw(canvas);
-        this.joyStick.draw(canvas);
+
         this.healthBarMainCharacter.draw(canvas);
         this.healthBarBoss.draw(canvas);
 
+        this.joyStick.draw(canvas);
+        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
         if (Constants.JOYSTICK_ATK_STATE) {
             canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paint);
         } else {
