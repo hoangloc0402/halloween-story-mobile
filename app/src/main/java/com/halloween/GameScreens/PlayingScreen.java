@@ -4,51 +4,39 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
-import com.halloween.GameContents.HealthBarBoss;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
-import com.halloween.GameObjects.Enemies.Gargoyle;
-import com.halloween.GameObjects.Enemies.Zombie;
+import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
+
+import java.util.ArrayList;
 
 public class PlayingScreen implements GameScreen{
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
-    private Bitmap pauseButton;
-    private Bitmap jumpButton;
-    private Bitmap atkButton;
-    private Bitmap background;
-    private Bitmap backgroundBlock;
+    private HealthBarMainCharacter healthBarMainCharacter;
+    private Portal portal;
+
+    private Bitmap background, backgroundBlock, backgroundCloud, backgroundCloudSmall, backgroundMoon;
     private Rect backgroundBlockWhat;
     private RectF backgroundBlockWhere;
-    private Bitmap backgroundMoon;
-//    private float backgroundXAxis = 0;
-    private Point pauseButtonPosition;
-    private Point jumpButtonPosition;
-    private Point atkButtonPosition;
-    private HealthBarMainCharacter healthBarMainCharacter;
-    private HealthBarBoss healthBarBoss;
-
+    private float backgroundCloudOffset, backgroundCloudSmallOffset;
+    private int backgroundCloudCount, backgroundCloudSmallCount;
+    private ArrayList<RectF> boxes;
     private Paint paint;
-
-    private Zombie zombie;
-
-    private Gargoyle gargoyle;
-
-//  comment this and use main char pos
-//    private Point tempWatchPosition;
 
     public PlayingScreen() {
         this.paint = new Paint();
-
+        this.boxes = new ArrayList<>();
+        this.initBoxes();
         // Map Stuff
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
@@ -61,89 +49,85 @@ public class PlayingScreen implements GameScreen{
         this.backgroundBlockWhat = new Rect(0, 0, (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ), backgroundBlock.getHeight());
         this.backgroundBlockWhere = new RectF((float)0.0, (float)0.0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
-        // button
-        this.pauseButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_button);
-        this.pauseButton = Bitmap.createScaledBitmap(pauseButton, 150, 150, false);
-        this.pauseButtonPosition = new Point(Constants.SCREEN_WIDTH - 200, 50);
+        this.backgroundCloud = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_cloud);
+        this.backgroundCloud = Bitmap.createScaledBitmap(backgroundCloud, (int) (Constants.SCREEN_HEIGHT * 800 * 0.4 / 320), (int) (Constants.SCREEN_HEIGHT * 0.4), false);
+        this.backgroundCloudCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloud.getWidth()) + 1;
 
-        this.jumpButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_button);
-        this.jumpButton = Bitmap.createScaledBitmap(jumpButton, 150, 150, false);
-        this.jumpButtonPosition = new Point(Constants.SCREEN_WIDTH - 200, Constants.SCREEN_HEIGHT - 200);
-
-        this.atkButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_button);
-        this.atkButton = Bitmap.createScaledBitmap(atkButton, 150, 150, false);
-        this.atkButtonPosition = new Point(Constants.SCREEN_WIDTH - 400, Constants.SCREEN_HEIGHT - 200);
-
-//        this.tempWatchPosition = new Point(50,50);
+        this.backgroundCloudSmall = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_cloud_small);
+        this.backgroundCloudSmall = Bitmap.createScaledBitmap(backgroundCloudSmall, (int) (Constants.SCREEN_HEIGHT * 1818 * 0.3 / 158), (int) (Constants.SCREEN_HEIGHT * 0.3), false);
+        this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 1;
 
         this.reset();
-        System.out.println("hello");
         this.joyStick = new JoyStick();
+        this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
         this.healthBarMainCharacter.setNewHealth(1000);
         this.healthBarMainCharacter.setNewScore(1000);
-        this.healthBarBoss = new HealthBarBoss();
-        this.healthBarBoss.setNewHealth(1000);
+
     }
 
     @Override
     public void reset() {
         this.mainCharacter = new MainCharacter();
-        this.zombie = new Zombie(new PointF(100, 900), new PointF(700, 900));
-        this.gargoyle = new Gargoyle(new PointF(200, 500), new PointF(900, 500));
     }
 
     @Override
     public void update() {
-        mainCharacter.update();
-        gargoyle.update(mainCharacter.getSurroundingBox());
+        backgroundCloudOffset += 1;
+        backgroundCloudSmallOffset += 1.5f;
+        if (backgroundCloudOffset > backgroundCloud.getWidth()) backgroundCloudOffset = 0f;
+        if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth()) backgroundCloudSmallOffset = 0f;
+
+        mainCharacter.update(boxes);
         joyStick.update();
-//        zombie.update(mainCharacter.getSurroundingBox());
+        if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
 
-        // This is just a template for watch position, comment this & use the Main Character Position
-//        if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT) {
-//            tempWatchPosition.x += 10.0;
-//        } else
-//            if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
-//                tempWatchPosition.x -= 10.0;
-//            }
-//        tempWatchPosition = mainCharacter.getCurrentPosition();
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
-//        Log.d("POS 1", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
         if (mainPosition.x < Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.15) {
             Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.15);
-        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.7) {
-            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.7);
+        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.5) {
+            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.5);
         }
-//        Log.d("POS 2", mainPosition.x + " , " + Constants.BACKGROUND_X_AXIS);
         Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
         Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
-
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )), backgroundBlock.getHeight());
     }
 
     @Override
     public void draw(Canvas canvas) {
+        Log.d("BG: ", Constants.BACKGROUND_X_AXIS + " " + backgroundBlock.getWidth() + " " + mainCharacter.getCurrentPosition().x);
         canvas.drawBitmap(background, 0, 0, paint);
-        canvas.drawBitmap(backgroundMoon, (float) (Constants.SCREEN_WIDTH * 0.7), (float) (Constants.SCREEN_HEIGHT * 0.2), paint);
+        canvas.drawBitmap(backgroundMoon, (float) (Constants.SCREEN_WIDTH * 0.7), (float) (Constants.SCREEN_HEIGHT * 0.125), paint);
+        for (int i = 0; i < backgroundCloudCount; i ++) {
+            canvas.drawBitmap(backgroundCloud, -backgroundCloudOffset + backgroundCloud.getWidth()*i, Constants.SCREEN_HEIGHT * 0.8f - backgroundCloud.getHeight(), paint);
+        }
+        for (int i = 0; i < backgroundCloudSmallCount; i ++) {
+            canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
+        }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
+        if (portal.isInRange()) {this.portal.draw(canvas);}
+        RectF temp = new RectF();
+        for (RectF box: boxes){
+            temp.set(box.left-Constants.BACKGROUND_X_AXIS, box.top, box.right-Constants.BACKGROUND_X_AXIS, box.bottom);
+            canvas.drawRect(temp, paint);
+        }
         this.mainCharacter.draw(canvas);
-        gargoyle.draw(canvas);
-//        zombie.draw(canvas);
-        this.joyStick.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
-        this.healthBarBoss.draw(canvas);
-        canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paint);
-        canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
+        this.joyStick.draw(canvas);
     }
 
     @Override
     public void terminate() {
 
+    }
+
+    private void initBoxes(){
+        this.boxes.add(new RectF(0, 800, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(500, 400, 1000, 500));
+//        this.boxes.add(new RectF(1200, 500, 1900, 1000));
     }
 
     @Override
@@ -153,117 +137,101 @@ public class PlayingScreen implements GameScreen{
         int maskedAction = event.getActionMasked();
         float x = event.getX(pointerIndex);
         float y = event.getY(pointerIndex);
-        
+
 
         switch(maskedAction)
         {
             case MotionEvent.ACTION_UP:
                 // Log.d("MOTION:", "ACTION_UP" + x + " " + y );
-                if (isInRangeOfPauseButton(x, y)) {
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
                     joyStick.backToCenter();
+                    joyStick.isPressedPause = false;
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
                 }
-                if (isInRangeOfAtkButton(x, y)) {
+//                if (isInRangeOfAtkButton(x, y)) {
                     Constants.JOYSTICK_ATK_STATE = false;
-                }
-                if (isInRangeOfJumpButton(x, y)) {
+//                }
+//                if (isInRangeOfJumpButton(x, y)) {
                     Constants.JOYSTICK_JUMP_STATE = false;
-                }
-                if (joyStick.isInRange(x, y)) {
+//                }
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.backToCenter();
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
                 // Log.d("MOTION:", "ACTION_DOWN" + x + " " + y);
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.updatePosition(x, y);
                 }
-                if (isInRangeOfJumpButton(x, y)) {
+                if (joyStick.isInRangeOfJumpButton(x, y)) {
                     Constants.JOYSTICK_JUMP_STATE = true;
                 }
-                if (isInRangeOfAtkButton(x, y)) {
+                if (joyStick.isInRangeOfAtkButton(x, y)) {
                     Constants.JOYSTICK_ATK_STATE = true;
+                }
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
+                    joyStick.isPressedPause = true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 // Log.d("MOTION:", "ACTION_MOVE" + x + " " + y);
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.updatePosition(x, y);
                 } else {
-                    if (joyStick.isPressed) {
+                    if (joyStick.isPressedJoyStick) {
                         joyStick.backToCenter();
                     }
                 }
-                if (isInRangeOfJumpButton(x, y)) {
-                    Constants.JOYSTICK_JUMP_STATE = true;
-                }
-                if (isInRangeOfAtkButton(x, y)) {
-                    Constants.JOYSTICK_ATK_STATE = true;
-                }
+//                if (isInRangeOfJumpButton(x, y)) {
+//                    Constants.JOYSTICK_JUMP_STATE = true;
+//                }
+//                if (isInRangeOfAtkButton(x, y)) {
+//                    Constants.JOYSTICK_ATK_STATE = true;
+//                }
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 // Log.d("MOTION:", "ACTION_POINTER_DOWN" + x + " " + y);
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.updatePosition(x, y);
                 }
-                if (isInRangeOfJumpButton(x, y)) {
+                if (joyStick.isInRangeOfJumpButton(x, y)) {
                     Constants.JOYSTICK_JUMP_STATE = true;
                 }
-                if (isInRangeOfAtkButton(x, y)) {
+                if (joyStick.isInRangeOfAtkButton(x, y)) {
                     Constants.JOYSTICK_ATK_STATE = true;
+                }
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
+                    joyStick.isPressedPause = true;
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 // Log.d("MOTION:", "ACTION_POINTER_UP" + x + " " + y);
-                if (isInRangeOfPauseButton(x, y)) {
+                if (joyStick.isInRangeOfPauseButton(x, y)) {
                     joyStick.backToCenter();
+                    joyStick.isPressedPause = false;
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
                 }
-                if (joyStick.isInRange(x, y)) {
+                if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.backToCenter();
                 }
-                if (isInRangeOfJumpButton(x, y)) {
+//                if (isInRangeOfJumpButton(x, y)) {
                     Constants.JOYSTICK_JUMP_STATE = false;
-                }
-                if (isInRangeOfAtkButton(x, y)) {
+//                }
+//                if (isInRangeOfAtkButton(x, y)) {
                     Constants.JOYSTICK_ATK_STATE = false;
-                }
+//                }
                 break;
             case MotionEvent.ACTION_OUTSIDE:
-                // Log.d("MOTION:", "ACTION_OUTSIDE" + x + " " + y);
                 break;
             case MotionEvent.ACTION_CANCEL:
-                // Log.d("MOTION:", "ACTION_CANCEL" + x + " " + y);
                 Constants.JOYSTICK_ATK_STATE = false;
                 Constants.JOYSTICK_JUMP_STATE = false;
+                joyStick.isPressedJoyStick = false;
+                joyStick.isPressedPause = false;
                 break;
         }
     }
 
-    public boolean isInRangeOfPauseButton(float x, float y){
-        if (
-                x >pauseButtonPosition.x &&
-                x < pauseButtonPosition.x + pauseButton.getWidth() &&
-                y > pauseButtonPosition.y &&
-                y < pauseButtonPosition.y + pauseButton.getHeight())
-            return true;
-        else return false;
-    }
 
-    public boolean isInRangeOfAtkButton(float x, float y) {
-        if ( x > atkButtonPosition.x && x < atkButtonPosition.x + atkButton.getWidth() &&
-             y > atkButtonPosition.y && y < atkButtonPosition.y + atkButton.getHeight())
-            return true;
-        else
-            return false;
-    }
-
-    public boolean isInRangeOfJumpButton(float x, float y) {
-        if ( x > jumpButtonPosition.x && x < jumpButtonPosition.x + jumpButton.getWidth() &&
-                y > jumpButtonPosition.y && y < jumpButtonPosition.y + jumpButton.getHeight())
-            return true;
-        else
-            return false;
-    }
 
 }
