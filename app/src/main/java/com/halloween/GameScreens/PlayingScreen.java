@@ -14,6 +14,7 @@ import com.halloween.Constants;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
+import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
 
@@ -32,6 +33,8 @@ public class PlayingScreen implements GameScreen{
     private int backgroundCloudCount, backgroundCloudSmallCount;
     private ArrayList<RectF> boxes;
     private Paint paint;
+
+    private Zombie zombie;
 
     public PlayingScreen() {
         this.paint = new Paint();
@@ -70,6 +73,7 @@ public class PlayingScreen implements GameScreen{
     @Override
     public void reset() {
         this.mainCharacter = new MainCharacter();
+        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
     }
 
     @Override
@@ -80,6 +84,7 @@ public class PlayingScreen implements GameScreen{
         if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth()) backgroundCloudSmallOffset = 0f;
 
         mainCharacter.update(boxes);
+        this.zombie.update(mainCharacter.getSurroundingBox());
         joyStick.update();
         if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
@@ -117,6 +122,7 @@ public class PlayingScreen implements GameScreen{
         this.mainCharacter.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
+        this.zombie.draw(canvas);
     }
 
     @Override

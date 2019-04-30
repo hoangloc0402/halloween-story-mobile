@@ -48,15 +48,14 @@ public class Enemy implements GameObject {
 
     //Check if the object is in the playing screen
     public boolean IsInScreen(){
-        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
+        return Constants.isInScreenRange(currentPosition.x, currentAnimation.frameWidth, Constants.CURRENT_GAME_STATE);
+//        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
     }
 
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance){
         float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
         float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
         float d =  dx*dx + dy*dy;
-//        float d =  dx*dx;
-//        System.out.println("Distance = " + playerSurroundingBox.centerX() + " " + surroundingBox.centerX());
         if (d <maxDistance)
             return true;
         return false;
@@ -74,10 +73,12 @@ public class Enemy implements GameObject {
     protected State currentState, previousState;
 
     @Override
-    public void draw(Canvas canvas){}
-
-    public void UpdateMovement(RectF playerSurroundingBox, float v_x, float v_y){
-
+    public void draw(Canvas canvas){
+        if (isActive) {
+            if (this.IsInScreen()) {
+                this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y));
+            }
+        }
     }
 
     @Override
