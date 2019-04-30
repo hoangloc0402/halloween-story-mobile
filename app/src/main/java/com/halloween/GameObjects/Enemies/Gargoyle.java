@@ -45,11 +45,6 @@ public class Gargoyle extends Enemy {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if (isActive) {
-            if (this.IsInScreen()) {
-                this.currentAnimation.draw(canvas, new PointF(this.currentPosition.x - Constants.BACKGROUND_X_AXIS, this.currentPosition.y));
-            }
-        }
     }
 
     @Override

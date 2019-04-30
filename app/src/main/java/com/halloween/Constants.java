@@ -1,6 +1,7 @@
 package com.halloween;
 
 import android.content.Context;
+import android.util.Log;
 
 public class Constants {
     public static int SCREEN_WIDTH;

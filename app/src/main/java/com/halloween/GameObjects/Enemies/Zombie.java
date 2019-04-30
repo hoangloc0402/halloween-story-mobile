@@ -47,11 +47,6 @@ public class Zombie extends Enemy {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if (isActive) {
-            if (this.IsInScreen()) {
-                this.currentAnimation.draw(canvas, new PointF(this.currentPosition.x - Constants.BACKGROUND_X_AXIS, this.currentPosition.y));
-            }
-        }
     }
 
     @Override
@@ -89,9 +84,9 @@ public class Zombie extends Enemy {
                             currentPosition.x = currentPosition.x - this.v_x;
                             currentPosition.y = currentPosition.y - this.v_y;
                         }
-                        if (currentPosition.x <= leftLandMark.x - Constants.BACKGROUND_X_AXIS) {
+                        if (currentPosition.x <= leftLandMark.x) {
                             isMovingForward = true;
-                        } else if (currentPosition.x >= rightLandMark.x - Constants.BACKGROUND_X_AXIS) {
+                        } else if (currentPosition.x >= rightLandMark.x) {
                             isMovingForward = false;
                         }
                     }
