@@ -6,7 +6,7 @@ public class Constants {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     public static Context CURRENT_CONTEXT;
-    public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER}
+    public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS}
     public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.PLAY;
     public static GAME_STATE PREVIOUS_GAME_STATE;
     public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE};
@@ -60,7 +60,6 @@ public class Constants {
     public static boolean isInScreenRange(float x, float offset, GAME_STATE game_state) {
         float left = getRelativeXPosition(x, game_state);
         float right = getRelativeXPosition(x + offset, game_state);
-        Log.d("range",left+ " "+right);
         switch (game_state) {
             case PLAY:
                 if (left > 0 || right < SCREEN_WIDTH)

@@ -9,11 +9,13 @@ public class ScreenManager {
     private PlayingScreen playingScreen;
     private MainMenuScreen mainMenuScreen;
     private PauseScreen pauseScreen;
+    private BossScreen bossScreen;
 
     public ScreenManager() {
         playingScreen = new PlayingScreen();
         mainMenuScreen = new MainMenuScreen();
         pauseScreen = new PauseScreen();
+        bossScreen = new BossScreen();
     }
 
     public GameScreen getActiveScreen(){
@@ -24,6 +26,8 @@ public class ScreenManager {
                 return mainMenuScreen;
             case PAUSE:
                 return pauseScreen;
+            case BOSS:
+                return bossScreen;
             default:
                 return null;
         }

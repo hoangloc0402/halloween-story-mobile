@@ -86,10 +86,10 @@ public class PlayingScreen implements GameScreen{
 
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
-        if (mainPosition.x < Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.15) {
-            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.15);
-        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.5) {
-            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - Constants.SCREEN_WIDTH * 0.5);
+        if (mainPosition.x < Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ) * 0.3) {
+            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ) * 0.3);
+        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + 0.6f * (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )) {
+            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - 0.6f * (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
         }
         Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
         Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
@@ -125,7 +125,7 @@ public class PlayingScreen implements GameScreen{
     }
 
     private void initBoxes(){
-        this.boxes.add(new RectF(0, 800, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(0, 800, Constants.SCREEN_WIDTH * 10, Constants.SCREEN_HEIGHT));
 //        this.boxes.add(new RectF(500, 400, 1000, 500));
 //        this.boxes.add(new RectF(1200, 500, 1900, 1000));
     }

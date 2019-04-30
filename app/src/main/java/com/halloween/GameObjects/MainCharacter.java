@@ -64,7 +64,7 @@ public class MainCharacter{
 
 
     public void draw(Canvas canvas) {
-        this.currentAnimation.draw(canvas, new PointF(this.position.x - Constants.BACKGROUND_X_AXIS, this.position.y));
+        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y));
 //        canvas.drawRect(currentAnimation.getSurroundingBox(this.position), this.paint);
 //        System.out.println(this.position);
     }

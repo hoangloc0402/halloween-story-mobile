@@ -26,8 +26,6 @@ public class Portal implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-//        this.portalAnimation.draw(canvas, new PointF(this.portalPosition.x - Constants.BACKGROUND_X_AXIS , this.portalPosition.y));
-//        this.portalAnimation.draw(canvas, new PointF(this.portalPosition.x - Constants.BACKGROUND_X_AXIS * Constants.SCREEN_WIDTH / Constants.SCREEN_HEIGHT, this.portalPosition.y));
         this.portalAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.portalPosition.x, Constants.GAME_STATE.PLAY),this.portalPosition.y));
     }
 
