@@ -30,10 +30,14 @@ public class Enemy implements GameObject {
     PointF rightLandMark;
     RectF surroundingBox;
 
-    public Enemy(float currentHP, PointF leftLandMark, PointF rightLandMark) {
+    float followDistance, attackDistance;
+
+    public Enemy(float currentHP, PointF leftLandMark, PointF rightLandMark, float followDistance, float attackDistance) {
         this.currentHP = currentHP;
         this.leftLandMark = leftLandMark;
         this.rightLandMark = rightLandMark;
+        this.followDistance = followDistance;
+        this.attackDistance = attackDistance;
         isAlive = true;
         isActive = true;
     }
@@ -76,7 +80,54 @@ public class Enemy implements GameObject {
     }
 
     public void update(RectF playerSurroundingBox){
-
+        if (isActive) {
+            if (currentHP <= 0) {
+                isAlive = false;
+                ChangeState(State.Died);
+            }
+            switch (currentState) {
+                case Died:
+                    ChangeState(State.Died);
+                    if (this.currentAnimation.isLastFrame())
+                        isActive = false;
+                    break;
+                case Hurt:
+                    ChangeState(State.Hurt);
+                    break;
+                case Attack:
+                    if (!IsPlayerInRange(playerSurroundingBox, attackDistance)) {
+                        ChangeState(State.Move);
+                    } else
+                        ChangeState(State.Attack);
+                    isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
+                    break;
+                case Move:
+                    ChangeState(State.Move);
+                    if (isAlive && IsInScreen()) {
+                        currentHP -= 0.01f;
+                        if (isMovingForward) {
+                            currentPosition.x = currentPosition.x + Constants.ZOMBIE_V_X;
+                        } else {
+                            currentPosition.x = currentPosition.x - Constants.ZOMBIE_V_X;
+                        }
+                        if (currentPosition.x <= leftLandMark.x - Constants.BACKGROUND_X_AXIS) {
+                            isMovingForward = true;
+                        } else if (currentPosition.x >= rightLandMark.x - Constants.BACKGROUND_X_AXIS) {
+                            isMovingForward = false;
+                        }
+                    }
+                    if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
+                        if (IsPlayerInRange(playerSurroundingBox, attackDistance))
+                            ChangeState(State.Attack);
+                        isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            this.currentAnimation.flip(isMovingForward);
+            currentAnimation.update();
+        }
     }
 
     public RectF getSurroundingBox(){
@@ -114,6 +165,18 @@ public class Enemy implements GameObject {
                 default:
                     break;
 
+            }
+        }
+    }
+
+    public void Hurt(int attack) {
+        if (isAlive) {
+            currentHP -= attack;
+            isAlive = currentHP > 0;
+            if (isAlive) {
+                ChangeState(State.Hurt);
+            } else {
+                ChangeState(State.Died);
             }
         }
     }

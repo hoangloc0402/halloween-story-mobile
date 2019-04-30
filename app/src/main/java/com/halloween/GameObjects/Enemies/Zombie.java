@@ -6,13 +6,14 @@ import android.graphics.RectF;
 
 import com.halloween.Animation;
 import com.halloween.Constants;
+import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
 
 public class Zombie extends Enemy {
 
 
     public Zombie(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.ZOMBIE_STARTING_HP, leftLandMark, rightLandMark);
+        super(Constants.ZOMBIE_STARTING_HP, leftLandMark, rightLandMark, Constants.ZOMBIE_FOLLOW_DISTANCE, Constants.ZOMBIE_ATTACK_DISTANCE);
 
         LoadAnimation();
 
@@ -76,67 +77,12 @@ public class Zombie extends Enemy {
     @Override
     public void update(RectF playerSurroundingBox) {
         super.update();
-        if (isActive) {
-            if (currentHP <= 0) {
-                isAlive = false;
-                ChangeState(State.Died);
-            }
-            switch (currentState) {
-                case Died:
-                    ChangeState(State.Died);
-                    if (this.currentAnimation.isLastFrame())
-                        isActive = false;
-                    break;
-                case Hurt:
-                    ChangeState(State.Hurt);
-                    break;
-                case Attack:
-                    if (!IsPlayerInRange(playerSurroundingBox, 40000)) {
-                        ChangeState(State.Move);
-                    } else
-                        ChangeState(State.Attack);
-                    break;
-                case Move:
-                    ChangeState(State.Move);
-                    if (isAlive && IsInScreen()) {
-                        currentHP -= 0.01f;
-                        if (isMovingForward) {
-                            currentPosition.x = currentPosition.x + Constants.ZOMBIE_V_X;
-                        } else {
-                            currentPosition.x = currentPosition.x - Constants.ZOMBIE_V_X;
-                        }
-                        if (currentPosition.x <= leftLandMark.x - Constants.BACKGROUND_X_AXIS) {
-                            isMovingForward = true;
-                        } else if (currentPosition.x >= rightLandMark.x - Constants.BACKGROUND_X_AXIS) {
-                            isMovingForward = false;
-                        }
-                    }
-                    if (IsPlayerInRange(playerSurroundingBox, 40000)) {
-                        ChangeState(State.Attack);
-                        isMovingForward = isMovingForward ^ (playerSurroundingBox.centerX() <= getSurroundingBox().centerX());
-                    }
-                    break;
-                default:
-                    break;
-            }
-            this.currentAnimation.flip(isMovingForward);
-            currentAnimation.update();
-        }
-
+        super.update(playerSurroundingBox);
     }
 
-    public void Hurt(int attack) {
-        if (isAlive) {
-            currentHP -= attack;
-            isAlive = currentHP > 0;
-            if (isAlive) {
-                ChangeState(State.Hurt);
-            } else {
-                ChangeState(State.Died);
-            }
-            update();
-        }
-    }
+
+
+
 
 
 }
