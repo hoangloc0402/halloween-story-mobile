@@ -108,38 +108,15 @@ public class PlayingScreen implements GameScreen{
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-<<<<<<< HEAD
-        this.mainCharacter.draw(canvas);
         if (portal.isInRange()) {this.portal.draw(canvas);}
-        this.healthBarMainCharacter.draw(canvas);
-        this.joyStick.draw(canvas);
-=======
-        canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, paint);
-        this.mainCharacter.draw(canvas);
-
         RectF temp = new RectF();
         for (RectF box: boxes){
             temp.set(box.left-Constants.BACKGROUND_X_AXIS, box.top, box.right-Constants.BACKGROUND_X_AXIS, box.bottom);
             canvas.drawRect(temp, paint);
         }
-
-        this.joyStick.draw(canvas);
+        this.mainCharacter.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
-        this.healthBarBoss.draw(canvas);
-
-        if (Constants.JOYSTICK_ATK_STATE) {
-            canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paint);
-        } else {
-            canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paint);
-        }
-        if (Constants.JOYSTICK_JUMP_STATE) {
-            canvas.drawBitmap(jumpButtonHover, jumpButtonPosition.x, jumpButtonPosition.y, paint);
-        } else {
-            canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
-        }
-
-
->>>>>>> eb9ca42f2bfee0340fe79f6a6f86ab189efa8c0e
+        this.joyStick.draw(canvas);
     }
 
     @Override
