@@ -34,7 +34,7 @@ public class MainCharacter{
     public MainCharacter(){
         this.loadAnimation();
         this.currentAnimation = idleAnimation;
-        this.position = new PointF(600,300);
+        this.position = new PointF(600,Constants.SCREEN_HEIGHT * 0.8f - currentAnimation.frameHeight);
         this.velocity = new PointF(0,0);
         this.currentAnimation.flip(true);
         this.current_score = 0;

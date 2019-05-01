@@ -105,6 +105,11 @@ public class PlayingScreen implements GameScreen{
         Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
         Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )), backgroundBlock.getHeight());
+
+
+        if (portal.isInSuckingRange(mainCharacter.getSurroundingBox())) {
+            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
+        }
     }
 
     @Override

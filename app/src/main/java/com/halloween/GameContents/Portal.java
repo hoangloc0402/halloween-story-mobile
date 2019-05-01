@@ -2,6 +2,7 @@ package com.halloween.GameContents;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.Log;
 
 import com.halloween.Animation;
@@ -22,6 +23,17 @@ public class Portal implements GameObject {
 
     public boolean isInRange() {
         return Constants.isInScreenRange(this.portalPosition.x, this.portalAnimation.frameWidth, Constants.GAME_STATE.PLAY);
+    }
+
+    public boolean isInSuckingRange(RectF box) {
+        float left = this.portalPosition.x + this.portalAnimation.frameWidth * 0.25f;
+        float top = this.portalPosition.y + this.portalAnimation.frameHeight * 0.25f;
+        float right = this.portalPosition.x + this.portalAnimation.frameWidth * 0.75f;
+        float bottom = this.portalPosition.y + this.portalAnimation.frameHeight * 0.75f;
+        Log.d("portal", left + " " + top + " " + right + " " + bottom);
+        Log.d("main", box.toShortString());
+        return ((left <= box.left && box.left <= right) || (left <= box.right && box.right <= right))
+                && ((top <= box.top && box.top <= bottom)||(top <= box.bottom && box.bottom <= bottom));
     }
 
     @Override

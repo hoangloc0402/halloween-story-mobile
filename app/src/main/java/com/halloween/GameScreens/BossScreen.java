@@ -25,7 +25,7 @@ public class BossScreen implements GameScreen {
     private HealthBarMainCharacter healthBarMainCharacter;
     private JoyStick joyStick;
     private HealthBarBoss healthBarBoss;
-    private Bitmap background, backgroundBlock, backgroundCloud, backgroundCloudSmall, backgroundMoon;
+    private Bitmap background, backgroundBlock, backgroundCloud, backgroundCloudSmall;
     private Rect backgroundBlockWhat;
     private RectF backgroundBlockWhere;
     private float backgroundCloudOffset, backgroundCloudSmallOffset;
@@ -49,6 +49,15 @@ public class BossScreen implements GameScreen {
         this.backgroundBlock = Bitmap.createScaledBitmap(backgroundBlock, 1800, 780, false);
         this.backgroundBlockWhat = new Rect(0, 0, (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ), backgroundBlock.getHeight());
         this.backgroundBlockWhere = new RectF((float)0.0, (float)0.0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+
+        this.backgroundCloud = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_boss_cloud);
+        this.backgroundCloud = Bitmap.createScaledBitmap(backgroundCloud, (int) (Constants.SCREEN_HEIGHT * 970 * 0.5 / 546), (int) (Constants.SCREEN_HEIGHT * 0.5), false);
+        this.backgroundCloudCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloud.getWidth()) + 2;
+
+        this.backgroundCloudSmall = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_boss_cloud_small);
+        this.backgroundCloudSmall = Bitmap.createScaledBitmap(backgroundCloudSmall, (int) (Constants.SCREEN_HEIGHT * 500 * 0.6 / 400), (int) (Constants.SCREEN_HEIGHT * 0.6), false);
+        this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 2;
+
         this.mainCharacter = new MainCharacter();
         this.joyStick = new JoyStick();
 
@@ -60,6 +69,12 @@ public class BossScreen implements GameScreen {
         this.healthBarMainCharacter.update();
         mainCharacter.update(new ArrayList<RectF>());
         joyStick.update();
+
+        backgroundCloudOffset += 1;
+        backgroundCloudSmallOffset += 1.5f;
+        if (backgroundCloudOffset > backgroundCloud.getWidth()) backgroundCloudOffset = 0f;
+        if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth()) backgroundCloudSmallOffset = 0f;
+
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
         if (mainPosition.x < Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH * 0.15) {
@@ -76,8 +91,13 @@ public class BossScreen implements GameScreen {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, paint);
+        for (int i = 0; i < backgroundCloudCount; i ++) {
+            canvas.drawBitmap(backgroundCloud, -backgroundCloudOffset + backgroundCloud.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloud.getHeight(), paint);
+        }
+        for (int i = 0; i < backgroundCloudSmallCount; i ++) {
+            canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.8f - backgroundCloudSmall.getHeight(), paint);
+        }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-
         this.mainCharacter.draw(canvas);
         this.healthBarBoss.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
