@@ -20,14 +20,11 @@ public class MainCharacter{
     private Animation idleAnimation, walkAnimation, jumpAnimation, dieAnimation;
     private Animation[] attackAnimation;
     private PointF position, velocity;
-    public int current_score;
-    public int currentHP, previousHP, attackPower;
+    public int current_score, currentHP, previousHP, attackPower;
     private boolean isJumping, isAttacking , isAlive, isActive, isInvincible;
-    private boolean isFlip;
-    private boolean allowLeft, allowRight, hit;
+    private boolean isFlip, allowLeft, allowRight, hit;
     private double elapsedTime;
     private Paint paint;
-    private int attackIndex = -1;
     private Random rand = new Random();
     private long jumpTime;
 
@@ -47,12 +44,13 @@ public class MainCharacter{
         this.paint = new Paint();
         hit = false;
         elapsedTime = 0;
+
     }
 
     public void loadAnimation(){
         int SCALE = 2;
         this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*SCALE,97*SCALE,8, 100, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
-        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*SCALE,97*SCALE,4, 100, new PointF(SCALE*60, SCALE*22), new PointF(0,0));
+        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*SCALE,97*SCALE,4, 100, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
         this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*SCALE,97*SCALE,1, 300, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
         this.dieAnimation = new Animation(R.drawable.main_character_die_12, 103*SCALE,97*SCALE,12, 100, new PointF(SCALE*47, SCALE*26), new PointF(0,0));
         this.attackAnimation = new Animation[4];
@@ -61,7 +59,6 @@ public class MainCharacter{
         this.attackAnimation[2] = new Animation(R.drawable.main_character_attack4_4, 131*SCALE,85*SCALE,4, 25, new PointF(SCALE*54, SCALE*13), new PointF(SCALE*35,0));
         this.attackAnimation[3] = new Animation(R.drawable.main_character_attack3_7, 180*SCALE,102*SCALE,7, 75, new PointF(SCALE*84, SCALE*14), new PointF(SCALE*56,SCALE*13));
     }
-
 
     public void draw(Canvas canvas) {
         this.currentAnimation.draw(canvas, new PointF(this.position.x - Constants.BACKGROUND_X_AXIS, this.position.y));
@@ -100,8 +97,10 @@ public class MainCharacter{
                 this.velocity.y = Constants.GRAVITY + this.velocity.y;
             }
 
+            this.isJumping = true;
 
             RectF surroundingBox = this.currentAnimation.getSurroundingBox(this.position);
+
             for (RectF box: boxes){
                 if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom) {
                     if (surroundingBox.right > box.left && surroundingBox.centerX() < box.left)
@@ -110,19 +109,16 @@ public class MainCharacter{
                         allowLeft = false;
                 }
                 if (surroundingBox.right > box.left + 3  && surroundingBox.left < box.right - 3 ){
-                    if (surroundingBox.bottom >= box.top && surroundingBox.centerY() < box.top) {
+                    if (surroundingBox.bottom >= box.top && surroundingBox.top < box.top) {
                         this.position.y = box.top - surroundingBox.height();
                         this.velocity.y = 0;
                         this.isJumping = false;
-                        break;
                     }
-                    else if (surroundingBox.top <= box.bottom && surroundingBox.centerY() > box.bottom){
-                        this.position.y = box.bottom + 1;
+                    else if (surroundingBox.top < box.bottom && surroundingBox.bottom > box.bottom){
+                        this.position.y = box.bottom;
                         this.velocity.y = 0;
-                        break;
                     }
                 }
-                else this.isJumping = true;
             }
 
 //            Check va chạm
@@ -130,12 +126,7 @@ public class MainCharacter{
                 this.position.x += this.velocity.x;
                 this.allowLeft = this.allowRight =  false;
             }
-            this.position.y += this.velocity.y;
-
-//            if (this.position.y > 600){
-//                this.position.y = 600;
-//                this.isJumping = false;
-//            }
+//            this.position.y += this.velocity.y;
         }
         else {
 
@@ -163,14 +154,13 @@ public class MainCharacter{
                 this.currentAnimation = this.attackAnimation[rand.nextInt(4)];
             }
         }
-        else if (!this.isJumping && this.velocity.x !=0) {
+        else if (!this.isJumping && this.velocity.x !=0)
             this.currentAnimation = this.walkAnimation;
-        }
-        else if (this.isJumping){
+        else if (this.isJumping)
             this.currentAnimation = this.jumpAnimation;
-        }
-        else
-            this.currentAnimation = this.idleAnimation;
+        else this.currentAnimation = this.idleAnimation;
+
+
 
         if (this.velocity.x > 0){
             this.isFlip = true;

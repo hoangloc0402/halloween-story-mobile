@@ -59,11 +59,11 @@ public class PlayingScreen implements GameScreen{
 
         this.backgroundCloud = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_cloud);
         this.backgroundCloud = Bitmap.createScaledBitmap(backgroundCloud, (int) (Constants.SCREEN_HEIGHT * 800 * 0.4 / 320), (int) (Constants.SCREEN_HEIGHT * 0.4), false);
-        this.backgroundCloudCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloud.getWidth()) + 1;
+        this.backgroundCloudCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloud.getWidth()) + 2;
 
         this.backgroundCloudSmall = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_cloud_small);
         this.backgroundCloudSmall = Bitmap.createScaledBitmap(backgroundCloudSmall, (int) (Constants.SCREEN_HEIGHT * 1818 * 0.3 / 158), (int) (Constants.SCREEN_HEIGHT * 0.3), false);
-        this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 1;
+        this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 2;
 
         // button
         this.buttonSize = Constants.SCREEN_HEIGHT * 0.16f;
@@ -169,8 +169,8 @@ public class PlayingScreen implements GameScreen{
 
     private void initBoxes(){
         this.boxes.add(new RectF(0, 800, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
-//        this.boxes.add(new RectF(500, 400, 1000, 500));
-//        this.boxes.add(new RectF(1200, 500, 1900, 1000));
+        this.boxes.add(new RectF(500, 500, 1000, 600));
+        this.boxes.add(new RectF(1200, 500, 1900, 1000));
     }
 
     @Override
