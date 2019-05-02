@@ -1,12 +1,13 @@
 package com.halloween;
 
 import android.content.Context;
+import android.util.Log;
 
 public class Constants {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     public static Context CURRENT_CONTEXT;
-    public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER}
+    public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS}
     public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.PLAY;
     public static GAME_STATE PREVIOUS_GAME_STATE;
     public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE};
@@ -29,6 +30,15 @@ public class Constants {
     public final static float ZOMBIE_FOLLOW_DISTANCE = 40000;
     public final static float ZOMBIE_ATTACK_DISTANCE = 10000;
 
+    public final static int GARGOYLE_ATTACK= 30;
+    public final static int GARGOYLE_DAMAGE = 20;
+    public final static float GARGOYLE_STARTING_HP = 50;
+    public final static int GARGOYLE_POINT = 100;
+    public final static float GARGOYLE_V_X = 2;
+    public final static float GARGOYLE_V_Y = 2;
+    public final static int GARGOYLE_SCALE = 2;
+    public final static float GARGOYLE_FOLLOW_DISTANCE = 4000000;
+    public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
 
     public static final float MAIN_CHARACTER_V_X = 10f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
@@ -37,4 +47,25 @@ public class Constants {
     public static int  MAIN_CHARACTER_ATTACK_POWER = 10;
     public static final double INVINCIBLE_TIME = 1500;
     public static final int MAIN_CHARACTER_MAX_SCORE = 2250;
+
+    public static final int backgroundMapAssetHeight = 578;
+    public static float getRelativeXPosition(float x, GAME_STATE game_state) {
+        switch (game_state) {
+            case PLAY:
+                return (x - BACKGROUND_X_AXIS) * SCREEN_WIDTH / (backgroundMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT);
+            default:
+                return -10000;
+        }
+    }
+    public static boolean isInScreenRange(float x, float offset, GAME_STATE game_state) {
+        float left = getRelativeXPosition(x, game_state);
+        float right = getRelativeXPosition(x + offset, game_state);
+        switch (game_state) {
+            case PLAY:
+                if (left > 0 || right < SCREEN_WIDTH)
+                    return true;
+                return false;
+            default: return false;
+        }
+    }
 }

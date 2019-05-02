@@ -30,6 +30,8 @@ public class Enemy implements GameObject {
     PointF rightLandMark;
     RectF surroundingBox;
 
+    float v_x, v_y;
+
     float followDistance, attackDistance;
 
     public Enemy(float currentHP, PointF leftLandMark, PointF rightLandMark, float followDistance, float attackDistance) {
@@ -46,15 +48,14 @@ public class Enemy implements GameObject {
 
     //Check if the object is in the playing screen
     public boolean IsInScreen(){
-        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
+        return Constants.isInScreenRange(currentPosition.x, currentAnimation.frameWidth, Constants.CURRENT_GAME_STATE);
+//        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
     }
 
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance){
         float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
         float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
         float d =  dx*dx + dy*dy;
-//        float d =  dx*dx;
-//        System.out.println("Distance = " + playerSurroundingBox.centerX() + " " + surroundingBox.centerX());
         if (d <maxDistance)
             return true;
         return false;
@@ -72,7 +73,13 @@ public class Enemy implements GameObject {
     protected State currentState, previousState;
 
     @Override
-    public void draw(Canvas canvas){}
+    public void draw(Canvas canvas){
+        if (isActive) {
+            if (this.IsInScreen()) {
+                this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y));
+            }
+        }
+    }
 
     @Override
     public void update(){
@@ -80,54 +87,7 @@ public class Enemy implements GameObject {
     }
 
     public void update(RectF playerSurroundingBox){
-        if (isActive) {
-            if (currentHP <= 0) {
-                isAlive = false;
-                ChangeState(State.Died);
-            }
-            switch (currentState) {
-                case Died:
-                    ChangeState(State.Died);
-                    if (this.currentAnimation.isLastFrame())
-                        isActive = false;
-                    break;
-                case Hurt:
-                    ChangeState(State.Hurt);
-                    break;
-                case Attack:
-                    if (!IsPlayerInRange(playerSurroundingBox, attackDistance)) {
-                        ChangeState(State.Move);
-                    } else
-                        ChangeState(State.Attack);
-                    isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
-                    break;
-                case Move:
-                    ChangeState(State.Move);
-                    if (isAlive && IsInScreen()) {
-                        currentHP -= 0.01f;
-                        if (isMovingForward) {
-                            currentPosition.x = currentPosition.x + Constants.ZOMBIE_V_X;
-                        } else {
-                            currentPosition.x = currentPosition.x - Constants.ZOMBIE_V_X;
-                        }
-                        if (currentPosition.x <= leftLandMark.x - Constants.BACKGROUND_X_AXIS) {
-                            isMovingForward = true;
-                        } else if (currentPosition.x >= rightLandMark.x - Constants.BACKGROUND_X_AXIS) {
-                            isMovingForward = false;
-                        }
-                    }
-                    if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
-                        if (IsPlayerInRange(playerSurroundingBox, attackDistance))
-                            ChangeState(State.Attack);
-                        isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
-                    }
-                    break;
-                default:
-                    break;
-            }
-            this.currentAnimation.flip(isMovingForward);
-            currentAnimation.update();
-        }
+
     }
 
     public RectF getSurroundingBox(){

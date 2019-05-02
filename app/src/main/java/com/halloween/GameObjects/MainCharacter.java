@@ -31,7 +31,7 @@ public class MainCharacter{
     public MainCharacter(){
         this.loadAnimation();
         this.currentAnimation = idleAnimation;
-        this.position = new PointF(600,300);
+        this.position = new PointF(600,Constants.SCREEN_HEIGHT * 0.8f - currentAnimation.frameHeight);
         this.velocity = new PointF(0,0);
         this.currentAnimation.flip(true);
         this.current_score = 0;
@@ -61,7 +61,7 @@ public class MainCharacter{
     }
 
     public void draw(Canvas canvas) {
-        this.currentAnimation.draw(canvas, new PointF(this.position.x - Constants.BACKGROUND_X_AXIS, this.position.y));
+        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y));
 //        canvas.drawRect(currentAnimation.getSurroundingBox(this.position), this.paint);
 //        System.out.println(this.position);
     }
@@ -174,6 +174,10 @@ public class MainCharacter{
 
 
     public PointF getCurrentPosition(){ return this.position;}
+
+    public RectF getSurroundingBox(){
+        return currentAnimation.getSurroundingBox(this.position);
+    }
 
 //    public Boolean collide(Rect targetBox){
 //        return targetBox.intersect(this.getSurroundingBox());
