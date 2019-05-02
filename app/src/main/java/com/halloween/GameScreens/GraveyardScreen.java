@@ -131,6 +131,8 @@ public class GraveyardScreen implements GameScreen{
 //            canvas.drawRect(temp, paint);
 //        }
         this.mainCharacter.draw(canvas);
+//        if (Constants.JOYSTICK_JUMP_STATE)
+//            mainCharacter.hurt(1);
 //        RectF temp = this.mainCharacter.getAttackRange();
 //        if (temp!=null){
 //            temp.left = Constants.getRelativeXPosition(temp.left, Constants.GAME_STATE.PLAY);

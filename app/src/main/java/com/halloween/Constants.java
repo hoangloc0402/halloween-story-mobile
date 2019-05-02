@@ -43,9 +43,9 @@ public class Constants {
     public static final float MAIN_CHARACTER_V_X = 5f;
     public static final float MAIN_CHARACTER_V_Y = -60f;
     public static final float GRAVITY = 5f;
-
     public static int  MAIN_CHARACTER_ATTACK_POWER = 10;
-    public static final double INVINCIBLE_TIME = 1500;
+    public static final long INVINCIBLE_TIME = 4000;
+    public static final long BLINK_TIME = 150;
     public static final int MAIN_CHARACTER_MAX_SCORE = 2250;
 
     public static final int backgroundMapAssetHeight = 578;

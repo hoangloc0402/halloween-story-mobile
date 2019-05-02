@@ -2,6 +2,8 @@ package com.halloween.GameObjects;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -23,12 +25,11 @@ public class MainCharacter{
     private PointF position, velocity;
     public int current_score, currentHP, previousHP, attackPower;
     private boolean isJumping, isAttacking , isAlive, isActive, isInvincible;
-    private boolean isFlip, allowLeft, allowRight, hit;
-    private double elapsedTime;
+    private boolean isFlip, allowLeft, allowRight;
     private Paint paint, normalPaint, redPaint;
     private Random rand = new Random();
     private RectF attackRect;
-    private long jumpTime;
+    private long invincibleStartTime, blinkTime;
 
     public MainCharacter(int positionX, int positionY){
         this.loadAnimation();
@@ -45,11 +46,9 @@ public class MainCharacter{
         this.isFlip = true;
         this.normalPaint = new Paint();
         this.redPaint = new Paint();
-        this.redPaint.setColor(Color.RED);
+        redPaint.setColorFilter(new LightingColorFilter(Color.argb(255,100,20,20), 0));
         this.attackRect = new RectF();
-        hit = false;
-        elapsedTime = 0;
-
+        this.paint = normalPaint;
     }
 
     public void loadAnimation(){
@@ -66,7 +65,7 @@ public class MainCharacter{
     }
 
     public void draw(Canvas canvas) {
-        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y));
+        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
 //        canvas.drawRect(currentAnimation.getSurroundingBox(this.position), this.paint);
 //        System.out.println(this.position);
     }
@@ -74,6 +73,7 @@ public class MainCharacter{
 
     public void update(ArrayList<RectF> boxes) {
         this.updateMovement(boxes);
+        this.updateInvincibleState();
         this.updateAnimation();
     }
 
@@ -139,6 +139,23 @@ public class MainCharacter{
         }
     }
 
+    private void updateInvincibleState(){
+        if (!isInvincible)
+            return;
+        long elapseTime = System.nanoTime();
+        if ((elapseTime - invincibleStartTime) / 1000000 > Constants.INVINCIBLE_TIME){
+            this.isInvincible = false;
+            this.paint = normalPaint;
+        }
+
+        else if ((elapseTime - blinkTime)/1000000 > Constants.BLINK_TIME){
+            this.blinkTime = System.nanoTime();
+            if (this.paint == this.normalPaint)
+                this.paint = this.redPaint;
+            else this.paint = normalPaint;
+        }
+    }
+
     private void updateAnimation(){
         if (this.currentHP < 0){
             currentHP = 0;
@@ -166,8 +183,6 @@ public class MainCharacter{
             this.currentAnimation = this.jumpAnimation;
         else this.currentAnimation = this.idleAnimation;
 
-
-
         if (this.velocity.x > 0){
             this.isFlip = true;
         } else if (this.velocity.x <0){
@@ -178,7 +193,17 @@ public class MainCharacter{
     }
 
     public void hurt(int damage){
-
+        if (this.isInvincible)
+            return;
+        else {
+            currentHP -= damage;
+            if (currentHP < 0)
+                this.isAlive = false;
+            else {
+                this.isInvincible = true;
+                this.invincibleStartTime = blinkTime = System.nanoTime();
+            }
+        }
     }
 
     public RectF getAttackRange(){
