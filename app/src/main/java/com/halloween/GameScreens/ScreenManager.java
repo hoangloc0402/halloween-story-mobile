@@ -6,13 +6,13 @@ import android.view.MotionEvent;
 import com.halloween.Constants;
 
 public class ScreenManager {
-    private PlayingScreen playingScreen;
+    private GraveyardScreen graveyardScreen;
     private MainMenuScreen mainMenuScreen;
     private PauseScreen pauseScreen;
     private BossScreen bossScreen;
 
     public ScreenManager() {
-        playingScreen = new PlayingScreen();
+        graveyardScreen = new GraveyardScreen();
         mainMenuScreen = new MainMenuScreen();
         pauseScreen = new PauseScreen();
         bossScreen = new BossScreen();
@@ -21,7 +21,7 @@ public class ScreenManager {
     public GameScreen getActiveScreen(){
         switch (Constants.CURRENT_GAME_STATE){
             case PLAY:
-                return playingScreen;
+                return graveyardScreen;
             case MAIN_MENU:
                 return mainMenuScreen;
             case PAUSE:

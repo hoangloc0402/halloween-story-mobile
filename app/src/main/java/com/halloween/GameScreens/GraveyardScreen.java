@@ -21,11 +21,11 @@ import com.halloween.R;
 
 import java.util.ArrayList;
 
-public class PlayingScreen implements GameScreen{
+public class GraveyardScreen implements GameScreen{
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
     private HealthBarMainCharacter healthBarMainCharacter;
-    private Portal portal;
+//    private Portal portal;
 
     private Bitmap background, backgroundBlock, backgroundCloud, backgroundCloudSmall, backgroundMoon;
     private Rect backgroundBlockWhat;
@@ -35,11 +35,11 @@ public class PlayingScreen implements GameScreen{
     private ArrayList<RectF> boxes;
     private Paint paint;
 
-    private Zombie zombie;
+//    private Zombie zombie;
 
-    private FireTrap fireTrap;
+//    private FireTrap fireTrap;
 
-    public PlayingScreen() {
+    public GraveyardScreen() {
         this.paint = new Paint();
         this.boxes = new ArrayList<>();
         this.initBoxes();
@@ -65,20 +65,20 @@ public class PlayingScreen implements GameScreen{
 
         this.reset();
         this.joyStick = new JoyStick();
-        this.portal = new Portal();
+//        this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
         this.healthBarMainCharacter.setNewHealth(1000);
         this.healthBarMainCharacter.setNewScore(1000);
 
-        this.fireTrap = new FireTrap(new PointF(100f, 200f),2000);
+//        this.fireTrap = new FireTrap(new PointF(100f, 200f),2000);
 
     }
 
     @Override
     public void reset() {
-        this.mainCharacter = new MainCharacter();
-        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
+        this.mainCharacter = new MainCharacter(600, 600);
+//        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
     }
 
     @Override
@@ -89,11 +89,11 @@ public class PlayingScreen implements GameScreen{
         if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth()) backgroundCloudSmallOffset = 0f;
 
         mainCharacter.update(boxes);
-        this.zombie.update(mainCharacter.getSurroundingBox());
+//        this.zombie.update(mainCharacter.getSurroundingBox());
         joyStick.update();
-        if (portal.isInRange()) {this.portal.update();}
+//        if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
-        fireTrap.update();
+//        fireTrap.update();
 
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
@@ -107,9 +107,9 @@ public class PlayingScreen implements GameScreen{
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )), backgroundBlock.getHeight());
 
 
-        if (portal.isInSuckingRange(mainCharacter.getSurroundingBox())) {
-            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
-        }
+//        if (portal.isInSuckingRange(mainCharacter.getSurroundingBox())) {
+//            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
+//        }
     }
 
     @Override
@@ -124,17 +124,25 @@ public class PlayingScreen implements GameScreen{
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-        if (portal.isInRange()) {this.portal.draw(canvas);}
-        RectF temp = new RectF();
-        for (RectF box: boxes){
-            temp.set(box.left-Constants.BACKGROUND_X_AXIS, box.top, box.right-Constants.BACKGROUND_X_AXIS, box.bottom);
-            canvas.drawRect(temp, paint);
-        }
+//        if (portal.isInRange()) {this.portal.draw(canvas);}
+//        RectF temp = new RectF();
+//        for (RectF box: boxes){
+//            temp.set(box.left-Constants.BACKGROUND_X_AXIS, box.top, box.right-Constants.BACKGROUND_X_AXIS, box.bottom);
+//            canvas.drawRect(temp, paint);
+//        }
         this.mainCharacter.draw(canvas);
+//        RectF temp = this.mainCharacter.getAttackRange();
+//        if (temp!=null){
+//            temp.left = Constants.getRelativeXPosition(temp.left, Constants.GAME_STATE.PLAY);
+//            temp.right = Constants.getRelativeXPosition(temp.right, Constants.GAME_STATE.PLAY);
+//            canvas.drawRect(temp, paint);
+//        }
+
+
         this.healthBarMainCharacter.draw(canvas);
-        this.fireTrap.draw(canvas);
+//        this.fireTrap.draw(canvas);
         this.joyStick.draw(canvas);
-        this.zombie.draw(canvas);
+//        this.zombie.draw(canvas);
     }
 
     @Override
@@ -143,7 +151,8 @@ public class PlayingScreen implements GameScreen{
     }
 
     private void initBoxes(){
-        this.boxes.add(new RectF(0, 800, Constants.SCREEN_WIDTH * 10, Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(0,0,0,Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(0, 0.8f*Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH * 10, Constants.SCREEN_HEIGHT));
 //        this.boxes.add(new RectF(500, 400, 1000, 500));
 //        this.boxes.add(new RectF(1200, 500, 1900, 1000));
     }
@@ -167,10 +176,10 @@ public class PlayingScreen implements GameScreen{
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
                 }
 //                if (isInRangeOfAtkButton(x, y)) {
-                    Constants.JOYSTICK_ATK_STATE = false;
+                Constants.JOYSTICK_ATK_STATE = false;
 //                }
 //                if (isInRangeOfJumpButton(x, y)) {
-                    Constants.JOYSTICK_JUMP_STATE = false;
+                Constants.JOYSTICK_JUMP_STATE = false;
 //                }
                 if (joyStick.isInRangeOfJoyStick(x, y)) {
                     joyStick.backToCenter();
@@ -233,10 +242,10 @@ public class PlayingScreen implements GameScreen{
                     joyStick.backToCenter();
                 }
 //                if (isInRangeOfJumpButton(x, y)) {
-                    Constants.JOYSTICK_JUMP_STATE = false;
+                Constants.JOYSTICK_JUMP_STATE = false;
 //                }
 //                if (isInRangeOfAtkButton(x, y)) {
-                    Constants.JOYSTICK_ATK_STATE = false;
+                Constants.JOYSTICK_ATK_STATE = false;
 //                }
                 break;
             case MotionEvent.ACTION_OUTSIDE:

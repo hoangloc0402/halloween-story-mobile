@@ -10,6 +10,7 @@ import android.graphics.RectF;
 
 import com.halloween.Animation;
 import com.halloween.Constants;
+import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.R;
 
 import java.util.ArrayList;
@@ -24,14 +25,15 @@ public class MainCharacter{
     private boolean isJumping, isAttacking , isAlive, isActive, isInvincible;
     private boolean isFlip, allowLeft, allowRight, hit;
     private double elapsedTime;
-    private Paint paint;
+    private Paint paint, normalPaint, redPaint;
     private Random rand = new Random();
+    private RectF attackRect;
     private long jumpTime;
 
-    public MainCharacter(){
+    public MainCharacter(int positionX, int positionY){
         this.loadAnimation();
         this.currentAnimation = idleAnimation;
-        this.position = new PointF(600,Constants.SCREEN_HEIGHT * 0.8f - currentAnimation.frameHeight);
+        this.position = new PointF(positionX, positionY);
         this.velocity = new PointF(0,0);
         this.currentAnimation.flip(true);
         this.current_score = 0;
@@ -41,7 +43,10 @@ public class MainCharacter{
         this.isActive = this.isAlive = true;
         this.isJumping = this.isAttacking =  this.isInvincible =  false;
         this.isFlip = true;
-        this.paint = new Paint();
+        this.normalPaint = new Paint();
+        this.redPaint = new Paint();
+        this.redPaint.setColor(Color.RED);
+        this.attackRect = new RectF();
         hit = false;
         elapsedTime = 0;
 
@@ -86,7 +91,10 @@ public class MainCharacter{
 
             if(Constants.JOYSTICK_ATK_STATE)
                 this.isAttacking = true;
-            else this.isAttacking = false;
+            else {
+                this.isAttacking = false;
+                this.position.y +=10;
+            }
 
             if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
                 this.velocity.y = Constants.MAIN_CHARACTER_V_Y;
@@ -98,6 +106,7 @@ public class MainCharacter{
             }
 
             this.isJumping = true;
+
 
             RectF surroundingBox = this.currentAnimation.getSurroundingBox(this.position);
 
@@ -120,13 +129,10 @@ public class MainCharacter{
                     }
                 }
             }
-
-//            Check va chạm
             if (this.allowLeft || this.allowRight){
                 this.position.x += this.velocity.x;
                 this.allowLeft = this.allowRight =  false;
             }
-//            this.position.y += this.velocity.y;
         }
         else {
 
@@ -171,7 +177,39 @@ public class MainCharacter{
         this.currentAnimation.update();
     }
 
+    public void hurt(int damage){
 
+    }
+
+    public RectF getAttackRange(){
+        if (!isAttacking)
+            return null;
+        int frameIndex = currentAnimation.getCurrentFrameIndex();
+        if (currentAnimation == attackAnimation[0])
+            if (frameIndex < 3)
+                return null;
+        if (currentAnimation == attackAnimation[1])
+            if ((frameIndex == 1 || frameIndex == 2))
+                return null;
+//        if (currentAnimation == attackAnimation[2])
+        if (currentAnimation == attackAnimation[3])
+            if ((frameIndex > 1 && frameIndex < 5))
+                return null;
+
+        float top = this.position.y - currentAnimation.offsetTopLeft.y;
+        float bottom = top + currentAnimation.frameHeight;
+        float left, right;
+        if (currentAnimation.isFlip){
+            left = this.position.x + currentAnimation.animationWidth/2;
+            right = left + currentAnimation.animationWidth;
+        }
+        else {
+            left = this.position.x - currentAnimation.animationWidth;
+            right = this.position.x;
+        }
+        this.attackRect.set(left, top, right, bottom);
+        return this.attackRect;
+    }
 
     public PointF getCurrentPosition(){ return this.position;}
 

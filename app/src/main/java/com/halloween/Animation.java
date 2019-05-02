@@ -11,7 +11,7 @@ import android.graphics.RectF;
 
 public class Animation {
     private Bitmap sourceBitmap;
-    private boolean isFlip;
+    public boolean isFlip;
     private int currentFrameIndex;
     private boolean isPlaying;
     private long frameInterval;

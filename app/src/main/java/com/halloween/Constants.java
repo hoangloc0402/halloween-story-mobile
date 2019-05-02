@@ -40,8 +40,8 @@ public class Constants {
     public final static float GARGOYLE_FOLLOW_DISTANCE = 4000000;
     public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
 
-    public static final float MAIN_CHARACTER_V_X = 10f;
-    public static final float MAIN_CHARACTER_V_Y = -50f;
+    public static final float MAIN_CHARACTER_V_X = 5f;
+    public static final float MAIN_CHARACTER_V_Y = -60f;
     public static final float GRAVITY = 5f;
 
     public static int  MAIN_CHARACTER_ATTACK_POWER = 10;
