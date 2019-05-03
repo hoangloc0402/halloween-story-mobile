@@ -53,21 +53,26 @@ public class MainCharacter{
 
     public void loadAnimation(){
         int SCALE = 2;
-        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*SCALE,97*SCALE,8, 100, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
-        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*SCALE,97*SCALE,4, 100, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
-        this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*SCALE,97*SCALE,1, 300, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
-        this.dieAnimation = new Animation(R.drawable.main_character_die_12, 103*SCALE,97*SCALE,12, 100, new PointF(SCALE*47, SCALE*26), new PointF(0,0));
+//        this.idleAnimation = new Animation(R.drawable.main_character_ulti_idle_139x181x8, (int)(139*SCALE*0.75f),(int)(181*SCALE*0.75f),8, 100);
+        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*SCALE,97*SCALE,8, 100, new PointF(SCALE*60, SCALE*26));
+        this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103*SCALE,97*SCALE,4, 100, new PointF(SCALE*60, SCALE*26));
+//        this.walkAnimation = new Animation(R.drawable.main_character_ulti_walk_133x179x8, (int)(133*SCALE),(int)(179*SCALE),8, 100);
+        this.jumpAnimation = new Animation(R.drawable.main_character_jump_1, 103*SCALE,97*SCALE,1, 300, new PointF(SCALE*60, SCALE*26));
+//        this.walkAnimation = new Animation(R.drawable.main_character_ulti_attack_772x348x30_488x135_564x265, (int)(772*SCALE/1.5),(int)(348*SCALE/1.5),30, 50, new PointF(448*SCALE/1.5f, 135*SCALE/1.5f), new PointF(208*SCALE/1.5f,83*SCALE/1.5f));
+
+        this.dieAnimation = new Animation(R.drawable.main_character_die_12, 103*SCALE,97*SCALE,12, 100, new PointF(SCALE*47, SCALE*26));
         this.attackAnimation = new Animation[4];
-        this.attackAnimation[0] = new Animation(R.drawable.main_character_attack_6, 103*SCALE,97*SCALE,6, 75, new PointF(SCALE*60, SCALE*26), new PointF(0,0));
+        this.attackAnimation[0] = new Animation(R.drawable.main_character_attack_6, 103*SCALE,97*SCALE,6, 75, new PointF(SCALE*60, SCALE*26));
         this.attackAnimation[1] = new Animation(R.drawable.main_character_attack2_4, 120*SCALE,73*SCALE,4, 75, new PointF(SCALE*60, SCALE*0), new PointF(SCALE*17,SCALE*2));
         this.attackAnimation[2] = new Animation(R.drawable.main_character_attack4_4, 131*SCALE,85*SCALE,4, 25, new PointF(SCALE*54, SCALE*13), new PointF(SCALE*35,0));
         this.attackAnimation[3] = new Animation(R.drawable.main_character_attack3_7, 180*SCALE,102*SCALE,7, 75, new PointF(SCALE*84, SCALE*14), new PointF(SCALE*56,SCALE*13));
     }
 
     public void draw(Canvas canvas) {
+//        canvas.drawRect(this.getSurroundingBox(), paint);
+        canvas.drawRect(Constants.getRelativeXPosition(currentAnimation.getSurroundingBox(this.position).left, Constants.CURRENT_GAME_STATE), currentAnimation.getSurroundingBox(this.position).top, Constants.getRelativeXPosition(currentAnimation.getSurroundingBox(this.position).left, Constants.CURRENT_GAME_STATE) + this.currentAnimation.animationWidth, currentAnimation.getSurroundingBox(this.position).bottom , this.paint);
         this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
-//        canvas.drawRect(currentAnimation.getSurroundingBox(this.position), this.paint);
-//        System.out.println(this.position);
+        //        System.out.println(this.position);
     }
 
 

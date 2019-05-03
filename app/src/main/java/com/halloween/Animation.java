@@ -21,7 +21,7 @@ public class Animation {
     public float animationWidth, animationHeight;
     public PointF offsetTopLeft, offsetBottomRight;
     private Rect sourceRect;
-    private RectF surroundingRect;
+    private RectF destinationRect, surroundingRect;
 
     public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime, PointF offsetTopLeft, PointF offsetBottomRight) {
         this.sourceBitmap = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), drawable);
@@ -31,11 +31,12 @@ public class Animation {
         this.frameCount = frameCount;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
-        this.animationWidth = frameWidth - offsetTopLeft.x - offsetBottomRight.x;
-        this.animationHeight = frameHeight - offsetTopLeft.y - offsetBottomRight.y;
         this.offsetTopLeft = offsetTopLeft;
         this.offsetBottomRight = offsetBottomRight;
+        this.animationWidth = this.frameWidth - offsetTopLeft.x - offsetBottomRight.x;
+        this.animationHeight = this.frameHeight - offsetTopLeft.y - offsetBottomRight.y;
         this.sourceRect = new Rect(0, 0, frameWidth, frameHeight);
+        this.destinationRect = new RectF();
         this.surroundingRect = new RectF();
         this.frameInterval = animTime * 1000000;
         this.isPlaying = true;
@@ -44,6 +45,9 @@ public class Animation {
 
     public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime) {
         this(drawable, frameWidth, frameHeight, frameCount, animTime, new PointF(0f, 0f), new PointF(0f, 0f));
+    }
+    public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime, PointF offsetTopLeft) {
+        this(drawable, frameWidth, frameHeight, frameCount, animTime, offsetTopLeft, new PointF(0f, 0f));
     }
 
     public boolean isPlaying() {
@@ -66,7 +70,14 @@ public class Animation {
         if (!this.isPlaying) currentFrameIndex = 0;
         Rect whatToDraw = getCurrentFrame();
         RectF whereToDraw = getDestinationRect(position);
-        canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
+        if (isFlip) {
+            canvas.save();
+            canvas.scale(-1,1, position.x + animationWidth/2, 0);
+            canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
+            canvas.restore();
+        }
+        else
+            canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
     }
 
     public void draw(Canvas canvas, PointF position) {
@@ -84,7 +95,7 @@ public class Animation {
     }
 
     public Rect getCurrentFrame() {
-        if (isFlip) {
+        if (false) {
             this.sourceRect.left = (this.currentFrameIndex + 1) * this.frameWidth;
             this.sourceRect.right = this.sourceRect.left - this.frameWidth;
         } else {
@@ -96,18 +107,19 @@ public class Animation {
 
     public RectF getDestinationRect(PointF position) {
         float left, top;
-        if (this.isFlip) {
+        if (false) {
             left = position.x - this.offsetBottomRight.x;
             top = position.y - this.offsetTopLeft.y;
         } else {
             left = position.x - this.offsetTopLeft.x;
             top = position.y - this.offsetTopLeft.y;
         }
-        return new RectF(left, top, left + this.frameWidth, top + this.frameHeight);
+        this.destinationRect.set(left, top, left + this.frameWidth, top + this.frameHeight);
+        return destinationRect;
     }
 
     public RectF getSurroundingBox(PointF position) {
-        this.surroundingRect.set(position.x, position.y, position.x + this.animationWidth, position.y + animationHeight);
+        this.surroundingRect.set(position.x, position.y, position.x + this.animationWidth, position.y + this.animationHeight);
         return this.surroundingRect;
     }
 
