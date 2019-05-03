@@ -65,8 +65,8 @@ public class MainCharacter{
     }
 
     public void draw(Canvas canvas) {
+        canvas.drawRect(Constants.getRelativeXPosition(currentAnimation.getSurroundingBox(this.position).left, Constants.CURRENT_GAME_STATE), currentAnimation.getSurroundingBox(this.position).top, Constants.getRelativeXPosition(currentAnimation.getSurroundingBox(this.position).right, Constants.CURRENT_GAME_STATE), currentAnimation.getSurroundingBox(this.position).bottom , this.paint);
         this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
-//        canvas.drawRect(currentAnimation.getSurroundingBox(this.position), this.paint);
 //        System.out.println(this.position);
     }
 
@@ -117,7 +117,7 @@ public class MainCharacter{
                     else if (surroundingBox.left < box.right && surroundingBox.centerX() > box.right)
                         allowLeft = false;
                 }
-                if (surroundingBox.right > box.left + 3  && surroundingBox.left < box.right - 3 ){
+                if (surroundingBox.right > box.left  && surroundingBox.left < box.right ){
                     if (surroundingBox.bottom >= box.top && surroundingBox.top < box.top) {
                         this.position.y = box.top - surroundingBox.height();
                         this.velocity.y = 0;

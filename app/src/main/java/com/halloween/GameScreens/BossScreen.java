@@ -30,11 +30,16 @@ public class BossScreen implements GameScreen {
     private RectF backgroundBlockWhere;
     private float backgroundCloudOffset, backgroundCloudSmallOffset;
     private int backgroundCloudCount, backgroundCloudSmallCount;
+
+    private ArrayList<RectF> boxes;
+
     private Paint paint;
 
     public BossScreen() {
         super();
         this.paint = new Paint();
+        this.boxes = new ArrayList<>();
+        this.initBoxes();
         this.healthBarBoss = new HealthBarBoss();
         this.healthBarBoss.setNewHealth(1000);
 
@@ -58,16 +63,27 @@ public class BossScreen implements GameScreen {
         this.backgroundCloudSmall = Bitmap.createScaledBitmap(backgroundCloudSmall, (int) (Constants.SCREEN_HEIGHT * 500 * 0.6 / 400), (int) (Constants.SCREEN_HEIGHT * 0.6), false);
         this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 2;
 
-        this.mainCharacter = new MainCharacter();
+        this.mainCharacter = new MainCharacter(50, 50);
         this.joyStick = new JoyStick();
+    }
 
+    private void initBoxes(){
+        this.boxes.add(new RectF(0,0,0,Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(1800,0,1800,Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(0, 0.8f*Constants.SCREEN_HEIGHT, 1800, Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(247, 0.576923077f*Constants.SCREEN_HEIGHT, 472, 0.653846154f * Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(562, 0.346153846f*Constants.SCREEN_HEIGHT, 607, 	0.423076923f * Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(787, 0.192307692f*Constants.SCREEN_HEIGHT, 922, 0.269230769f * Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(697, 0.576923077f*Constants.SCREEN_HEIGHT, 1012, 0.653846154f * Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(1102, 0.346153846f*Constants.SCREEN_HEIGHT, 1147, 0.423076923f * Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(1237, 0.576923077f*Constants.SCREEN_HEIGHT, 1462, 0.653846154f * Constants.SCREEN_HEIGHT));
     }
 
     @Override
     public void update() {
         this.healthBarBoss.update();
         this.healthBarMainCharacter.update();
-        mainCharacter.update(new ArrayList<RectF>());
+        this.mainCharacter.update(boxes);
         joyStick.update();
 
         backgroundCloudOffset += 1;
@@ -98,6 +114,11 @@ public class BossScreen implements GameScreen {
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.8f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
+        RectF temp = new RectF();
+        for (RectF box: boxes){
+            temp.set(Constants.getRelativeXPosition(box.left,Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right,Constants.CURRENT_GAME_STATE), box.bottom);
+            canvas.drawRect(temp, paint);
+        }
         this.mainCharacter.draw(canvas);
         this.healthBarBoss.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
