@@ -58,7 +58,7 @@ public class BossScreen implements GameScreen {
         this.backgroundCloudSmall = Bitmap.createScaledBitmap(backgroundCloudSmall, (int) (Constants.SCREEN_HEIGHT * 500 * 0.6 / 400), (int) (Constants.SCREEN_HEIGHT * 0.6), false);
         this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 2;
 
-        this.mainCharacter = new MainCharacter();
+        this.mainCharacter = new MainCharacter(600,600);
         this.joyStick = new JoyStick();
 
     }

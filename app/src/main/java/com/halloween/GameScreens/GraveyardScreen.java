@@ -16,7 +16,11 @@ import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.MainCharacter;
+import com.halloween.GameObjects.Traps.CampFire;
 import com.halloween.GameObjects.Traps.FireTrap;
+import com.halloween.GameObjects.Traps.Spear;
+import com.halloween.GameObjects.Traps.SpearHorizontal;
+import com.halloween.GameObjects.Traps.SpearVertical;
 import com.halloween.R;
 
 import java.util.ArrayList;
@@ -37,7 +41,11 @@ public class GraveyardScreen implements GameScreen{
 
 //    private Zombie zombie;
 
-//    private FireTrap fireTrap;
+    private FireTrap fireTrap;
+    private CampFire campFire;
+    private Spear spear;
+    private SpearHorizontal spearHorizontal;
+    private SpearVertical spearVertical;
 
     public GraveyardScreen() {
         this.paint = new Paint();
@@ -71,7 +79,11 @@ public class GraveyardScreen implements GameScreen{
         this.healthBarMainCharacter.setNewHealth(1000);
         this.healthBarMainCharacter.setNewScore(1000);
 
-//        this.fireTrap = new FireTrap(new PointF(100f, 200f),2000);
+        this.fireTrap = new FireTrap(new PointF(1200f, 200f),2000);
+        this.campFire = new CampFire(new PointF(1300f, 200f));
+        this.spear = new Spear(new PointF(1500f, 200f), 2000);
+        this.spearHorizontal = new SpearHorizontal(new PointF(1600f, 200f), 1000);
+        this.spearVertical = new SpearVertical(new PointF(1700f, 200f), 1000);
 
     }
 
@@ -93,7 +105,11 @@ public class GraveyardScreen implements GameScreen{
         joyStick.update();
 //        if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
-//        fireTrap.update();
+        fireTrap.update();
+        campFire.update();
+        spear.update();
+        spearHorizontal.update();
+        spearVertical.update();
 
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
@@ -142,7 +158,11 @@ public class GraveyardScreen implements GameScreen{
 
 
         this.healthBarMainCharacter.draw(canvas);
-//        this.fireTrap.draw(canvas);
+        this.fireTrap.draw(canvas);
+        this.campFire.draw(canvas);
+        this.spear.draw(canvas);
+        this.spearHorizontal.draw(canvas);
+        this.spearVertical.draw(canvas);
         this.joyStick.draw(canvas);
 //        this.zombie.draw(canvas);
     }
