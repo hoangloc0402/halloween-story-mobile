@@ -8,7 +8,7 @@ public class Constants {
     public static int SCREEN_HEIGHT;
     public static Context CURRENT_CONTEXT;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS}
-    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.PLAY;
+    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.BOSS;
     public static GAME_STATE PREVIOUS_GAME_STATE;
     public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE};
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
@@ -49,10 +49,13 @@ public class Constants {
     public static final int MAIN_CHARACTER_MAX_SCORE = 2250;
 
     public static final int backgroundMapAssetHeight = 578;
+    public static final int backgroundBossMapAssetHeight = 780;
     public static float getRelativeXPosition(float x, GAME_STATE game_state) {
         switch (game_state) {
             case PLAY:
                 return (x - BACKGROUND_X_AXIS) * SCREEN_WIDTH / (backgroundMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT);
+            case BOSS:
+                return (x - BACKGROUND_X_AXIS) * SCREEN_WIDTH / (backgroundBossMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT);
             default:
                 return -10000;
         }
@@ -62,6 +65,7 @@ public class Constants {
         float right = getRelativeXPosition(x + offset, game_state);
         switch (game_state) {
             case PLAY:
+            case BOSS:
                 if (left > 0 || right < SCREEN_WIDTH)
                     return true;
                 return false;

@@ -10,7 +10,7 @@ public abstract class Trap {
     protected int frameHeight;
     protected long lastWorkingTime;
     protected boolean isWorking;
-    protected static TrapEffectingBox[] trapEffectingBoxes;
+    protected TrapEffectingBox[] trapEffectingBoxes;
     protected long timeBetweenTwoAnimation;
     protected float scale;
 
