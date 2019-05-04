@@ -4,7 +4,7 @@ import android.graphics.PointF;
 
 import com.halloween.GameObjects.Traps.TrapEffectingBox;
 
-public abstract class Trap {
+public abstract class Trap implements GameObject {
     protected PointF position;
     protected int frameWidth;
     protected int frameHeight;
