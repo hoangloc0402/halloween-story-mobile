@@ -6,6 +6,8 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
+
 import com.halloween.Animation;
 import com.halloween.Constants;
 import com.halloween.R;
@@ -81,6 +83,7 @@ public class MainCharacter {
 
     public void draw(Canvas canvas) {
 //        canvas.drawRect(this.getSurroundingBox(), paint);
+        Log.d("MAIN POS", this.position.toString());
         RectF sur = currentAnimation.getSurroundingBox(position);
         canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
 //        RectF atk = getAttackRange();

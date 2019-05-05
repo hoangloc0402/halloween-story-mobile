@@ -127,7 +127,7 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void reset() {
-        this.mainCharacter = new MainCharacter(600, 600);
+        this.mainCharacter = new MainCharacter(5400, 600);
 //        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
     }
 
@@ -248,9 +248,15 @@ public class GraveyardScreen implements GameScreen {
         this.boxes.add(new RectF(5082.962963f, Constants.SCREEN_HEIGHT * 0.57840617f, 5116.296296f, Constants.SCREEN_HEIGHT * 0.655526992f));
         this.boxes.add(new RectF(5216.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 5249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
         this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
-        this.boxes.add(new RectF(5582.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5616.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
-        this.boxes.add(new RectF(5782.962963f, Constants.SCREEN_HEIGHT * 0.424164524f, 5816.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
-        this.boxes.add(new RectF(5982.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 6016.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5575f, Constants.SCREEN_HEIGHT * 0.269922879f, 5625f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5545f, Constants.SCREEN_HEIGHT * 0.43f, 5600f, Constants.SCREEN_HEIGHT * 0.53f));
+        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.34f, 5655f, Constants.SCREEN_HEIGHT * 0.44f));
+        this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5820f, Constants.SCREEN_HEIGHT * 0.467128027f, 5850f, Constants.SCREEN_HEIGHT * 0.536332179f));
+        this.boxes.add(new RectF(5975f, Constants.SCREEN_HEIGHT * 0.269922879f, 6025f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5935f, Constants.SCREEN_HEIGHT * 0.389273356f, 5980f, Constants.SCREEN_HEIGHT * 0.458477509f));
+        this.boxes.add(new RectF(6010f, Constants.SCREEN_HEIGHT * 0.302768166f, 6045f, Constants.SCREEN_HEIGHT * 0.380622837f));
+        this.boxes.add(new RectF(6010f, Constants.SCREEN_HEIGHT * 0.553633218f, 6095f, Constants.SCREEN_HEIGHT * 0.6f));
         this.boxes.add(new RectF(6249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.57840617f));
         this.boxes.add(new RectF(6366.666667f, Constants.SCREEN_HEIGHT * 0.44344473f, 6400f, Constants.SCREEN_HEIGHT * 0.501285347f));
         this.boxes.add(new RectF(6316.296296f, Constants.SCREEN_HEIGHT * 0.57840617f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.655526992f));
