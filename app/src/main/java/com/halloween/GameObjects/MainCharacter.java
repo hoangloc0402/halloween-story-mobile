@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.Log;
-
 import com.halloween.Animation;
 import com.halloween.Constants;
 import com.halloween.R;
@@ -73,7 +72,7 @@ public class MainCharacter {
         this.attackAnimation[3] = new Animation(R.drawable.main_character_attack3_7, 180 * SCALE, 102 * SCALE, 7, 75, new PointF(SCALE * 84, SCALE * 14), new PointF(SCALE * 56, SCALE * 13));
 
         float SCALE2 = SCALE / 1.86597938144f;
-        this.idleAnimationUlti      = new Animation(R.drawable.main_character_ulti_idle_139x181x8, 139 * SCALE2, 181 * SCALE2 , 8, 100, new PointF(39*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
+        this.idleAnimationUlti      = new Animation(R.drawable.main_character_ulti_idle_139x181x8, 139 * SCALE2, 181 * SCALE2 , 8, 100, new PointF(29*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
         this.walkAnimationUlti      = new Animation(R.drawable.main_character_ulti_walk_133x179x8, 133 * SCALE2, 179 * SCALE2, 8, 100, new PointF(24*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
         this.jumpAnimationUlti      = idleAnimationUlti;
         this.attackAnimationUlti    = new Animation(R.drawable.main_character_ulti_attack_772x348x18_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 18, 50, new PointF(492 * SCALE2, 140 * SCALE2), new PointF(214 * SCALE2, 83 * SCALE2));
@@ -82,15 +81,12 @@ public class MainCharacter {
     }
 
     public void draw(Canvas canvas) {
-//        canvas.drawRect(this.getSurroundingBox(), paint);
-//        Log.d("MAIN POS", this.position.toString());
-        RectF sur = currentAnimation.getSurroundingBox(position);
-        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
+//        RectF sur = currentAnimation.getSurroundingBox(position);
+//        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
 //        RectF atk = getAttackRange();
 //        if (atk!=null)
 //            canvas.drawRect(Constants.getRelativeXPosition(atk.left, Constants.CURRENT_GAME_STATE), atk.top, Constants.getRelativeXPosition(atk.right, Constants.CURRENT_GAME_STATE), atk.bottom , this.redPaint);
         this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
-        //        System.out.println(this.position);
     }
 
     public void update(ArrayList<RectF> boxes) {
@@ -125,14 +121,13 @@ public class MainCharacter {
                 this.isAttacking = false;
                 this.position.y += 10;
             }
-
-
             if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
+                Constants.JOYSTICK_JUMP_STATE = false;
                 this.velocity.y = Constants.MAIN_CHARACTER_V_Y;
                 this.position.y += this.velocity.y;
                 this.isJumping = true;
 //                this.jumpTime = System.nanoTime();
-            } else if (isJumping) {
+            } else if (isJumping && this.currentAnimation != this.attackAnimationUlti) {
 //                if ((System.nanoTime() - this.jumpTime) / 1000000 > Constants.JUMP_TIME){
                 this.position.y += this.velocity.y;
                 this.velocity.y = Constants.GRAVITY + this.velocity.y;
@@ -140,16 +135,19 @@ public class MainCharacter {
 //                }
             }
             this.isJumping = true;
-
             RectF surroundingBox = this.getSurroundingBox();
             for (RectF box : boxes) {
-                if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom && surroundingBox.bottom - box.top > 10) {
-                    if (surroundingBox.right > box.left && surroundingBox.right - box.left < Constants.MAIN_CHARACTER_V_X)
+                if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom && surroundingBox.bottom - box.top > 20) {
+                    if (surroundingBox.right >= box.left && surroundingBox.right - box.left <= 2*Constants.MAIN_CHARACTER_V_X){
+                        this.position.x = box.left - surroundingBox.width();
                         allowRight = false;
-                    else if (surroundingBox.left < box.right && box.right - surroundingBox.left < Constants.MAIN_CHARACTER_V_X)
+                    }
+                    else if (surroundingBox.left <= box.right && box.right - surroundingBox.left <= 2*Constants.MAIN_CHARACTER_V_X){
+                        this.position.x = box.right;
                         allowLeft = false;
+                    }
                 }
-                if (surroundingBox.right > box.left + 3 && surroundingBox.left < box.right - 3) {
+                if (surroundingBox.right > box.left && surroundingBox.left < box.right) {
                     if (surroundingBox.bottom >= box.top && surroundingBox.top < box.top) {
                         this.position.y = box.top - surroundingBox.height();
                         this.velocity.y = 0;
@@ -166,7 +164,8 @@ public class MainCharacter {
             }
             if (surroundingBox.bottom > Constants.SCREEN_HEIGHT * 0.8)
                 this.position.y = Constants.SCREEN_HEIGHT * 0.8f - surroundingBox.height();
-        } else {
+        }
+        else {
             if (isJumping) {
 //                if ((System.nanoTime() - this.jumpTime) / 1000000 > Constants.JUMP_TIME){
                 this.position.y += this.velocity.y;
@@ -175,7 +174,6 @@ public class MainCharacter {
 //                }
             }
             this.isJumping = true;
-
             RectF surroundingBox = this.getSurroundingBox();
             for (RectF box : boxes) {
                 if (surroundingBox.right > box.left + 3 && surroundingBox.left < box.right - 3) {
