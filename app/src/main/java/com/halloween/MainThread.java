@@ -3,6 +3,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.halloween.GameScreens.GamePanel;
@@ -72,7 +73,7 @@ public class MainThread extends Thread{
                 averageFPS = 1000/((totalTime/frameCount)/1000000);
                 frameCount = 0;
                 totalTime = 0;
-                System.out.println(averageFPS);
+                Log.d("FPS ", String.valueOf(averageFPS));
             }
         }
     }

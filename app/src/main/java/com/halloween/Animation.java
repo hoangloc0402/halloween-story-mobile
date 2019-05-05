@@ -22,10 +22,11 @@ public class Animation {
     public PointF offsetTopLeft, offsetBottomRight;
     private Rect sourceRect;
     private RectF destinationRect, surroundingRect;
+    private Paint myPaint;
 
     public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime, PointF offsetTopLeft, PointF offsetBottomRight) {
-        this.sourceBitmap = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), drawable);
-        this.sourceBitmap = Bitmap.createScaledBitmap(sourceBitmap, frameWidth * frameCount, frameHeight, false);
+        Bitmap bitmap = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), drawable);
+        this.sourceBitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount, frameHeight, false);
         this.isFlip = false;
         this.currentFrameIndex = 0;
         this.frameCount = frameCount;
@@ -40,14 +41,18 @@ public class Animation {
         this.surroundingRect = new RectF();
         this.frameInterval = animTime * 1000000;
         this.isPlaying = true;
+        this.myPaint = new Paint();
         this.lastFrameTime = System.nanoTime();
     }
 
-    public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime) {
-        this(drawable, frameWidth, frameHeight, frameCount, animTime, new PointF(0f, 0f), new PointF(0f, 0f));
+    public Animation(int drawable, float frameWidth, float frameHeight, int frameCount, int animTime) {
+        this(drawable, (int)frameWidth, (int)frameHeight, frameCount, animTime, new PointF(0f, 0f), new PointF(0f, 0f));
     }
-    public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime, PointF offsetTopLeft) {
-        this(drawable, frameWidth, frameHeight, frameCount, animTime, offsetTopLeft, new PointF(0f, 0f));
+    public Animation(int drawable, float frameWidth, float frameHeight, int frameCount, int animTime, PointF offsetTopLeft) {
+        this(drawable, (int)frameWidth, (int)frameHeight, frameCount, animTime, offsetTopLeft, new PointF(0f, 0f));
+    }
+    public Animation(int drawable, float frameWidth, float frameHeight, int frameCount, int animTime, PointF offsetTopLeft, PointF offsetBottomRight){
+        this(drawable, (int)frameWidth, (int)frameHeight, frameCount, animTime, offsetTopLeft, offsetBottomRight);
     }
 
     public boolean isPlaying() {
@@ -70,18 +75,18 @@ public class Animation {
         if (!this.isPlaying) currentFrameIndex = 0;
         Rect whatToDraw = getCurrentFrame();
         RectF whereToDraw = getDestinationRect(position);
-        if (isFlip) {
-            canvas.save();
-            canvas.scale(-1,1, position.x + animationWidth/2, 0);
-            canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
-            canvas.restore();
-        }
-        else
+//        if (isFlip) {
+//            canvas.save();
+//            canvas.scale(-1,1, position.x + animationWidth/2, 0);
+//            canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
+//            canvas.restore();
+//        }
+//        else
             canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
     }
 
     public void draw(Canvas canvas, PointF position) {
-        this.draw(canvas, position, new Paint());
+        this.draw(canvas, position, myPaint);
     }
 
     public void update() {
@@ -95,7 +100,7 @@ public class Animation {
     }
 
     public Rect getCurrentFrame() {
-        if (false) {
+        if (this.isFlip) {
             this.sourceRect.left = (this.currentFrameIndex + 1) * this.frameWidth;
             this.sourceRect.right = this.sourceRect.left - this.frameWidth;
         } else {
@@ -107,7 +112,7 @@ public class Animation {
 
     public RectF getDestinationRect(PointF position) {
         float left, top;
-        if (false) {
+        if (this.isFlip) {
             left = position.x - this.offsetBottomRight.x;
             top = position.y - this.offsetTopLeft.y;
         } else {

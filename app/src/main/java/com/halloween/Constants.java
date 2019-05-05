@@ -8,7 +8,7 @@ public class Constants {
     public static int SCREEN_HEIGHT;
     public static Context CURRENT_CONTEXT;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS}
-    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.BOSS;
+    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.PLAY;
     public static GAME_STATE PREVIOUS_GAME_STATE;
     public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE};
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
@@ -17,7 +17,6 @@ public class Constants {
 
     public static float BACKGROUND_X_AXIS = 0.0f;
 
-    public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final int MAX_HEALTH_BOSS = 1000;
     public static final int MAX_SCORE = 1000;
 
@@ -41,12 +40,17 @@ public class Constants {
     public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
 
     public static final float MAIN_CHARACTER_V_X = 5f;
-    public static final float MAIN_CHARACTER_V_Y = -60f;
-    public static final float GRAVITY = 5f;
-    public static int  MAIN_CHARACTER_ATTACK_POWER = 10;
+    public static final float MAIN_CHARACTER_V_Y = -50f;
+    public static final float GRAVITY = 3f;
+    public static final int  MAIN_CHARACTER_ATTACK_POWER = 10;
+    public static final int MAIN_CHARACTER_MAX_SCORE = 1000;
+    public static final int MAIN_CHARACTER_MAX_MANA = 1000;
+    public static final int MANA_INCREASE_SPEED = 5;
+    public static final int MANA_DECREASE_SPEED = 5;
+    public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final long INVINCIBLE_TIME = 4000;
     public static final long BLINK_TIME = 150;
-    public static final int MAIN_CHARACTER_MAX_SCORE = 2250;
+//    public static final long JUMP_TIME = 16;
 
     public static final int backgroundMapAssetHeight = 578;
     public static final int backgroundBossMapAssetHeight = 780;
