@@ -1,10 +1,12 @@
 package com.halloween.GameObjects.Traps;
 
+import android.drm.DrmStore;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.halloween.Animation;
 import com.halloween.Constants;
@@ -14,10 +16,10 @@ import com.halloween.R;
 public class FireTrap extends Trap {
     private Animation burningFire;
 
-    public FireTrap(PointF postition, long timeBetweenTwoAnimation) {
+    public FireTrap(PointF postition, long timeBetweenTwoAnimation, float scale) {
         this.position = postition;
         this.timeBetweenTwoAnimation = timeBetweenTwoAnimation;
-        this.scale = 2f;
+        this.scale = scale;
         this.frameHeight = (int) (178 * scale);
         this.frameWidth = (int) (107 * scale);
         this.burningFire = new Animation(R.drawable.fire_10, frameWidth, frameHeight, 10, 150);
