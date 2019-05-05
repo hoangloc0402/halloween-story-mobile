@@ -72,11 +72,11 @@ public class BossScreen implements GameScreen {
         this.boxes.add(new RectF(1800,0,1800,Constants.SCREEN_HEIGHT));
         this.boxes.add(new RectF(0, 0.8f*Constants.SCREEN_HEIGHT, 1800, Constants.SCREEN_HEIGHT));
         this.boxes.add(new RectF(247, 0.576923077f*Constants.SCREEN_HEIGHT, 472, 0.653846154f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(562, 0.346153846f*Constants.SCREEN_HEIGHT, 607, 	0.423076923f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(787, 0.192307692f*Constants.SCREEN_HEIGHT, 922, 0.269230769f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(697, 0.576923077f*Constants.SCREEN_HEIGHT, 1012, 0.653846154f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(1102, 0.346153846f*Constants.SCREEN_HEIGHT, 1147, 0.423076923f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(1237, 0.576923077f*Constants.SCREEN_HEIGHT, 1462, 0.653846154f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(562, 0.346153846f*Constants.SCREEN_HEIGHT, 607, 	0.423076923f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(787, 0.192307692f*Constants.SCREEN_HEIGHT, 922, 0.269230769f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(697, 0.576923077f*Constants.SCREEN_HEIGHT, 1012, 0.653846154f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(1102, 0.346153846f*Constants.SCREEN_HEIGHT, 1147, 0.423076923f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(1237, 0.576923077f*Constants.SCREEN_HEIGHT, 1462, 0.653846154f * Constants.SCREEN_HEIGHT));
     }
 
     @Override
@@ -137,103 +137,6 @@ public class BossScreen implements GameScreen {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        int pointerIndex = event.getActionIndex();
-        int pointerId = event.getPointerId(pointerIndex);
-        int maskedAction = event.getActionMasked();
-        float x = event.getX(pointerIndex);
-        float y = event.getY(pointerIndex);
-
-
-        switch(maskedAction)
-        {
-            case MotionEvent.ACTION_UP:
-                // Log.d("MOTION:", "ACTION_UP" + x + " " + y );
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.backToCenter();
-                    joyStick.isPressedPause = false;
-                    Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
-                }
-//                if (isInRangeOfAtkButton(x, y)) {
-                Constants.JOYSTICK_ATK_STATE = false;
-//                }
-//                if (isInRangeOfJumpButton(x, y)) {
-                Constants.JOYSTICK_JUMP_STATE = false;
-//                }
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.backToCenter();
-                }
-                break;
-            case MotionEvent.ACTION_DOWN:
-                // Log.d("MOTION:", "ACTION_DOWN" + x + " " + y);
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.updatePosition(x, y);
-                }
-                if (joyStick.isInRangeOfJumpButton(x, y)) {
-                    Constants.JOYSTICK_JUMP_STATE = true;
-                }
-                if (joyStick.isInRangeOfAtkButton(x, y)) {
-                    Constants.JOYSTICK_ATK_STATE = true;
-                }
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.isPressedPause = true;
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                // Log.d("MOTION:", "ACTION_MOVE" + x + " " + y);
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.updatePosition(x, y);
-                } else {
-                    if (joyStick.isPressedJoyStick) {
-                        joyStick.backToCenter();
-                    }
-                }
-//                if (isInRangeOfJumpButton(x, y)) {
-//                    Constants.JOYSTICK_JUMP_STATE = true;
-//                }
-//                if (isInRangeOfAtkButton(x, y)) {
-//                    Constants.JOYSTICK_ATK_STATE = true;
-//                }
-                break;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                // Log.d("MOTION:", "ACTION_POINTER_DOWN" + x + " " + y);
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.updatePosition(x, y);
-                }
-                if (joyStick.isInRangeOfJumpButton(x, y)) {
-                    Constants.JOYSTICK_JUMP_STATE = true;
-                }
-                if (joyStick.isInRangeOfAtkButton(x, y)) {
-                    Constants.JOYSTICK_ATK_STATE = true;
-                }
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.isPressedPause = true;
-                }
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                // Log.d("MOTION:", "ACTION_POINTER_UP" + x + " " + y);
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.backToCenter();
-                    joyStick.isPressedPause = false;
-                    Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
-                }
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.backToCenter();
-                }
-//                if (isInRangeOfJumpButton(x, y)) {
-                Constants.JOYSTICK_JUMP_STATE = false;
-//                }
-//                if (isInRangeOfAtkButton(x, y)) {
-                Constants.JOYSTICK_ATK_STATE = false;
-//                }
-                break;
-            case MotionEvent.ACTION_OUTSIDE:
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                Constants.JOYSTICK_ATK_STATE = false;
-                Constants.JOYSTICK_JUMP_STATE = false;
-                joyStick.isPressedJoyStick = false;
-                joyStick.isPressedPause = false;
-                break;
-        }
+        joyStick.receiveTouch(event);
     }
 }

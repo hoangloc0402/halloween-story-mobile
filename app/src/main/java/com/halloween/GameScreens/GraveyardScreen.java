@@ -42,6 +42,7 @@ public class GraveyardScreen implements GameScreen {
     private int backgroundCloudCount, backgroundCloudSmallCount;
     private ArrayList<RectF> boxes;
     private Paint paint;
+    private RectF tempRect, tempSurrounding;
 
 //    private Zombie zombie;
 
@@ -87,6 +88,8 @@ public class GraveyardScreen implements GameScreen {
 
         this.traps = new ArrayList<>();
         this.initTraps();
+        this.tempRect = new RectF();
+        this.tempSurrounding = new RectF();
     }
 
     private void initTraps() {
@@ -141,12 +144,19 @@ public class GraveyardScreen implements GameScreen {
         joyStick.update();
 //        if (portal.isInRange()) {this.portal.update();}
         int mana = mainCharacter.getManaPoint();
-        if (mana >= 1000)
+        if (mana >= Constants.MAIN_CHARACTER_MAX_MANA)
             mainCharacter.isInUltimateForm = true;
-
+        healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
         healthBarMainCharacter.setNewMana(mana);
         healthBarMainCharacter.update();
+
+        tempSurrounding = mainCharacter.getSurroundingBox();
         for (Trap trap : traps) {
+            tempRect = trap.getSurroundingBox();
+            if (tempRect!=null){
+                if (tempSurrounding.intersect(tempRect))
+                    mainCharacter.decreaseHealth(10);
+            }
             trap.update();
         }
 
@@ -200,9 +210,16 @@ public class GraveyardScreen implements GameScreen {
         for (Trap trap : traps) {
             trap.draw(canvas);
         }
-        this.joyStick.draw(canvas);
+        /*this.fireTrap.draw(canvas);
+        this.campFire.draw(canvas);
+        this.spear.draw(canvas);
+        this.spearHorizontal.draw(canvas);
+        this.spearVertical.draw(canvas);*/
 //        this.zombie.draw(canvas);
+
+        this.joyStick.draw(canvas);
     }
+
 
     @Override
     public void terminate() {
@@ -210,149 +227,53 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initBoxes() {
-        this.boxes.add(new RectF(0, 0, 0, Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(10000f, 0, 10000f, Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(0, 0, 1, Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(10000f, 0, 10010f, Constants.SCREEN_HEIGHT));
         this.boxes.add(new RectF(0, 0.8f * Constants.SCREEN_HEIGHT, 10000, Constants.SCREEN_HEIGHT));
-//        this.boxes.add(new RectF(382, Constants.SCREEN_HEIGHT * 0.578f, 816, Constants.SCREEN_HEIGHT * 0.656f));
-//        this.boxes.add(new RectF(650, Constants.SCREEN_HEIGHT * 0.347f, 883, Constants.SCREEN_HEIGHT * 0.424f));
-//        this.boxes.add(new RectF(1116.3f, Constants.SCREEN_HEIGHT * 0.578f, 1283, Constants.SCREEN_HEIGHT * 0.656f));
-//        this.boxes.add(new RectF(1249.6f, Constants.SCREEN_HEIGHT * 0.347f, 1416.3f, Constants.SCREEN_HEIGHT * 0.424f));
-//        this.boxes.add(new RectF(1449.6f, Constants.SCREEN_HEIGHT * 0.116f, 1683, Constants.SCREEN_HEIGHT * 0.193f));
-//        this.boxes.add(new RectF(1716.296296f, Constants.SCREEN_HEIGHT * 0.57840617f, 2349.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
-//        this.boxes.add(new RectF(2416.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 2449.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
-//        this.boxes.add(new RectF(2549.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 2582.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
-//        this.boxes.add(new RectF(2649.62963f, Constants.SCREEN_HEIGHT * 0.115681234f, 2882.962963f, Constants.SCREEN_HEIGHT * 0.192802057f));
-//        this.boxes.add(new RectF(2949.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 2982.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
-//        this.boxes.add(new RectF(3082.962963f, Constants.SCREEN_HEIGHT * 0.424164524f, 3116.296296f, Constants.SCREEN_HEIGHT * 0.501285347f));
-//        this.boxes.add(new RectF(3449.62963f, Constants.SCREEN_HEIGHT * 0.347043702f, 3682.962963f, Constants.SCREEN_HEIGHT * 0.424164524f));
-//        this.boxes.add(new RectF(3782.962963f, Constants.SCREEN_HEIGHT * 0.501285347f, 3949.62963f, Constants.SCREEN_HEIGHT * 0.57840617f));
-//        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT * 0.655526992f, 4482.962963f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 4349.62963f, Constants.SCREEN_HEIGHT * 0.347043702f));
-//        this.boxes.add(new RectF(5082.962963f, Constants.SCREEN_HEIGHT * 0.57840617f, 5116.296296f, Constants.SCREEN_HEIGHT * 0.655526992f));
-//        this.boxes.add(new RectF(5216.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 5249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
-//        this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
-//        this.boxes.add(new RectF(5582.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5616.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(5782.962963f, Constants.SCREEN_HEIGHT * 0.424164524f, 5816.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(5982.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 6016.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(6249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.57840617f));
-//        this.boxes.add(new RectF(6366.666667f, Constants.SCREEN_HEIGHT * 0.44344473f, 6400f, Constants.SCREEN_HEIGHT * 0.501285347f));
-//        this.boxes.add(new RectF(6316.296296f, Constants.SCREEN_HEIGHT * 0.57840617f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.655526992f));
-//        this.boxes.add(new RectF(6416.296296f, Constants.SCREEN_HEIGHT * 0.655526992f, 6549.62963f, Constants.SCREEN_HEIGHT * 0.732647815f));
-//        this.boxes.add(new RectF(6382.962963f, Constants.SCREEN_HEIGHT * 0.501285347f, 6416.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(6716.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 7082.962963f, Constants.SCREEN_HEIGHT * 0.501285347f));
-//        this.boxes.add(new RectF(7149.62963f, Constants.SCREEN_HEIGHT * 0.192802057f, 7182.962963f, Constants.SCREEN_HEIGHT * 0.269922879f));
-//        this.boxes.add(new RectF(7482.962963f, Constants.SCREEN_HEIGHT * 0.115681234f, 7516.296296f, Constants.SCREEN_HEIGHT * 0.192802057f));
-//        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT * -0.642673522f, 8516.296296f, Constants.SCREEN_HEIGHT * 0.115681234f));
-//        this.boxes.add(new RectF(8516.296296f, Constants.SCREEN_HEIGHT * -0.642673522f, 8549.62963f, Constants.SCREEN_HEIGHT * 0.424164524f));
-//        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT * 0.347043702f, 8516.296296f, Constants.SCREEN_HEIGHT * 0.424164524f));
-//        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT * 0.347043702f, 8349.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
-//        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT * 0.57840617f, 8749.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
-//        this.boxes.add(new RectF(8049.62963f, Constants.SCREEN_HEIGHT * 0.115681234f, 8149.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(7982.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 8049.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(7916.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 7982.962963f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(7849.62963f, Constants.SCREEN_HEIGHT * 0.57840617f, 7916.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
-//        this.boxes.add(new RectF(7782.962963f, Constants.SCREEN_HEIGHT * 0.732647815f, 7849.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(382, Constants.SCREEN_HEIGHT * 0.578f, 816, Constants.SCREEN_HEIGHT * 0.656f));
+        this.boxes.add(new RectF(650, Constants.SCREEN_HEIGHT * 0.347f, 883, Constants.SCREEN_HEIGHT * 0.424f));
+        this.boxes.add(new RectF(1116.3f, Constants.SCREEN_HEIGHT * 0.578f, 1283, Constants.SCREEN_HEIGHT * 0.656f));
+        this.boxes.add(new RectF(1249.6f, Constants.SCREEN_HEIGHT * 0.347f, 1416.3f, Constants.SCREEN_HEIGHT * 0.424f));
+        this.boxes.add(new RectF(1449.6f, Constants.SCREEN_HEIGHT * 0.116f, 1683, Constants.SCREEN_HEIGHT * 0.193f));
+        this.boxes.add(new RectF(1716.296296f, Constants.SCREEN_HEIGHT * 0.57840617f, 2349.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+        this.boxes.add(new RectF(2416.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 2449.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
+        this.boxes.add(new RectF(2549.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 2582.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+        this.boxes.add(new RectF(2649.62963f, Constants.SCREEN_HEIGHT * 0.115681234f, 2882.962963f, Constants.SCREEN_HEIGHT * 0.192802057f));
+        this.boxes.add(new RectF(2949.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 2982.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+        this.boxes.add(new RectF(3082.962963f, Constants.SCREEN_HEIGHT * 0.424164524f, 3116.296296f, Constants.SCREEN_HEIGHT * 0.501285347f));
+        this.boxes.add(new RectF(3449.62963f, Constants.SCREEN_HEIGHT * 0.347043702f, 3682.962963f, Constants.SCREEN_HEIGHT * 0.424164524f));
+        this.boxes.add(new RectF(3782.962963f, Constants.SCREEN_HEIGHT * 0.501285347f, 3949.62963f, Constants.SCREEN_HEIGHT * 0.57840617f));
+        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT * 0.655526992f, 4482.962963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 4349.62963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+        this.boxes.add(new RectF(5082.962963f, Constants.SCREEN_HEIGHT * 0.57840617f, 5116.296296f, Constants.SCREEN_HEIGHT * 0.655526992f));
+        this.boxes.add(new RectF(5216.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 5249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
+        this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+        this.boxes.add(new RectF(5582.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5616.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5782.962963f, Constants.SCREEN_HEIGHT * 0.424164524f, 5816.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5982.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 6016.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(6249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.57840617f));
+        this.boxes.add(new RectF(6366.666667f, Constants.SCREEN_HEIGHT * 0.44344473f, 6400f, Constants.SCREEN_HEIGHT * 0.501285347f));
+        this.boxes.add(new RectF(6316.296296f, Constants.SCREEN_HEIGHT * 0.57840617f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+        this.boxes.add(new RectF(6416.296296f, Constants.SCREEN_HEIGHT * 0.655526992f, 6549.62963f, Constants.SCREEN_HEIGHT * 0.732647815f));
+        this.boxes.add(new RectF(6382.962963f, Constants.SCREEN_HEIGHT * 0.501285347f, 6416.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(6716.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 7082.962963f, Constants.SCREEN_HEIGHT * 0.501285347f));
+        this.boxes.add(new RectF(7149.62963f, Constants.SCREEN_HEIGHT * 0.192802057f, 7182.962963f, Constants.SCREEN_HEIGHT * 0.269922879f));
+        this.boxes.add(new RectF(7482.962963f, Constants.SCREEN_HEIGHT * 0.115681234f, 7516.296296f, Constants.SCREEN_HEIGHT * 0.192802057f));
+        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT * -0.642673522f, 8516.296296f, Constants.SCREEN_HEIGHT * 0.115681234f));
+        this.boxes.add(new RectF(8516.296296f, Constants.SCREEN_HEIGHT * -0.642673522f, 8549.62963f, Constants.SCREEN_HEIGHT * 0.424164524f));
+        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT * 0.347043702f, 8516.296296f, Constants.SCREEN_HEIGHT * 0.424164524f));
+        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT * 0.347043702f, 8349.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT * 0.57840617f, 8749.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+        this.boxes.add(new RectF(8049.62963f, Constants.SCREEN_HEIGHT * 0.115681234f, 8149.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(7982.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 8049.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(7916.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 7982.962963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(7849.62963f, Constants.SCREEN_HEIGHT * 0.57840617f, 7916.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(7782.962963f, Constants.SCREEN_HEIGHT * 0.732647815f, 7849.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
     }
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        int pointerIndex = event.getActionIndex();
-        int pointerId = event.getPointerId(pointerIndex);
-        int maskedAction = event.getActionMasked();
-        float x = event.getX(pointerIndex);
-        float y = event.getY(pointerIndex);
-
-
-        switch (maskedAction) {
-            case MotionEvent.ACTION_UP:
-                // Log.d("MOTION:", "ACTION_UP" + x + " " + y );
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.backToCenter();
-                    joyStick.isPressedPause = false;
-                    Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
-                }
-//                if (isInRangeOfAtkButton(x, y)) {
-                Constants.JOYSTICK_ATK_STATE = false;
-//                }
-//                if (isInRangeOfJumpButton(x, y)) {
-                Constants.JOYSTICK_JUMP_STATE = false;
-//                }
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.backToCenter();
-                }
-                break;
-            case MotionEvent.ACTION_DOWN:
-                // Log.d("MOTION:", "ACTION_DOWN" + x + " " + y);
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.updatePosition(x, y);
-                }
-                if (joyStick.isInRangeOfJumpButton(x, y)) {
-                    Constants.JOYSTICK_JUMP_STATE = true;
-                }
-                if (joyStick.isInRangeOfAtkButton(x, y)) {
-                    Constants.JOYSTICK_ATK_STATE = true;
-                }
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.isPressedPause = true;
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                // Log.d("MOTION:", "ACTION_MOVE" + x + " " + y);
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.updatePosition(x, y);
-                } else {
-                    if (joyStick.isPressedJoyStick) {
-                        joyStick.backToCenter();
-                    }
-                }
-//                if (isInRangeOfJumpButton(x, y)) {
-//                    Constants.JOYSTICK_JUMP_STATE = true;
-//                }
-//                if (isInRangeOfAtkButton(x, y)) {
-//                    Constants.JOYSTICK_ATK_STATE = true;
-//                }
-                break;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                // Log.d("MOTION:", "ACTION_POINTER_DOWN" + x + " " + y);
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.updatePosition(x, y);
-                }
-                if (joyStick.isInRangeOfJumpButton(x, y)) {
-                    Constants.JOYSTICK_JUMP_STATE = true;
-                }
-                if (joyStick.isInRangeOfAtkButton(x, y)) {
-                    Constants.JOYSTICK_ATK_STATE = true;
-                }
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.isPressedPause = true;
-                }
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                // Log.d("MOTION:", "ACTION_POINTER_UP" + x + " " + y);
-                if (joyStick.isInRangeOfPauseButton(x, y)) {
-                    joyStick.backToCenter();
-                    joyStick.isPressedPause = false;
-                    Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
-                }
-                if (joyStick.isInRangeOfJoyStick(x, y)) {
-                    joyStick.backToCenter();
-                }
-//                if (isInRangeOfJumpButton(x, y)) {
-                Constants.JOYSTICK_JUMP_STATE = false;
-//                }
-//                if (isInRangeOfAtkButton(x, y)) {
-                Constants.JOYSTICK_ATK_STATE = false;
-//                }
-                break;
-            case MotionEvent.ACTION_OUTSIDE:
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                Constants.JOYSTICK_ATK_STATE = false;
-                Constants.JOYSTICK_JUMP_STATE = false;
-                joyStick.isPressedJoyStick = false;
-                joyStick.isPressedPause = false;
-                break;
-        }
+        joyStick.receiveTouch(event);
     }
 
 

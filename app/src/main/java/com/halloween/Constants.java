@@ -14,11 +14,11 @@ public class Constants {
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
     public static boolean JOYSTICK_ATK_STATE = false;
     public static boolean JOYSTICK_JUMP_STATE = false;
+    public static boolean JOYSTICK_TRANSFORM_STATE = false;
 
     public static float BACKGROUND_X_AXIS = 0.0f;
 
     public static final int MAX_HEALTH_BOSS = 1000;
-    public static final int MAX_MANA = 1000;
 
     public final static int ZOMBIE_ATTACK= 30;
     public final static int ZOMBIE_DAMAGE = 20;
@@ -41,27 +41,22 @@ public class Constants {
 
     public static final float MAIN_CHARACTER_V_X = 5f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
-    public static final float GRAVITY = 3f;
+    public static final float GRAVITY = 2.5f;
     public static final int  MAIN_CHARACTER_ATTACK_POWER = 10;
     public static final int MAIN_CHARACTER_MAX_SCORE = 1000;
+
     public static final int MAIN_CHARACTER_MAX_MANA = 1000;
-    public static final int MANA_INCREASE_SPEED = 1;
-    public static final int MANA_DECREASE_SPEED = 2;
+    public static boolean MAIN_CHARACTER_IS_FULL_MANA = true;
+    public static final int MANA_INCREASE_SPEED = 40;
+    public static final int MANA_DECREASE_SPEED = 5;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final long INVINCIBLE_TIME = 4000;
     public static final long BLINK_TIME = 150;
+
 //    public static final long JUMP_TIME = 16;
 
     public static final int backgroundMapAssetHeight = 578;
     public static final int backgroundBossMapAssetHeight = 780;
-
-    public static final int FIRE_TRAP_DAMAGE = 50;
-    public static final int CAMP_FIRE_DAMAGE = 10;
-    public static final int SPEAR_DAMAGE = 1000;
-    public static final int SPEAR_HORIZONTAL_DAMAGE = 30;
-    public static final int SPEAR_VERTICAL_DAMAGE = 30;
-
-
     public static float getRelativeXPosition(float x, GAME_STATE game_state)  {
         return getRelativeXPosition(x);
     }

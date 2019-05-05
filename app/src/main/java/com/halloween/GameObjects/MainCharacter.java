@@ -70,19 +70,19 @@ public class MainCharacter {
         this.attackAnimation[2] = new Animation(R.drawable.main_character_attack4_4, 131 * SCALE, 85 * SCALE, 4, 25, new PointF(SCALE * 54, SCALE * 13), new PointF(SCALE * 35, 0));
         this.attackAnimation[3] = new Animation(R.drawable.main_character_attack3_7, 180 * SCALE, 102 * SCALE, 7, 75, new PointF(SCALE * 84, SCALE * 14), new PointF(SCALE * 56, SCALE * 13));
 
-        float SCALE2 = 1f;
+        float SCALE2 = SCALE / 1.86597938144f;
         this.idleAnimationUlti      = new Animation(R.drawable.main_character_ulti_idle_139x181x8, 139 * SCALE2, 181 * SCALE2 , 8, 100, new PointF(39*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
         this.walkAnimationUlti      = new Animation(R.drawable.main_character_ulti_walk_133x179x8, 133 * SCALE2, 179 * SCALE2, 8, 100, new PointF(24*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
-        this.jumpAnimationUlti      = walkAnimationUlti;
-        this.attackAnimationUlti    = new Animation(R.drawable.main_character_ulti_attack_772x348x30_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 30, 50, new PointF(448 * SCALE2, 135 * SCALE2), new PointF(564 * SCALE2, 265 * SCALE2));
+        this.jumpAnimationUlti      = idleAnimationUlti;
+        this.attackAnimationUlti    = new Animation(R.drawable.main_character_ulti_attack_772x348x18_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 18, 50, new PointF(492 * SCALE2, 140 * SCALE2), new PointF(214 * SCALE2, 83 * SCALE2));
         this.appearAnimationUtil    = new Animation(R.drawable.main_character_ulti_appear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73*SCALE2, 69*SCALE2), new PointF(63*SCALE2, 26*SCALE2));
         this.disappearAnimationUlti = new Animation(R.drawable.main_character_ulti_disappear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73*SCALE2, 69*SCALE2), new PointF(63*SCALE2, 26*SCALE2));
     }
 
     public void draw(Canvas canvas) {
 //        canvas.drawRect(this.getSurroundingBox(), paint);
-//        RectF sur = currentAnimation.getSurroundingBox(position);
-//        canvas.drawRect(Constants.getRelativeXPosition(sur.left, Constants.CURRENT_GAME_STATE), sur. top, Constants.getRelativeXPosition(sur.right, Constants.CURRENT_GAME_STATE), sur.bottom , this.paint);
+        RectF sur = currentAnimation.getSurroundingBox(position);
+        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
 //        RectF atk = getAttackRange();
 //        if (atk!=null)
 //            canvas.drawRect(Constants.getRelativeXPosition(atk.left, Constants.CURRENT_GAME_STATE), atk.top, Constants.getRelativeXPosition(atk.right, Constants.CURRENT_GAME_STATE), atk.bottom , this.redPaint);
@@ -105,7 +105,7 @@ public class MainCharacter {
 //                this.isInUltimateForm = true;
 
             if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
-                this.velocity.x = -Constants.MAIN_CHARACTER_V_X;
+                this.velocity.x = - Constants.MAIN_CHARACTER_V_X;
                 this.allowLeft = true;
             } else if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT) {
                 this.velocity.x = Constants.MAIN_CHARACTER_V_X;
@@ -134,12 +134,8 @@ public class MainCharacter {
             this.isJumping = true;
 
             RectF surroundingBox = this.getSurroundingBox();
-//            System.out.println("SURROUNDING");
-//            System.out.println(surroundingBox);
             for (RectF box : boxes) {
-//                System.out.println("BOXXX");
-//                System.out.println(box);
-                if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom) {
+                if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom && surroundingBox.bottom - box.top > 10) {
                     if (surroundingBox.right > box.left && surroundingBox.right - box.left < Constants.MAIN_CHARACTER_V_X)
                         allowRight = false;
                     else if (surroundingBox.left < box.right && box.right - surroundingBox.left < Constants.MAIN_CHARACTER_V_X)
