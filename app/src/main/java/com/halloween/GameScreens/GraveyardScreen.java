@@ -33,7 +33,7 @@ public class GraveyardScreen implements GameScreen {
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
     private HealthBarMainCharacter healthBarMainCharacter;
-//    private Portal portal;
+    private Portal portal;
 
     private Bitmap background, backgroundBlock, backgroundCloud, backgroundCloudSmall, backgroundMoon;
     private Rect backgroundBlockWhat;
@@ -79,7 +79,7 @@ public class GraveyardScreen implements GameScreen {
 
         this.reset();
         this.joyStick = new JoyStick();
-//        this.portal = new Portal();
+        this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
 //        this.healthBarMainCharacter.setNewHealth(1000);
@@ -139,7 +139,7 @@ public class GraveyardScreen implements GameScreen {
         mainCharacter.update(boxes);
 //        this.zombie.update(mainCharacter.getSurroundingBox());
         joyStick.update();
-//        if (portal.isInRange()) {this.portal.update();}
+        if (portal.isInRange()) {this.portal.update();}
         int mana = mainCharacter.getManaPoint();
         if (mana >= Constants.MAIN_CHARACTER_MAX_MANA)
             mainCharacter.isInUltimateForm = true;
@@ -178,7 +178,7 @@ public class GraveyardScreen implements GameScreen {
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth() * i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-//        if (portal.isInRange()) {this.portal.draw(canvas);}
+        if (portal.isInRange()) {this.portal.draw(canvas);}
         RectF temp = new RectF();
         for (RectF box : boxes) {
             temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);

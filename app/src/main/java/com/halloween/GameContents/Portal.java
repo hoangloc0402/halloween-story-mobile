@@ -18,7 +18,7 @@ public class Portal implements GameObject {
     public Portal() {
         this.portalAnimation = new Animation(R.drawable.portal_300x300x12, 300, 300, 12, 100, new PointF(0,0), new PointF(0, 0));
         this.portalAnimation.play();
-        this.portalPosition = new PointF(1000f, Constants.SCREEN_HEIGHT * 0.8f - portalAnimation.frameHeight);
+        this.portalPosition = new PointF(9600f, Constants.SCREEN_HEIGHT * 0.8f - portalAnimation.frameHeight);
     }
 
     public boolean isInRange() {
