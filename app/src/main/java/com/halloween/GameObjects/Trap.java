@@ -14,6 +14,12 @@ public abstract class Trap implements GameObject {
     protected TrapEffectingBox[] trapEffectingBoxes;
     protected long timeBetweenTwoAnimation;
     protected float scale;
+    protected RectF surroundingBox;
+    protected int damage;
+
+    public int getDamage() {
+        return damage;
+    }
 
     public PointF getPosition() {
         return position;
