@@ -45,7 +45,7 @@ public class BossScreen implements GameScreen {
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
         this.healthBarMainCharacter.setNewHealth(1000);
-        this.healthBarMainCharacter.setNewScore(1000);
+        this.healthBarMainCharacter.setNewMana(1000);
 
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);

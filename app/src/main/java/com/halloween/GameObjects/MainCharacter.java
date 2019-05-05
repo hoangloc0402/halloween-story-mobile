@@ -95,7 +95,6 @@ public class MainCharacter {
         this.updateInvincibleState();
         this.updateAnimation();
         this.updateMana();
-        System.out.println(this.currentMana);
         if (!this.isActive)
             Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
     }

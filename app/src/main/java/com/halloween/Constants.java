@@ -18,7 +18,7 @@ public class Constants {
     public static float BACKGROUND_X_AXIS = 0.0f;
 
     public static final int MAX_HEALTH_BOSS = 1000;
-    public static final int MAX_SCORE = 1000;
+    public static final int MAX_MANA = 1000;
 
     public final static int ZOMBIE_ATTACK= 30;
     public final static int ZOMBIE_DAMAGE = 20;

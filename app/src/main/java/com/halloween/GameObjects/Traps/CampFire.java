@@ -14,9 +14,9 @@ import com.halloween.R;
 public class CampFire extends Trap {
     private Animation burningFire;
 
-    public CampFire(PointF postition) {
+    public CampFire(PointF postition, float scale) {
         this.position = postition;
-        this.scale = 2f;
+        this.scale = scale;
         this.frameHeight = (int) (190 * scale);
         this.frameWidth = (int) (189 * scale);
         this.burningFire = new Animation(R.drawable.campfire_6, frameWidth, frameHeight, 6, 100);

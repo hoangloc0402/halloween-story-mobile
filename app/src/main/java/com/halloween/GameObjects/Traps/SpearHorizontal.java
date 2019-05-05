@@ -14,10 +14,10 @@ import com.halloween.R;
 public class SpearHorizontal extends Trap {
     private Animation burningFire;
 
-    public SpearHorizontal(PointF postition, long timeBetweenTwoAnimation) {
+    public SpearHorizontal(PointF postition, long timeBetweenTwoAnimation, float scale) {
         this.position = postition;
         this.timeBetweenTwoAnimation = timeBetweenTwoAnimation;
-        this.scale = 2f;
+        this.scale = scale;
         this.frameHeight = (int) (69 * scale);
         this.frameWidth = (int) (107 * scale);
         this.burningFire = new Animation(R.drawable.spearh_16, frameWidth, frameHeight, 16, 100);
