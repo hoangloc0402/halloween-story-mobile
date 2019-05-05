@@ -54,8 +54,12 @@ public class Constants {
 
     public static final int backgroundMapAssetHeight = 578;
     public static final int backgroundBossMapAssetHeight = 780;
-    public static float getRelativeXPosition(float x, GAME_STATE game_state) {
-        switch (game_state) {
+    public static float getRelativeXPosition(float x, GAME_STATE game_state)  {
+        return getRelativeXPosition(x);
+    }
+
+    public static float getRelativeXPosition(float x) {
+        switch (CURRENT_GAME_STATE) {
             case PLAY:
                 return (x - BACKGROUND_X_AXIS) * SCREEN_WIDTH / (backgroundMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT);
             case BOSS:
@@ -64,7 +68,22 @@ public class Constants {
                 return -10000;
         }
     }
+
+    public static float getAbsoluteXLength(float x) {
+        switch (CURRENT_GAME_STATE) {
+            case PLAY:
+                return x * (backgroundMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT) / SCREEN_WIDTH;
+            case BOSS:
+                return x * (backgroundBossMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT) / SCREEN_WIDTH;
+            default:
+                return 0;
+        }
+    }
     public static boolean isInScreenRange(float x, float offset, GAME_STATE game_state) {
+        return isInScreenRange(x, offset);
+    }
+    public static boolean isInScreenRange(float x, float offset) {
+        GAME_STATE game_state = CURRENT_GAME_STATE;
         float left = getRelativeXPosition(x, game_state);
         float right = getRelativeXPosition(x + offset, game_state);
         switch (game_state) {
