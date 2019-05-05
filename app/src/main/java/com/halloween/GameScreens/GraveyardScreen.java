@@ -42,6 +42,7 @@ public class GraveyardScreen implements GameScreen {
     private int backgroundCloudCount, backgroundCloudSmallCount;
     private ArrayList<RectF> boxes;
     private Paint paint;
+    private RectF tempRect, tempSurrounding;
 
 //    private Zombie zombie;
 
@@ -87,6 +88,8 @@ public class GraveyardScreen implements GameScreen {
 
         this.traps = new ArrayList<>();
         this.initTraps();
+        this.tempRect = new RectF();
+        this.tempSurrounding = new RectF();
     }
 
     private void initTraps() {
@@ -143,9 +146,17 @@ public class GraveyardScreen implements GameScreen {
         int mana = mainCharacter.getManaPoint();
         if (mana >= Constants.MAIN_CHARACTER_MAX_MANA)
             mainCharacter.isInUltimateForm = true;
-        healthBarMainCharacter.setNewHealth(mana);
+        healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
+        healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
         healthBarMainCharacter.update();
+
+        tempSurrounding = mainCharacter.getSurroundingBox();
         for (Trap trap : traps) {
+            tempRect = trap.getSurroundingBox();
+            if (tempRect!=null){
+                if (tempSurrounding.intersect(tempRect))
+                    mainCharacter.decreaseHealth(trap.getDamage());
+            }
             trap.update();
         }
 

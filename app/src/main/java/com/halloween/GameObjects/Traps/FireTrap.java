@@ -37,15 +37,16 @@ public class FireTrap extends Trap {
         };
         this.isWorking = true;
         this.lastWorkingTime = System.currentTimeMillis();
+        this.damage = Constants.CAMP_FIRE_DAMAGE;
+        surroundingBox = new RectF();
     }
 
     @Override
     public RectF getSurroundingBox() {
-        RectF surroundingBox = new RectF();
         TrapEffectingBox trapEffectingBox = trapEffectingBoxes[burningFire.getCurrentFrameIndex()];
         PointF topLeft = trapEffectingBox.getTopLeft();
         PointF bottomRight = trapEffectingBox.getBottomRight();
-        surroundingBox.set(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE) + topLeft.x * scale, topLeft.y * scale + this.position.y, Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE) + bottomRight.x * scale, bottomRight.y * scale + this.position.y);
+        surroundingBox.set(this.position.x + Constants.getAbsoluteXLength(topLeft.x * scale) , topLeft.y * scale + this.position.y, this.position.x + Constants.getAbsoluteXLength( bottomRight.x * scale), bottomRight.y * scale + this.position.y);
         return surroundingBox;
     }
 
