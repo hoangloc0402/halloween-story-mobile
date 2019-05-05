@@ -73,8 +73,8 @@ public class MainCharacter {
         float SCALE2 = SCALE / 1.86597938144f;
         this.idleAnimationUlti      = new Animation(R.drawable.main_character_ulti_idle_139x181x8, 139 * SCALE2, 181 * SCALE2 , 8, 100, new PointF(39*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
         this.walkAnimationUlti      = new Animation(R.drawable.main_character_ulti_walk_133x179x8, 133 * SCALE2, 179 * SCALE2, 8, 100, new PointF(24*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
-        this.jumpAnimationUlti      = walkAnimationUlti;
-        this.attackAnimationUlti    = new Animation(R.drawable.main_character_ulti_attack_772x348x18_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 18, 50, new PointF(326 * SCALE2, 155 * SCALE2), new PointF(376 * SCALE2, 101 * SCALE2));
+        this.jumpAnimationUlti      = idleAnimationUlti;
+        this.attackAnimationUlti    = new Animation(R.drawable.main_character_ulti_attack_772x348x18_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 18, 50, new PointF(492 * SCALE2, 140 * SCALE2), new PointF(214 * SCALE2, 83 * SCALE2));
         this.appearAnimationUtil    = new Animation(R.drawable.main_character_ulti_appear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73*SCALE2, 69*SCALE2), new PointF(63*SCALE2, 26*SCALE2));
         this.disappearAnimationUlti = new Animation(R.drawable.main_character_ulti_disappear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73*SCALE2, 69*SCALE2), new PointF(63*SCALE2, 26*SCALE2));
     }
@@ -105,7 +105,7 @@ public class MainCharacter {
 //                this.isInUltimateForm = true;
 
             if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
-                this.velocity.x = -Constants.MAIN_CHARACTER_V_X;
+                this.velocity.x = - Constants.MAIN_CHARACTER_V_X;
                 this.allowLeft = true;
             } else if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.RIGHT) {
                 this.velocity.x = Constants.MAIN_CHARACTER_V_X;
@@ -134,12 +134,8 @@ public class MainCharacter {
             this.isJumping = true;
 
             RectF surroundingBox = this.getSurroundingBox();
-//            System.out.println("SURROUNDING");
-//            System.out.println(surroundingBox);
             for (RectF box : boxes) {
-//                System.out.println("BOXXX");
-//                System.out.println(box);
-                if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom) {
+                if (surroundingBox.bottom > box.top && surroundingBox.top < box.bottom && surroundingBox.bottom - box.top > 10) {
                     if (surroundingBox.right > box.left && surroundingBox.right - box.left < Constants.MAIN_CHARACTER_V_X)
                         allowRight = false;
                     else if (surroundingBox.left < box.right && box.right - surroundingBox.left < Constants.MAIN_CHARACTER_V_X)

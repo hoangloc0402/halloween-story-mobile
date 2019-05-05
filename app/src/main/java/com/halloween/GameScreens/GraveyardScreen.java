@@ -139,9 +139,10 @@ public class GraveyardScreen implements GameScreen {
         joyStick.update();
 //        if (portal.isInRange()) {this.portal.update();}
         int mana = mainCharacter.getManaPoint();
-        if (mana >= 1000)
+        if (mana >= Constants.MAIN_CHARACTER_MAX_MANA)
             mainCharacter.isInUltimateForm = true;
-        healthBarMainCharacter.setNewHealth(mana);
+        healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
+        healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
         healthBarMainCharacter.update();
         for (Trap trap : traps) {
             trap.update();
@@ -162,6 +163,8 @@ public class GraveyardScreen implements GameScreen {
 //        if (portal.isInSuckingRange(mainCharacter.getSurroundingBox())) {
 //            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
 //        }
+
+
     }
 
     @Override
