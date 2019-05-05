@@ -64,6 +64,18 @@ public class Constants {
                 return -10000;
         }
     }
+
+    public static float getAbsoluteXLength(float x, GAME_STATE game_state) {
+        switch (game_state) {
+            case PLAY:
+                return x * (backgroundMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT) / SCREEN_WIDTH;
+            case BOSS:
+                return x * (backgroundBossMapAssetHeight * SCREEN_WIDTH / SCREEN_HEIGHT) / SCREEN_WIDTH;
+            default:
+                return 0;
+        }
+    }
+
     public static boolean isInScreenRange(float x, float offset, GAME_STATE game_state) {
         float left = getRelativeXPosition(x, game_state);
         float right = getRelativeXPosition(x + offset, game_state);
