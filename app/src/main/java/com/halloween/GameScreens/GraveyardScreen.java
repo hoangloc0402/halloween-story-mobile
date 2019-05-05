@@ -97,32 +97,32 @@ public class GraveyardScreen implements GameScreen {
 
         float spearVerticalTrapScale = scale * 1.0f;
         traps.add(new SpearVertical(new PointF(4990, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
-        traps.add(new SpearVertical(new PointF(5400, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
-        traps.add(new SpearVertical(new PointF(5765, (float) (0.8 * Constants.SCREEN_HEIGHT - 315 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
-        traps.add(new SpearVertical(new PointF(6237, (float) (0.8 * Constants.SCREEN_HEIGHT - 268 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
-        traps.add(new SpearVertical(new PointF(6295, (float) (0.8 * Constants.SCREEN_HEIGHT - 268 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
-        traps.add(new SpearVertical(new PointF(8250, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
-
-        float spearHorizontalTrapScale = scale * 1.0f;
-        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 373 * spearHorizontalTrapScale)), 1000, spearHorizontalTrapScale));
-        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 193 * spearHorizontalTrapScale)), 1000, spearHorizontalTrapScale));
-        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 63 * spearHorizontalTrapScale)), 1000, spearHorizontalTrapScale));
-
-        float campFireTrapScale = scale * 1.0f;
-        traps.add(new CampFire(new PointF(7375, (float) (0.8 * Constants.SCREEN_HEIGHT - 120 * campFireTrapScale)), campFireTrapScale));
-
-        float spearTrapScale = scale * 1.0f;
-        traps.add(new Spear(new PointF(5620, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
-        traps.add(new Spear(new PointF(5690, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
-        traps.add(new Spear(new PointF(5815, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
-        traps.add(new Spear(new PointF(5890, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
-        traps.add(new Spear(new PointF(6020, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
-        traps.add(new Spear(new PointF(6090, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
-        traps.add(new Spear(new PointF(6160, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
-
-        float fireTrapScale = scale * 1.0f;
-        traps.add(new FireTrap(new PointF(7755, (float) (0.8 * Constants.SCREEN_HEIGHT - 201 * fireTrapScale)), 2000, fireTrapScale));
-        traps.add(new FireTrap(new PointF(7885, (float) (0.8 * Constants.SCREEN_HEIGHT - 377 * fireTrapScale)), 2000, fireTrapScale));
+//        traps.add(new SpearVertical(new PointF(5400, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
+//        traps.add(new SpearVertical(new PointF(5765, (float) (0.8 * Constants.SCREEN_HEIGHT - 315 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
+//        traps.add(new SpearVertical(new PointF(6237, (float) (0.8 * Constants.SCREEN_HEIGHT - 268 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
+//        traps.add(new SpearVertical(new PointF(6295, (float) (0.8 * Constants.SCREEN_HEIGHT - 268 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
+//        traps.add(new SpearVertical(new PointF(8250, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * spearVerticalTrapScale)), 1000, spearVerticalTrapScale));
+//
+//        float spearHorizontalTrapScale = scale * 1.0f;
+//        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 373 * spearHorizontalTrapScale)), 1000, spearHorizontalTrapScale));
+//        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 193 * spearHorizontalTrapScale)), 1000, spearHorizontalTrapScale));
+//        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 63 * spearHorizontalTrapScale)), 1000, spearHorizontalTrapScale));
+//
+//        float campFireTrapScale = scale * 1.0f;
+//        traps.add(new CampFire(new PointF(7375, (float) (0.8 * Constants.SCREEN_HEIGHT - 120 * campFireTrapScale)), campFireTrapScale));
+//
+//        float spearTrapScale = scale * 1.0f;
+//        traps.add(new Spear(new PointF(5620, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
+//        traps.add(new Spear(new PointF(5690, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
+//        traps.add(new Spear(new PointF(5815, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
+//        traps.add(new Spear(new PointF(5890, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
+//        traps.add(new Spear(new PointF(6020, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
+//        traps.add(new Spear(new PointF(6090, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
+//        traps.add(new Spear(new PointF(6160, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * spearTrapScale)), 0, spearTrapScale));
+//
+//        float fireTrapScale = scale * 1.0f;
+//        traps.add(new FireTrap(new PointF(7755, (float) (0.8 * Constants.SCREEN_HEIGHT - 201 * fireTrapScale)), 2000, fireTrapScale));
+//        traps.add(new FireTrap(new PointF(7885, (float) (0.8 * Constants.SCREEN_HEIGHT - 377 * fireTrapScale)), 2000, fireTrapScale));
     }
 
     @Override
@@ -143,9 +143,7 @@ public class GraveyardScreen implements GameScreen {
 //        this.zombie.update(mainCharacter.getSurroundingBox());
         joyStick.update();
         if (portal.isInRange()) {this.portal.update();}
-        int mana = mainCharacter.getManaPoint();
-        if (mana >= Constants.MAIN_CHARACTER_MAX_MANA)
-            mainCharacter.isInUltimateForm = true;
+
         healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
         healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
         healthBarMainCharacter.update();

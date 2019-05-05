@@ -83,7 +83,7 @@ public class MainCharacter {
 
     public void draw(Canvas canvas) {
 //        canvas.drawRect(this.getSurroundingBox(), paint);
-        Log.d("MAIN POS", this.position.toString());
+//        Log.d("MAIN POS", this.position.toString());
         RectF sur = currentAnimation.getSurroundingBox(position);
         canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
 //        RectF atk = getAttackRange();
@@ -108,8 +108,6 @@ public class MainCharacter {
                 Constants.JOYSTICK_TRANSFORM_STATE = false;
                 this.isInUltimateForm = true;
             }
-
-
             if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
                 this.velocity.x = - Constants.MAIN_CHARACTER_V_X;
                 this.allowLeft = true;
@@ -118,12 +116,16 @@ public class MainCharacter {
                 this.allowRight = true;
             } else this.velocity.x = 0;
 
-            if (Constants.JOYSTICK_ATK_STATE)
+            if (this.currentAnimation == this.attackAnimationUlti){
+                this.isAttacking = !this.attackAnimationUlti.isLastFrame();
+            }
+            else if (Constants.JOYSTICK_ATK_STATE)
                 this.isAttacking = true;
             else {
                 this.isAttacking = false;
                 this.position.y += 10;
             }
+
 
             if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
                 this.velocity.y = Constants.MAIN_CHARACTER_V_Y;
@@ -256,10 +258,7 @@ public class MainCharacter {
     }
 
     private void updateMana() {
-        if (this.currentMana >= Constants.MAIN_CHARACTER_MAX_MANA)
-            Constants.MAIN_CHARACTER_IS_FULL_MANA = true;
-        else
-            Constants.MAIN_CHARACTER_IS_FULL_MANA = false;
+        Constants.MAIN_CHARACTER_IS_FULL_MANA = this.currentMana >= Constants.MAIN_CHARACTER_MAX_MANA;
         if (this.isInUltimateForm) {
             this.decreaseMana(Constants.MANA_DECREASE_SPEED);
         }
