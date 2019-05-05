@@ -27,6 +27,8 @@ import com.halloween.R;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static android.content.ContentValues.TAG;
+
 public class GraveyardScreen implements GameScreen {
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
@@ -141,7 +143,8 @@ public class GraveyardScreen implements GameScreen {
         int mana = mainCharacter.getManaPoint();
         if (mana >= 1000)
             mainCharacter.isInUltimateForm = true;
-        healthBarMainCharacter.setNewHealth(mana);
+
+        healthBarMainCharacter.setNewMana(mana);
         healthBarMainCharacter.update();
         for (Trap trap : traps) {
             trap.update();

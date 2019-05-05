@@ -28,6 +28,7 @@ public class Spear extends Trap {
         this.lastWorkingTime = System.currentTimeMillis();
     }
 
+    @Override
     public RectF getSurroundingBox() {
         RectF surroundingBox = new RectF();
         TrapEffectingBox trapEffectingBox = trapEffectingBoxes[0];

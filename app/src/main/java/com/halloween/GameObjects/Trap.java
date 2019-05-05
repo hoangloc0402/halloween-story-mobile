@@ -1,6 +1,7 @@
 package com.halloween.GameObjects;
 
 import android.graphics.PointF;
+import android.graphics.RectF;
 
 import com.halloween.GameObjects.Traps.TrapEffectingBox;
 
@@ -16,5 +17,9 @@ public abstract class Trap implements GameObject {
 
     public PointF getPosition() {
         return position;
+    }
+
+    public RectF getSurroundingBox(){
+        return null;
     }
 }

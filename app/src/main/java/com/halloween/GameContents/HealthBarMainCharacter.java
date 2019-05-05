@@ -14,6 +14,8 @@ import com.halloween.Constants;
 import com.halloween.GameObjects.GameObject;
 import com.halloween.R;
 
+import static android.content.ContentValues.TAG;
+
 public class HealthBarMainCharacter implements GameObject {
     private enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
 
@@ -138,22 +140,22 @@ public class HealthBarMainCharacter implements GameObject {
             updateNewMana();
         if (System.currentTimeMillis() - this.lastUpdateTime > 1000 / 60) {
             updateHealthBar();
-            updateManaBar();
             this.lastUpdateTime = System.currentTimeMillis();
         }
+        updateManaBar();
     }
 
     public void updateManaBar() {
         switch (this.manaBarState) {
             case INCREASING:
-                this.increasingMana -= 5;
-                this.blueMana += 5;
+                this.increasingMana -= Constants.MANA_INCREASE_SPEED;
+                this.blueMana += Constants.MANA_INCREASE_SPEED;
                 this.greyMana = this.increasingMana;
                 this.yellowMana = this.decreasingMana;
                 if (this.increasingMana == 0) this.manaBarState = MANA_STATE.NORMAL;
                 break;
             case DECREASING:
-                this.decreasingMana -= 5;
+                this.decreasingMana -= Constants.MANA_DECREASE_SPEED;
                 this.blueMana = this.currentMana;
                 this.yellowMana = this.decreasingMana;
                 this.greyMana = this.increasingMana;
