@@ -45,7 +45,7 @@ public class BossScreen implements GameScreen {
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
         this.healthBarMainCharacter.setNewHealth(1000);
-        this.healthBarMainCharacter.setNewScore(1000);
+        this.healthBarMainCharacter.setNewMana(1000);
 
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
@@ -72,11 +72,11 @@ public class BossScreen implements GameScreen {
         this.boxes.add(new RectF(1800,0,1800,Constants.SCREEN_HEIGHT));
         this.boxes.add(new RectF(0, 0.8f*Constants.SCREEN_HEIGHT, 1800, Constants.SCREEN_HEIGHT));
         this.boxes.add(new RectF(247, 0.576923077f*Constants.SCREEN_HEIGHT, 472, 0.653846154f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(562, 0.346153846f*Constants.SCREEN_HEIGHT, 607, 	0.423076923f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(787, 0.192307692f*Constants.SCREEN_HEIGHT, 922, 0.269230769f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(697, 0.576923077f*Constants.SCREEN_HEIGHT, 1012, 0.653846154f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(1102, 0.346153846f*Constants.SCREEN_HEIGHT, 1147, 0.423076923f * Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(1237, 0.576923077f*Constants.SCREEN_HEIGHT, 1462, 0.653846154f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(562, 0.346153846f*Constants.SCREEN_HEIGHT, 607, 	0.423076923f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(787, 0.192307692f*Constants.SCREEN_HEIGHT, 922, 0.269230769f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(697, 0.576923077f*Constants.SCREEN_HEIGHT, 1012, 0.653846154f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(1102, 0.346153846f*Constants.SCREEN_HEIGHT, 1147, 0.423076923f * Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(1237, 0.576923077f*Constants.SCREEN_HEIGHT, 1462, 0.653846154f * Constants.SCREEN_HEIGHT));
     }
 
     @Override

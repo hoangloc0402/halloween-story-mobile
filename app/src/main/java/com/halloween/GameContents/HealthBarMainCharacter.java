@@ -8,18 +8,21 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Shader;
+import android.util.Log;
 
 import com.halloween.Constants;
 import com.halloween.GameObjects.GameObject;
 import com.halloween.R;
 
+import static android.content.ContentValues.TAG;
+
 public class HealthBarMainCharacter implements GameObject {
     private enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
 
-    private enum SCORE_STATE {INCREASING, NORMAL}
+    private enum MANA_STATE {INCREASING, DECREASING, NORMAL}
 
     private PointF healthBarBase = new PointF();
-    private PointF scoreBarBase = new PointF();
+    private PointF manaBarBase = new PointF();
     private double scale;
     private int healthBarWidth;
     private int healthBarHeight;
@@ -31,14 +34,16 @@ public class HealthBarMainCharacter implements GameObject {
     private int redHealth;
     private int yellowHealth;
     private int greyHealth;
-    private int scoreBarWidth;
-    private int scoreBarHeight;
-    private int currentScore;
-    private int newScore;
-    private int increasingScore;
-    private int greenScore;
-    private int greyScore;
-    private SCORE_STATE scoreBarState;
+    private int manaBarWidth;
+    private int manaBarHeight;
+    private int currentMana;
+    private int newMana;
+    private int decreasingMana;
+    private int increasingMana;
+    private int blueMana;
+    private int greyMana;
+    private int yellowMana;
+    private MANA_STATE manaBarState;
     private HEALTH_STATE healthBarState;
     private Bitmap healthBarBorder;
     private Paint paint;
@@ -65,16 +70,20 @@ public class HealthBarMainCharacter implements GameObject {
         this.greyHealth = Constants.MAX_HEALTH_MAIN_CHARACTER;
         this.healthBarState = HEALTH_STATE.NORMAL;
 
-        this.scoreBarWidth = this.healthBarBorder.getWidth() * 353 / 432;
-        this.scoreBarHeight = this.healthBarBorder.getHeight() * 28 / 92;
+        this.manaBarWidth = this.healthBarBorder.getWidth() * 353 / 432;
+        this.manaBarHeight = this.healthBarBorder.getHeight() * 28 / 92;
 
-        this.scoreBarBase.x = (float) (this.healthBarBorder.getWidth() * 65 / 432);
-        this.scoreBarBase.y = (float) (this.healthBarBorder.getHeight() * 62 / 92);
+        this.manaBarBase.x = (float) (this.healthBarBorder.getWidth() * 65 / 432);
+        this.manaBarBase.y = (float) (this.healthBarBorder.getHeight() * 62 / 92);
 
-        this.currentScore = 0;
-        this.newScore = 0;
-        this.increasingScore = 0;
-        this.scoreBarState = SCORE_STATE.NORMAL;
+        this.currentMana = 0;
+        this.newMana = 0;
+        this.decreasingMana = 0;
+        this.increasingMana = 0;
+        this.blueMana = 0;
+        this.yellowHealth = 0;
+        this.greyHealth = Constants.MAIN_CHARACTER_MAX_MANA;
+        this.manaBarState = MANA_STATE.NORMAL;
 
         this.lastUpdateTime = System.currentTimeMillis();
         this.paint = new Paint();
@@ -101,18 +110,18 @@ public class HealthBarMainCharacter implements GameObject {
                 healthBarBase.y, healthBarBase.x + redHeathWidth + yellowHealthWidth, healthBarBase.y + this.healthBarHeight, yellowHealthBarPaint, canvas);
         drawRectWithOneRounded(healthBarBase.x, healthBarBase.y, healthBarBase.x + redHeathWidth, healthBarBase.y + this.healthBarHeight, redHealthBarPaint, canvas);
 
-        Paint greenScoreBarPaint = new Paint();
-        Paint greyScoreBarPaint = new Paint();
+        Paint blueManaBarPaint = new Paint();
+        Paint greyManaBarPaint = new Paint();
 
-        greenScoreBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(218, 255, 187), Color.rgb(77, 170, 0), Shader.TileMode.CLAMP));
-        greyScoreBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(230, 214, 255), Color.rgb(122, 118, 119), Shader.TileMode.CLAMP));
+        blueManaBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(218, 255, 187), Color.rgb(77, 170, 0), Shader.TileMode.CLAMP));
+        greyManaBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(230, 214, 255), Color.rgb(122, 118, 119), Shader.TileMode.CLAMP));
 
-        float greenScoreWidth = this.scoreBarWidth * this.greenScore / Constants.MAX_SCORE;
-        float greyScoreWidth = this.scoreBarWidth * this.greyScore / Constants.MAX_SCORE;
+        float blueManaWidth = this.manaBarWidth * this.blueMana / Constants.MAIN_CHARACTER_MAX_MANA;
+//        float greyManaWidth = this.manaBarWidth * this.greyMana / Constants.MAIN_CHARACTER_MAX_MANA;
 
-        drawRectWithOneRounded(scoreBarBase.x + greenScoreWidth,
-                scoreBarBase.y, scoreBarBase.x + greenScoreWidth + greyScoreWidth, scoreBarBase.y + this.scoreBarHeight, greyScoreBarPaint, canvas);
-        drawRectWithOneRounded(scoreBarBase.x, scoreBarBase.y, scoreBarBase.x + greenScoreWidth, scoreBarBase.y + this.scoreBarHeight, greenScoreBarPaint, canvas);
+//        drawRectWithOneRounded(manaBarBase.x + blueManaWidth,
+//                manaBarBase.y, manaBarBase.x + blueManaWidth + greyManaWidth, manaBarBase.y + this.manaBarHeight, greyManaBarPaint, canvas);
+        drawRectWithOneRounded(manaBarBase.x, manaBarBase.y, manaBarBase.x + blueManaWidth, manaBarBase.y + this.manaBarHeight, blueManaBarPaint, canvas);
 
         canvas.drawBitmap(this.healthBarBorder, 0, 0, paint);
     }
@@ -127,22 +136,30 @@ public class HealthBarMainCharacter implements GameObject {
     public void update() {
         if (this.newHealth != this.currentHealth)
             updateNewHealth();
-        if (this.newScore != this.currentScore)
-            updateNewScore();
+        if (this.newMana != this.currentMana)
+            updateNewMana();
         if (System.currentTimeMillis() - this.lastUpdateTime > 1000 / 60) {
             updateHealthBar();
-            updateScoreBar();
             this.lastUpdateTime = System.currentTimeMillis();
         }
+        updateManaBar();
     }
 
-    public void updateScoreBar() {
-        switch ((this.healthBarState)) {
+    public void updateManaBar() {
+        switch (this.manaBarState) {
             case INCREASING:
-                this.increasingScore -= 5;
-                this.greenScore += 5;
-                this.greyScore = this.increasingScore;
-                if (this.increasingScore == 0) this.healthBarState = HEALTH_STATE.NORMAL;
+                this.increasingMana -= Constants.MANA_INCREASE_SPEED;
+                this.blueMana += Constants.MANA_INCREASE_SPEED;
+                this.greyMana = this.increasingMana;
+                this.yellowMana = this.decreasingMana;
+                if (this.increasingMana == 0) this.manaBarState = MANA_STATE.NORMAL;
+                break;
+            case DECREASING:
+                this.decreasingMana -= Constants.MANA_DECREASE_SPEED;
+                this.blueMana = this.currentMana;
+                this.yellowMana = this.decreasingMana;
+                this.greyMana = this.increasingMana;
+                if (this.decreasingMana == 0) this.manaBarState = MANA_STATE.NORMAL;
                 break;
             case NORMAL:
                 break;
@@ -174,16 +191,50 @@ public class HealthBarMainCharacter implements GameObject {
         }
     }
 
-    public void updateNewScore() {
-        switch (this.scoreBarState) {
+    public void updateNewMana() {
+        switch (this.manaBarState) {
             case NORMAL:
-                this.increasingScore = this.newScore - this.currentScore;
-                this.currentScore = this.newScore;
-                this.scoreBarState = SCORE_STATE.INCREASING;
+                if (this.newMana > this.currentMana) {
+                    this.increasingMana = this.newMana - this.currentMana;
+                    this.currentMana = this.newMana;
+                    this.manaBarState = MANA_STATE.INCREASING;
+                } else {
+                    this.decreasingMana = this.currentMana - this.newMana;
+                    this.currentMana = this.newMana;
+                    this.manaBarState = MANA_STATE.DECREASING;
+                }
+                break;
+            case DECREASING:
+                if (this.newMana > this.currentMana) {
+                    if (this.newMana - this.currentMana >= this.decreasingMana) {
+                        this.increasingMana = this.newMana - this.currentMana;
+                        this.currentMana = this.newMana;
+                        this.decreasingMana = 0;
+                        this.manaBarState = MANA_STATE.INCREASING;
+                    } else {
+                        this.decreasingMana -= this.newMana - this.currentMana;
+                        this.currentMana = this.newMana;
+                    }
+                } else {
+                    this.decreasingMana += this.currentMana - this.newMana;
+                    this.currentMana = this.newMana;
+                }
                 break;
             case INCREASING:
-                this.increasingScore += this.newScore - this.currentScore;
-                this.currentScore = this.newScore;
+                if (this.newMana > this.currentMana) {
+                    this.increasingMana += this.newMana - this.currentMana;
+                    this.currentMana = this.newMana;
+                } else {
+                    if (this.currentMana - this.newMana <= this.increasingMana) {
+                        this.increasingMana -= this.currentMana - this.newMana;
+                        this.currentMana = this.newMana;
+                    } else {
+                        this.decreasingMana = this.currentMana - this.newMana;
+                        this.increasingMana = 0;
+                        this.currentMana = this.newMana;
+                        this.manaBarState = MANA_STATE.DECREASING;
+                    }
+                }
                 break;
             default:
                 break;
@@ -204,10 +255,8 @@ public class HealthBarMainCharacter implements GameObject {
                 }
                 break;
             case DECREASING:
-                System.out.println("decresing");
                 if (this.newHealth > this.currentHealth) {
                     if (this.newHealth - this.currentHealth >= this.decreasingHealth) {
-                        System.out.println("new - current >= decreasing");
                         this.increasingHealth = this.newHealth - this.currentHealth;
                         this.currentHealth = this.newHealth;
                         this.decreasingHealth = 0;
@@ -254,11 +303,11 @@ public class HealthBarMainCharacter implements GameObject {
         this.newHealth = newHealth;
     }
 
-    public void setNewScore(int newScore) {
-        this.newScore = newScore;
+    public void setNewMana(int newMana) {
+        this.newMana = newMana;
     }
 
-    public int getCurrentScore() {
-        return currentScore;
+    public int getCurrentMana() {
+        return currentMana;
     }
 }

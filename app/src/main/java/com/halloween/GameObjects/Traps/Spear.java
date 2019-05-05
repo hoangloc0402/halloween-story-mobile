@@ -14,10 +14,10 @@ import com.halloween.R;
 public class Spear extends Trap {
     private Animation workingSpear;
 
-    public Spear(PointF postition, long timeBetweenTwoAnimation) {
+    public Spear(PointF postition, long timeBetweenTwoAnimation, float scale) {
         this.position = postition;
         this.timeBetweenTwoAnimation = timeBetweenTwoAnimation;
-        this.scale = 3f;
+        this.scale = scale;
         this.frameHeight = (int) (86 * scale);
         this.frameWidth = (int) (77 * scale);
         this.workingSpear = new Animation(R.drawable.spear_4, frameWidth, frameHeight, 4, 150);
@@ -28,6 +28,7 @@ public class Spear extends Trap {
         this.lastWorkingTime = System.currentTimeMillis();
     }
 
+    @Override
     public RectF getSurroundingBox() {
         RectF surroundingBox = new RectF();
         TrapEffectingBox trapEffectingBox = trapEffectingBoxes[0];

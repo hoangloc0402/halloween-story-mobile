@@ -36,6 +36,8 @@ public class Animation {
         this.offsetBottomRight = offsetBottomRight;
         this.animationWidth = this.frameWidth - offsetTopLeft.x - offsetBottomRight.x;
         this.animationHeight = this.frameHeight - offsetTopLeft.y - offsetBottomRight.y;
+        this.animationWidth = Constants.getAbsoluteXLength(this.animationWidth);
+//        this.animationHeight = Constants.getAbsoluteXLength(this.animationHeight);
         this.sourceRect = new Rect(0, 0, frameWidth, frameHeight);
         this.destinationRect = new RectF();
         this.surroundingRect = new RectF();
