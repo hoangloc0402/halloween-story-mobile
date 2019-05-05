@@ -57,6 +57,14 @@ public class Constants {
 
     public static final int backgroundMapAssetHeight = 578;
     public static final int backgroundBossMapAssetHeight = 780;
+
+    public static final int FIRE_TRAP_DAMAGE = 50;
+    public static final int CAMP_FIRE_DAMAGE = 10;
+    public static final int SPEAR_DAMAGE = 1000;
+    public static final int SPEAR_HORIZONTAL_DAMAGE = 30;
+    public static final int SPEAR_VERTICAL_DAMAGE = 30;
+
+
     public static float getRelativeXPosition(float x, GAME_STATE game_state)  {
         return getRelativeXPosition(x);
     }
