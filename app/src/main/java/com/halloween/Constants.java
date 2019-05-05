@@ -14,6 +14,7 @@ public class Constants {
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
     public static boolean JOYSTICK_ATK_STATE = false;
     public static boolean JOYSTICK_JUMP_STATE = false;
+    public static boolean JOYSTICK_TRANSFORM_STATE = false;
 
     public static float BACKGROUND_X_AXIS = 0.0f;
 
@@ -43,7 +44,9 @@ public class Constants {
     public static final float GRAVITY = 2.5f;
     public static final int  MAIN_CHARACTER_ATTACK_POWER = 10;
     public static final int MAIN_CHARACTER_MAX_SCORE = 1000;
-    public static final int MAIN_CHARACTER_MAX_MANA = 10000;
+
+    public static final int MAIN_CHARACTER_MAX_MANA = 1000;
+    public static boolean MAIN_CHARACTER_IS_FULL_MANA = true;
     public static final int MANA_INCREASE_SPEED = 40;
     public static final int MANA_DECREASE_SPEED = 5;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
