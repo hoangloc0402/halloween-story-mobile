@@ -143,11 +143,9 @@ public class GraveyardScreen implements GameScreen {
 //        this.zombie.update(mainCharacter.getSurroundingBox());
         joyStick.update();
 //        if (portal.isInRange()) {this.portal.update();}
-        int mana = mainCharacter.getManaPoint();
-        if (mana >= Constants.MAIN_CHARACTER_MAX_MANA)
-            mainCharacter.isInUltimateForm = true;
+
         healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
-        healthBarMainCharacter.setNewMana(mana);
+        healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
         healthBarMainCharacter.update();
 
         tempSurrounding = mainCharacter.getSurroundingBox();
@@ -155,7 +153,7 @@ public class GraveyardScreen implements GameScreen {
             tempRect = trap.getSurroundingBox();
             if (tempRect!=null){
                 if (tempSurrounding.intersect(tempRect))
-                    mainCharacter.decreaseHealth(10);
+                    mainCharacter.decreaseHealth(trap.getDamage());
             }
             trap.update();
         }

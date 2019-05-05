@@ -58,7 +58,7 @@ public class MainCharacter {
     }
 
     private void loadAnimation() {
-        float SCALE = 2;
+        float SCALE = 1.75f;
 //        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*SCALE,97*SCALE,8, 100);
         this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103 * SCALE, 97 * SCALE, 8, 100, new PointF(60 * SCALE, 26 * SCALE));
         this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103 * SCALE, 97 * SCALE, 4, 100, new PointF(60 * SCALE, 26 * SCALE));
@@ -101,8 +101,11 @@ public class MainCharacter {
 
     private void updateMovement(ArrayList<RectF> boxes) {
         if (this.isAlive) {
-//            if (Constants.JOYSTICK_ATK_STATE)
-//                this.isInUltimateForm = true;
+            if (Constants.JOYSTICK_TRANSFORM_STATE){
+                Constants.JOYSTICK_TRANSFORM_STATE = false;
+                this.isInUltimateForm = true;
+            }
+
 
             if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.LEFT) {
                 this.velocity.x = - Constants.MAIN_CHARACTER_V_X;
@@ -250,6 +253,10 @@ public class MainCharacter {
     }
 
     private void updateMana() {
+        if (this.currentMana >= Constants.MAIN_CHARACTER_MAX_MANA)
+            Constants.MAIN_CHARACTER_IS_FULL_MANA = true;
+        else
+            Constants.MAIN_CHARACTER_IS_FULL_MANA = false;
         if (this.isInUltimateForm) {
             this.decreaseMana(Constants.MANA_DECREASE_SPEED);
         }

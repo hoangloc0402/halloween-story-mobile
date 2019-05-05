@@ -46,7 +46,7 @@ public class Constants {
     public static final int MAIN_CHARACTER_MAX_SCORE = 1000;
 
     public static final int MAIN_CHARACTER_MAX_MANA = 1000;
-    public static boolean MAIN_CHARACTER_IS_FULL_MANA = true;
+    public static boolean MAIN_CHARACTER_IS_FULL_MANA = false;
     public static final int MANA_INCREASE_SPEED = 40;
     public static final int MANA_DECREASE_SPEED = 5;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
