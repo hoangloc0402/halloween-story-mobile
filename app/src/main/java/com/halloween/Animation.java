@@ -77,13 +77,13 @@ public class Animation {
         if (!this.isPlaying) currentFrameIndex = 0;
         Rect whatToDraw = getCurrentFrame();
         RectF whereToDraw = getDestinationRect(position);
-//        if (isFlip) {
-//            canvas.save();
-//            canvas.scale(-1,1, position.x + animationWidth/2, 0);
-//            canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
-//            canvas.restore();
-//        }
-//        else
+        if (isFlip) {
+            canvas.save();
+            canvas.scale(-1,1, position.x + animationWidth/2, 0);
+            canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
+            canvas.restore();
+        }
+        else
             canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
     }
 
@@ -102,25 +102,25 @@ public class Animation {
     }
 
     public Rect getCurrentFrame() {
-        if (this.isFlip) {
-            this.sourceRect.left = (this.currentFrameIndex + 1) * this.frameWidth;
-            this.sourceRect.right = this.sourceRect.left - this.frameWidth;
-        } else {
+//        if (this.isFlip) {
+//            this.sourceRect.left = (this.currentFrameIndex + 1) * this.frameWidth;
+//            this.sourceRect.right = this.sourceRect.left - this.frameWidth;
+//        } else {
             this.sourceRect.left = this.currentFrameIndex * this.frameWidth;
             this.sourceRect.right = this.sourceRect.left + this.frameWidth;
-        }
+//        }
         return sourceRect;
     }
 
     public RectF getDestinationRect(PointF position) {
         float left, top;
-        if (this.isFlip) {
-            left = position.x - this.offsetBottomRight.x;
-            top = position.y - this.offsetTopLeft.y;
-        } else {
+//        if (this.isFlip) {
+//            left = position.x - this.offsetBottomRight.x;
+//            top = position.y - this.offsetTopLeft.y;
+//        } else {
             left = position.x - this.offsetTopLeft.x;
             top = position.y - this.offsetTopLeft.y;
-        }
+//        }
         this.destinationRect.set(left, top, left + this.frameWidth, top + this.frameHeight);
         return destinationRect;
     }
