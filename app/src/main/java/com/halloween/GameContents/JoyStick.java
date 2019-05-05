@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.halloween.Constants;
 import com.halloween.GameObjects.GameObject;
@@ -15,8 +16,7 @@ import com.halloween.R;
 public class JoyStick implements GameObject {
     private Bitmap joystickBase, joystickButton;
 
-    public boolean isPressedJoyStick = false;
-    public boolean isPressedPause = false;
+    public boolean isPressedJoyStick = false, isPressedPause = false, isPressedTransform = false;
     private float offset = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.05);
     private float baseSize = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.32);
     private float buttonSize = (float)(baseSize * 0.5);
@@ -26,8 +26,8 @@ public class JoyStick implements GameObject {
     private PointF joystickButtonPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
     private PointF joystickButtonOriginalPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
 
-    private Bitmap pauseButton, pauseButtonHover, jumpButton, jumpButtonHover, atkButton, atkButtonHover;
-    private Point pauseButtonPosition, jumpButtonPosition, atkButtonPosition;
+    private Bitmap pauseButton, pauseButtonHover, jumpButton, jumpButtonHover, atkButton, atkButtonHover, transformButton, transformButtonHover;
+    private Point pauseButtonPosition, jumpButtonPosition, atkButtonPosition, transformButtonPosition;
 
     public JoyStick() {
 //        this.joystickBase = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.joystick_base);
@@ -54,6 +54,12 @@ public class JoyStick implements GameObject {
         this.atkButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.attack_button_hover);
         this.atkButtonHover = Bitmap.createScaledBitmap(atkButtonHover, (int) buttonSize   , (int) buttonSize, false);
         this.atkButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - jumpButton.getWidth() - atkButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - offset - atkButton.getHeight()));
+
+        this.transformButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.transform_button);
+        this.transformButton = Bitmap.createScaledBitmap(transformButton, (int) (0.7f * buttonSize) , (int) (0.7f * buttonSize), false);
+        this.transformButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.transform_button_hover);
+        this.transformButtonHover = Bitmap.createScaledBitmap(transformButtonHover, (int)(0.7f * buttonSize)  , (int) (0.7f * buttonSize), false);
+        this.transformButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 3.5f - jumpButton.getWidth() - atkButton.getWidth() - transformButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - offset - atkButton.getHeight() + 0.5f * (atkButton.getHeight() - transformButton.getHeight())));
 
         this.paint.setAlpha(255);
     }
@@ -88,6 +94,13 @@ public class JoyStick implements GameObject {
     public boolean isInRangeOfJumpButton(float x, float y) {
         if ( x > jumpButtonPosition.x && x < jumpButtonPosition.x + jumpButton.getWidth() &&
                 y > jumpButtonPosition.y && y < jumpButtonPosition.y + jumpButton.getHeight())
+            return true;
+        else
+            return false;
+    }
+    public boolean isInRangeOfTransformButton(float x, float y) {
+        if ( x > transformButtonPosition.x && x < transformButtonPosition.x +  transformButton.getWidth() &&
+                y > transformButtonPosition.y && y < transformButtonPosition.y +  transformButton.getHeight())
             return true;
         else
             return false;
@@ -165,6 +178,13 @@ public class JoyStick implements GameObject {
         } else {
             canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
         }
+        if (Constants.MAIN_CHARACTER_IS_FULL_MANA) {
+            if (isPressedTransform) {
+                canvas.drawBitmap(transformButtonHover, transformButtonPosition.x, transformButtonPosition.y, new Paint());
+            } else {
+                canvas.drawBitmap(transformButton, transformButtonPosition.x, transformButtonPosition.y, new Paint());
+            }
+        }
         if (Constants.JOYSTICK_ATK_STATE) {
             canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paint);
         } else {
@@ -176,6 +196,121 @@ public class JoyStick implements GameObject {
             canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
         }
         canvas.drawBitmap(joystickButton, joystickButtonPosition.x, joystickButtonPosition.y, paint);
+    }
+
+    public void receiveTouch(MotionEvent event) {
+        int pointerIndex = event.getActionIndex();
+        int pointerId = event.getPointerId(pointerIndex);
+        int maskedAction = event.getActionMasked();
+        float x = event.getX(pointerIndex);
+        float y = event.getY(pointerIndex);
+
+
+        switch (maskedAction) {
+            case MotionEvent.ACTION_UP:
+                // Log.d("MOTION:", "ACTION_UP" + x + " " + y );
+                if (isInRangeOfPauseButton(x, y)) {
+                    backToCenter();
+                    isPressedPause = false;
+                    Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
+                }
+                if (Constants.MAIN_CHARACTER_IS_FULL_MANA && isInRangeOfTransformButton(x, y)) {
+                    isPressedTransform = false;
+                    Constants.JOYSTICK_TRANSFORM_STATE = true;
+                }
+//                if (isInRangeOfAtkButton(x, y)) {
+                Constants.JOYSTICK_ATK_STATE = false;
+//                }
+//                if (isInRangeOfJumpButton(x, y)) {
+                Constants.JOYSTICK_JUMP_STATE = false;
+//                }
+                if (isInRangeOfJoyStick(x, y)) {
+                    backToCenter();
+                }
+                break;
+            case MotionEvent.ACTION_DOWN:
+                // Log.d("MOTION:", "ACTION_DOWN" + x + " " + y);
+                if (isInRangeOfJoyStick(x, y)) {
+                    updatePosition(x, y);
+                }
+                if (isInRangeOfJumpButton(x, y)) {
+                    Constants.JOYSTICK_JUMP_STATE = true;
+                }
+                if (isInRangeOfAtkButton(x, y)) {
+                    Constants.JOYSTICK_ATK_STATE = true;
+                }
+                if (isInRangeOfPauseButton(x, y)) {
+                    isPressedPause = true;
+                }
+                if (Constants.MAIN_CHARACTER_IS_FULL_MANA && isInRangeOfTransformButton(x, y)) {
+                    isPressedTransform = true;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                // Log.d("MOTION:", "ACTION_MOVE" + x + " " + y);
+                if (isInRangeOfJoyStick(x, y)) {
+                    updatePosition(x, y);
+                } else {
+                    if (isPressedJoyStick) {
+                        backToCenter();
+                    }
+                }
+//                if (isInRangeOfJumpButton(x, y)) {
+//                    Constants.JOYSTICK_JUMP_STATE = true;
+//                }
+//                if (isInRangeOfAtkButton(x, y)) {
+//                    Constants.JOYSTICK_ATK_STATE = true;
+//                }
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                // Log.d("MOTION:", "ACTION_POINTER_DOWN" + x + " " + y);
+                if (isInRangeOfJoyStick(x, y)) {
+                    updatePosition(x, y);
+                }
+                if (isInRangeOfJumpButton(x, y)) {
+                    Constants.JOYSTICK_JUMP_STATE = true;
+                }
+                if (isInRangeOfAtkButton(x, y)) {
+                    Constants.JOYSTICK_ATK_STATE = true;
+                }
+                if (isInRangeOfPauseButton(x, y)) {
+                    isPressedPause = true;
+                }
+                if (Constants.MAIN_CHARACTER_IS_FULL_MANA && isInRangeOfTransformButton(x, y)) {
+                    isPressedTransform = true;
+                }
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                // Log.d("MOTION:", "ACTION_POINTER_UP" + x + " " + y);
+                if (isInRangeOfPauseButton(x, y)) {
+                    backToCenter();
+                    isPressedPause = false;
+                    Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PAUSE;
+                }
+                if (Constants.MAIN_CHARACTER_IS_FULL_MANA && isInRangeOfTransformButton(x, y)) {
+                    isPressedTransform = false;
+                    Constants.JOYSTICK_TRANSFORM_STATE = true;
+                }
+                if (isInRangeOfJoyStick(x, y)) {
+                    backToCenter();
+                }
+//                if (isInRangeOfJumpButton(x, y)) {
+                Constants.JOYSTICK_JUMP_STATE = false;
+//                }
+//                if (isInRangeOfAtkButton(x, y)) {
+                Constants.JOYSTICK_ATK_STATE = false;
+//                }
+                break;
+            case MotionEvent.ACTION_OUTSIDE:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                Constants.JOYSTICK_ATK_STATE = false;
+                Constants.JOYSTICK_JUMP_STATE = false;
+                isPressedJoyStick = false;
+                isPressedPause = false;
+                isPressedTransform = false;
+                break;
+        }
     }
 
     @Override
