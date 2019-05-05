@@ -34,7 +34,7 @@ public class CampFire extends Trap {
         TrapEffectingBox trapEffectingBox = trapEffectingBoxes[0];
         PointF topLeft = trapEffectingBox.getTopLeft();
         PointF bottomRight = trapEffectingBox.getBottomRight();
-        surroundingBox.set(this.position.x + topLeft.x * scale, topLeft.y * scale + this.position.y, this.position.x + bottomRight.x * scale, bottomRight.y * scale + this.position.y);
+        surroundingBox.set(this.position.x + Constants.getAbsoluteXLength(topLeft.x * scale) , topLeft.y * scale + this.position.y, this.position.x + Constants.getAbsoluteXLength( bottomRight.x * scale), bottomRight.y * scale + this.position.y);
         return surroundingBox;
     }
 
