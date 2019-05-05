@@ -8,11 +8,10 @@ import android.graphics.RectF;
 
 import com.halloween.Animation;
 import com.halloween.Constants;
-import com.halloween.GameObjects.GameObject;
 import com.halloween.GameObjects.Trap;
 import com.halloween.R;
 
-public class SpearHorizontal extends Trap implements GameObject {
+public class SpearHorizontal extends Trap {
     private Animation burningFire;
 
     public SpearHorizontal(PointF postition, long timeBetweenTwoAnimation) {

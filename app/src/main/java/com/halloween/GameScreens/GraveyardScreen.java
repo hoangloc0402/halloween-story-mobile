@@ -16,6 +16,7 @@ import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.MainCharacter;
+import com.halloween.GameObjects.Trap;
 import com.halloween.GameObjects.Traps.CampFire;
 import com.halloween.GameObjects.Traps.FireTrap;
 import com.halloween.GameObjects.Traps.Spear;
@@ -24,8 +25,9 @@ import com.halloween.GameObjects.Traps.SpearVertical;
 import com.halloween.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class GraveyardScreen implements GameScreen{
+public class GraveyardScreen implements GameScreen {
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
     private HealthBarMainCharacter healthBarMainCharacter;
@@ -40,6 +42,8 @@ public class GraveyardScreen implements GameScreen{
     private Paint paint;
 
 //    private Zombie zombie;
+
+    private ArrayList<Trap> traps;
 
     private FireTrap fireTrap;
     private CampFire campFire;
@@ -60,8 +64,8 @@ public class GraveyardScreen implements GameScreen{
 
         this.backgroundBlock = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_merged);
         this.backgroundBlock = Bitmap.createScaledBitmap(backgroundBlock, 10000, 578, false);
-        this.backgroundBlockWhat = new Rect(0, 0, (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ), backgroundBlock.getHeight());
-        this.backgroundBlockWhere = new RectF((float)0.0, (float)0.0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        this.backgroundBlockWhat = new Rect(0, 0, (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT), backgroundBlock.getHeight());
+        this.backgroundBlockWhere = new RectF((float) 0.0, (float) 0.0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
         this.backgroundCloud = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.map_cloud);
         this.backgroundCloud = Bitmap.createScaledBitmap(backgroundCloud, (int) (Constants.SCREEN_HEIGHT * 800 * 0.4 / 320), (int) (Constants.SCREEN_HEIGHT * 0.4), false);
@@ -79,12 +83,40 @@ public class GraveyardScreen implements GameScreen{
         this.healthBarMainCharacter.setNewHealth(1000);
         this.healthBarMainCharacter.setNewScore(1000);
 
-        this.fireTrap = new FireTrap(new PointF(1200f, 200f),2000);
-        this.campFire = new CampFire(new PointF(1300f, 200f));
+        this.traps = new ArrayList<>();
+        this.initTraps();
+
+        /*this.fireTrap = new FireTrap(new PointF(7770, (float) (0.8 * Constants.SCREEN_HEIGHT - 52*2 - 163*2)), 2000);
+        this.campFire = new CampFire(new PointF(10700*10000/13500, 200f));
         this.spear = new Spear(new PointF(1500f, 200f), 2000);
         this.spearHorizontal = new SpearHorizontal(new PointF(1600f, 200f), 1000);
-        this.spearVertical = new SpearVertical(new PointF(1700f, 200f), 1000);
+        this.spearVertical = new SpearVertical(new PointF(1700f, 200f), 1000);*/
+    }
 
+    private void initTraps() {
+        traps.add(new SpearVertical(new PointF(4990, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * 2)), 1000));
+        traps.add(new SpearVertical(new PointF(5400, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * 2)), 1000));
+        traps.add(new SpearVertical(new PointF(5772, (float) (0.8 * Constants.SCREEN_HEIGHT - 222 * Constants.SCREEN_HEIGHT / 578 - 93 * 2)), 1000));
+        traps.add(new SpearVertical(new PointF(6237, (float) (0.8 * Constants.SCREEN_HEIGHT - 175 * Constants.SCREEN_HEIGHT / 578 - 93 * 2)), 1000));
+        traps.add(new SpearVertical(new PointF(6295, (float) (0.8 * Constants.SCREEN_HEIGHT - 175 * Constants.SCREEN_HEIGHT / 578 - 93 * 2)), 1000));
+        traps.add(new SpearVertical(new PointF(8250, (float) (0.8 * Constants.SCREEN_HEIGHT - 93 * 2)), 1000));
+
+        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 315 * Constants.SCREEN_HEIGHT / 578 - 58 * 2)), 1000));
+        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 135 * Constants.SCREEN_HEIGHT / 578 - 58 * 2)), 1000));
+        traps.add(new SpearHorizontal(new PointF(8145, (float) (0.8 * Constants.SCREEN_HEIGHT - 5 * Constants.SCREEN_HEIGHT / 578 - 58 * 2)), 1000));
+
+        traps.add(new CampFire(new PointF(7375, (float) (0.8 * Constants.SCREEN_HEIGHT - 120 * 2))));
+
+        traps.add(new Spear(new PointF(5620, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * 3)), 0));
+        traps.add(new Spear(new PointF(5690, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * 3)), 0));
+        traps.add(new Spear(new PointF(5815, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * 3)), 0));
+        traps.add(new Spear(new PointF(5890, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * 3)), 0));
+        traps.add(new Spear(new PointF(6020, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * 3)), 0));
+        traps.add(new Spear(new PointF(6090, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * 3)), 0));
+        traps.add(new Spear(new PointF(6160, (float) (0.8 * Constants.SCREEN_HEIGHT - 75 * 3)), 0));
+
+        traps.add(new FireTrap(new PointF(7770, (float) (0.8 * Constants.SCREEN_HEIGHT - 45 * Constants.SCREEN_HEIGHT / 578 - 163 * 2)), 2000));
+        traps.add(new FireTrap(new PointF(7900, (float) (0.8 * Constants.SCREEN_HEIGHT - 221 * Constants.SCREEN_HEIGHT / 578 - 163 * 2)), 2000));
     }
 
     @Override
@@ -98,29 +130,33 @@ public class GraveyardScreen implements GameScreen{
         backgroundCloudOffset += 1;
         backgroundCloudSmallOffset += 1.5f;
         if (backgroundCloudOffset > backgroundCloud.getWidth()) backgroundCloudOffset = 0f;
-        if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth()) backgroundCloudSmallOffset = 0f;
+        if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth())
+            backgroundCloudSmallOffset = 0f;
 
         mainCharacter.update(boxes);
 //        this.zombie.update(mainCharacter.getSurroundingBox());
         joyStick.update();
 //        if (portal.isInRange()) {this.portal.update();}
         healthBarMainCharacter.update();
-        fireTrap.update();
+        for (Trap trap : traps) {
+            trap.update();
+        }
+        /*fireTrap.update();
         campFire.update();
         spear.update();
         spearHorizontal.update();
-        spearVertical.update();
+        spearVertical.update();*/
 
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
-        if (mainPosition.x < Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ) * 0.3) {
-            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ) * 0.3);
-        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + 0.6f * (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )) {
-            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - 0.6f * (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
+        if (mainPosition.x < Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT) * 0.3) {
+            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT) * 0.3);
+        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + 0.6f * (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)) {
+            Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - 0.6f * (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT));
         }
         Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
-        Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT ));
-        this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH *  backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT )), backgroundBlock.getHeight());
+        Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT));
+        this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)), backgroundBlock.getHeight());
 
 
 //        if (portal.isInSuckingRange(mainCharacter.getSurroundingBox())) {
@@ -133,17 +169,17 @@ public class GraveyardScreen implements GameScreen{
 //        Log.d("BG: ", Constants.BACKGROUND_X_AXIS + " " + backgroundBlock.getWidth() + " " + mainCharacter.getCurrentPosition().x);
         canvas.drawBitmap(background, 0, 0, paint);
         canvas.drawBitmap(backgroundMoon, (float) (Constants.SCREEN_WIDTH * 0.7), (float) (Constants.SCREEN_HEIGHT * 0.125), paint);
-        for (int i = 0; i < backgroundCloudCount; i ++) {
-            canvas.drawBitmap(backgroundCloud, -backgroundCloudOffset + backgroundCloud.getWidth()*i, Constants.SCREEN_HEIGHT * 0.8f - backgroundCloud.getHeight(), paint);
+        for (int i = 0; i < backgroundCloudCount; i++) {
+            canvas.drawBitmap(backgroundCloud, -backgroundCloudOffset + backgroundCloud.getWidth() * i, Constants.SCREEN_HEIGHT * 0.8f - backgroundCloud.getHeight(), paint);
         }
-        for (int i = 0; i < backgroundCloudSmallCount; i ++) {
-            canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth()*i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
+        for (int i = 0; i < backgroundCloudSmallCount; i++) {
+            canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth() * i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
 //        if (portal.isInRange()) {this.portal.draw(canvas);}
         RectF temp = new RectF();
-        for (RectF box: boxes){
-            temp.set(Constants.getRelativeXPosition(box.left,Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right,Constants.CURRENT_GAME_STATE), box.bottom);
+        for (RectF box : boxes) {
+            temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);
             canvas.drawRect(temp, paint);
         }
         this.mainCharacter.draw(canvas);
@@ -158,12 +194,16 @@ public class GraveyardScreen implements GameScreen{
 
 
         this.healthBarMainCharacter.draw(canvas);
-        this.fireTrap.draw(canvas);
+        for (Trap trap : traps) {
+            trap.draw(canvas);
+        }
+        System.out.println(Constants.SCREEN_HEIGHT);
+        /*this.fireTrap.draw(canvas);
         this.campFire.draw(canvas);
         this.spear.draw(canvas);
         this.spearHorizontal.draw(canvas);
         this.spearVertical.draw(canvas);
-        this.joyStick.draw(canvas);
+        this.joyStick.draw(canvas);*/
 //        this.zombie.draw(canvas);
     }
 
@@ -172,49 +212,49 @@ public class GraveyardScreen implements GameScreen{
 
     }
 
-    private void initBoxes(){
-        this.boxes.add(new RectF(0,0,0,Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(10000f,0,10000f,Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(0, 0.8f*Constants.SCREEN_HEIGHT, 10000, Constants.SCREEN_HEIGHT));
-        this.boxes.add(new RectF(382, Constants.SCREEN_HEIGHT*0.578f, 816, Constants.SCREEN_HEIGHT*0.656f));
-        this.boxes.add(new RectF(650, Constants.SCREEN_HEIGHT*0.347f, 883, Constants.SCREEN_HEIGHT*0.424f));
-        this.boxes.add(new RectF(1116.3f, Constants.SCREEN_HEIGHT*0.578f, 1283, Constants.SCREEN_HEIGHT*0.656f));
-        this.boxes.add(new RectF(1249.6f, Constants.SCREEN_HEIGHT*0.347f, 1416.3f, Constants.SCREEN_HEIGHT*0.424f));
-        this.boxes.add(new RectF(1449.6f, Constants.SCREEN_HEIGHT*0.116f, 1683, Constants.SCREEN_HEIGHT*0.193f));
-        this.boxes.add(new RectF(1716.296296f, Constants.SCREEN_HEIGHT*0.57840617f,2349.62963f, Constants.SCREEN_HEIGHT*0.655526992f));
-        this.boxes.add(new RectF(2416.296296f, Constants.SCREEN_HEIGHT*0.424164524f,2449.62963f, Constants.SCREEN_HEIGHT*0.501285347f));
-        this.boxes.add(new RectF(2549.62963f, Constants.SCREEN_HEIGHT*0.269922879f,2582.962963f, Constants.SCREEN_HEIGHT*0.347043702f));
-        this.boxes.add(new RectF(2649.62963f, Constants.SCREEN_HEIGHT*0.115681234f,2882.962963f, Constants.SCREEN_HEIGHT*0.192802057f));
-        this.boxes.add(new RectF(2949.62963f, Constants.SCREEN_HEIGHT*0.269922879f,2982.962963f, Constants.SCREEN_HEIGHT*0.347043702f));
-        this.boxes.add(new RectF(3082.962963f, Constants.SCREEN_HEIGHT*0.424164524f,3116.296296f, Constants.SCREEN_HEIGHT*0.501285347f));
-        this.boxes.add(new RectF(3449.62963f, Constants.SCREEN_HEIGHT*0.347043702f,3682.962963f, Constants.SCREEN_HEIGHT*0.424164524f));
-        this.boxes.add(new RectF(3782.962963f, Constants.SCREEN_HEIGHT*0.501285347f,3949.62963f, Constants.SCREEN_HEIGHT*0.57840617f));
-        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT*0.655526992f,4482.962963f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT*0.269922879f,4349.62963f, Constants.SCREEN_HEIGHT*0.347043702f));
-        this.boxes.add(new RectF(5082.962963f, Constants.SCREEN_HEIGHT*0.57840617f,5116.296296f, Constants.SCREEN_HEIGHT*0.655526992f));
-        this.boxes.add(new RectF(5216.296296f, Constants.SCREEN_HEIGHT*0.424164524f,5249.62963f, Constants.SCREEN_HEIGHT*0.501285347f));
-        this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT*0.269922879f,5382.962963f, Constants.SCREEN_HEIGHT*0.347043702f));
-        this.boxes.add(new RectF(5582.962963f, Constants.SCREEN_HEIGHT*0.269922879f,5616.296296f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(5782.962963f, Constants.SCREEN_HEIGHT*0.424164524f,5816.296296f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(5982.962963f, Constants.SCREEN_HEIGHT*0.269922879f,6016.296296f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(6249.62963f, Constants.SCREEN_HEIGHT*0.501285347f,6382.962963f, Constants.SCREEN_HEIGHT*0.57840617f));
-        this.boxes.add(new RectF(6366.666667f, Constants.SCREEN_HEIGHT*0.44344473f,6400f, Constants.SCREEN_HEIGHT*0.501285347f));
-        this.boxes.add(new RectF(6316.296296f, Constants.SCREEN_HEIGHT*0.57840617f,6382.962963f, Constants.SCREEN_HEIGHT*0.655526992f));
-        this.boxes.add(new RectF(6416.296296f, Constants.SCREEN_HEIGHT*0.655526992f,6549.62963f, Constants.SCREEN_HEIGHT*0.732647815f));
-        this.boxes.add(new RectF(6382.962963f, Constants.SCREEN_HEIGHT*0.501285347f,6416.296296f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(6716.296296f, Constants.SCREEN_HEIGHT*0.424164524f,7082.962963f, Constants.SCREEN_HEIGHT*0.501285347f));
-        this.boxes.add(new RectF(7149.62963f, Constants.SCREEN_HEIGHT*0.192802057f,7182.962963f, Constants.SCREEN_HEIGHT*0.269922879f));
-        this.boxes.add(new RectF(7482.962963f, Constants.SCREEN_HEIGHT*0.115681234f,7516.296296f, Constants.SCREEN_HEIGHT*0.192802057f));
-        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT*-0.642673522f,8516.296296f, Constants.SCREEN_HEIGHT*0.115681234f));
-        this.boxes.add(new RectF(8516.296296f, Constants.SCREEN_HEIGHT*-0.642673522f,8549.62963f, Constants.SCREEN_HEIGHT*0.424164524f));
-        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT*0.347043702f,8516.296296f, Constants.SCREEN_HEIGHT*0.424164524f));
-        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT*0.347043702f,8349.62963f, Constants.SCREEN_HEIGHT*0.655526992f));
-        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT*0.57840617f,8749.62963f, Constants.SCREEN_HEIGHT*0.655526992f));
-        this.boxes.add(new RectF(8049.62963f, Constants.SCREEN_HEIGHT*0.115681234f,8149.62963f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(7982.962963f, Constants.SCREEN_HEIGHT*0.269922879f,8049.62963f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(7916.296296f, Constants.SCREEN_HEIGHT*0.424164524f,7982.962963f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(7849.62963f, Constants.SCREEN_HEIGHT*0.57840617f,7916.296296f, Constants.SCREEN_HEIGHT*0.809768638f));
-        this.boxes.add(new RectF(7782.962963f, Constants.SCREEN_HEIGHT*0.732647815f,7849.62963f, Constants.SCREEN_HEIGHT*0.809768638f));
+    private void initBoxes() {
+        this.boxes.add(new RectF(0, 0, 0, Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(10000f, 0, 10000f, Constants.SCREEN_HEIGHT));
+        this.boxes.add(new RectF(0, 0.8f * Constants.SCREEN_HEIGHT, 10000, Constants.SCREEN_HEIGHT));
+//        this.boxes.add(new RectF(382, Constants.SCREEN_HEIGHT * 0.578f, 816, Constants.SCREEN_HEIGHT * 0.656f));
+//        this.boxes.add(new RectF(650, Constants.SCREEN_HEIGHT * 0.347f, 883, Constants.SCREEN_HEIGHT * 0.424f));
+//        this.boxes.add(new RectF(1116.3f, Constants.SCREEN_HEIGHT * 0.578f, 1283, Constants.SCREEN_HEIGHT * 0.656f));
+//        this.boxes.add(new RectF(1249.6f, Constants.SCREEN_HEIGHT * 0.347f, 1416.3f, Constants.SCREEN_HEIGHT * 0.424f));
+//        this.boxes.add(new RectF(1449.6f, Constants.SCREEN_HEIGHT * 0.116f, 1683, Constants.SCREEN_HEIGHT * 0.193f));
+//        this.boxes.add(new RectF(1716.296296f, Constants.SCREEN_HEIGHT * 0.57840617f, 2349.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+//        this.boxes.add(new RectF(2416.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 2449.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
+//        this.boxes.add(new RectF(2549.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 2582.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+//        this.boxes.add(new RectF(2649.62963f, Constants.SCREEN_HEIGHT * 0.115681234f, 2882.962963f, Constants.SCREEN_HEIGHT * 0.192802057f));
+//        this.boxes.add(new RectF(2949.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 2982.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+//        this.boxes.add(new RectF(3082.962963f, Constants.SCREEN_HEIGHT * 0.424164524f, 3116.296296f, Constants.SCREEN_HEIGHT * 0.501285347f));
+//        this.boxes.add(new RectF(3449.62963f, Constants.SCREEN_HEIGHT * 0.347043702f, 3682.962963f, Constants.SCREEN_HEIGHT * 0.424164524f));
+//        this.boxes.add(new RectF(3782.962963f, Constants.SCREEN_HEIGHT * 0.501285347f, 3949.62963f, Constants.SCREEN_HEIGHT * 0.57840617f));
+//        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT * 0.655526992f, 4482.962963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(4049.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 4349.62963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+//        this.boxes.add(new RectF(5082.962963f, Constants.SCREEN_HEIGHT * 0.57840617f, 5116.296296f, Constants.SCREEN_HEIGHT * 0.655526992f));
+//        this.boxes.add(new RectF(5216.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 5249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
+//        this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
+//        this.boxes.add(new RectF(5582.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5616.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(5782.962963f, Constants.SCREEN_HEIGHT * 0.424164524f, 5816.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(5982.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 6016.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(6249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.57840617f));
+//        this.boxes.add(new RectF(6366.666667f, Constants.SCREEN_HEIGHT * 0.44344473f, 6400f, Constants.SCREEN_HEIGHT * 0.501285347f));
+//        this.boxes.add(new RectF(6316.296296f, Constants.SCREEN_HEIGHT * 0.57840617f, 6382.962963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+//        this.boxes.add(new RectF(6416.296296f, Constants.SCREEN_HEIGHT * 0.655526992f, 6549.62963f, Constants.SCREEN_HEIGHT * 0.732647815f));
+//        this.boxes.add(new RectF(6382.962963f, Constants.SCREEN_HEIGHT * 0.501285347f, 6416.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(6716.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 7082.962963f, Constants.SCREEN_HEIGHT * 0.501285347f));
+//        this.boxes.add(new RectF(7149.62963f, Constants.SCREEN_HEIGHT * 0.192802057f, 7182.962963f, Constants.SCREEN_HEIGHT * 0.269922879f));
+//        this.boxes.add(new RectF(7482.962963f, Constants.SCREEN_HEIGHT * 0.115681234f, 7516.296296f, Constants.SCREEN_HEIGHT * 0.192802057f));
+//        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT * -0.642673522f, 8516.296296f, Constants.SCREEN_HEIGHT * 0.115681234f));
+//        this.boxes.add(new RectF(8516.296296f, Constants.SCREEN_HEIGHT * -0.642673522f, 8549.62963f, Constants.SCREEN_HEIGHT * 0.424164524f));
+//        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT * 0.347043702f, 8516.296296f, Constants.SCREEN_HEIGHT * 0.424164524f));
+//        this.boxes.add(new RectF(8316.296296f, Constants.SCREEN_HEIGHT * 0.347043702f, 8349.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+//        this.boxes.add(new RectF(8349.62963f, Constants.SCREEN_HEIGHT * 0.57840617f, 8749.62963f, Constants.SCREEN_HEIGHT * 0.655526992f));
+//        this.boxes.add(new RectF(8049.62963f, Constants.SCREEN_HEIGHT * 0.115681234f, 8149.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(7982.962963f, Constants.SCREEN_HEIGHT * 0.269922879f, 8049.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(7916.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 7982.962963f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(7849.62963f, Constants.SCREEN_HEIGHT * 0.57840617f, 7916.296296f, Constants.SCREEN_HEIGHT * 0.809768638f));
+//        this.boxes.add(new RectF(7782.962963f, Constants.SCREEN_HEIGHT * 0.732647815f, 7849.62963f, Constants.SCREEN_HEIGHT * 0.809768638f));
     }
 
     @Override
@@ -226,8 +266,7 @@ public class GraveyardScreen implements GameScreen{
         float y = event.getY(pointerIndex);
 
 
-        switch(maskedAction)
-        {
+        switch (maskedAction) {
             case MotionEvent.ACTION_UP:
                 // Log.d("MOTION:", "ACTION_UP" + x + " " + y );
                 if (joyStick.isInRangeOfPauseButton(x, y)) {
@@ -318,7 +357,6 @@ public class GraveyardScreen implements GameScreen{
                 break;
         }
     }
-
 
 
 }

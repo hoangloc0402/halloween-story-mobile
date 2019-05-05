@@ -8,11 +8,10 @@ import android.graphics.RectF;
 
 import com.halloween.Animation;
 import com.halloween.Constants;
-import com.halloween.GameObjects.GameObject;
 import com.halloween.GameObjects.Trap;
 import com.halloween.R;
 
-public class CampFire extends Trap implements GameObject {
+public class CampFire extends Trap {
     private Animation burningFire;
 
     public CampFire(PointF postition) {
