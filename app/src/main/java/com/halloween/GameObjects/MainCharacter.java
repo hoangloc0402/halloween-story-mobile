@@ -27,7 +27,7 @@ public class MainCharacter {
     private RectF attackRect;
     private long invincibleStartTime, blinkTime, jumpTime;
 
-    public MainCharacter(int positionX, int positionY) {
+    private MainCharacter(int positionX, int positionY) {
         this.loadAnimation();
         this.resetAllValue();
         this.position = new PointF(positionX, positionY);
@@ -37,6 +37,13 @@ public class MainCharacter {
         this.redPaint.setColor(Color.RED);
         this.attackRect = new RectF();
         this.paint = this.normalPaint;
+    }
+
+
+    public static MainCharacter getInstance() {
+        if (MainCharacter.instance == null)
+            MainCharacter.instance = new MainCharacter(0, 0);
+        return MainCharacter.instance;
     }
 
     public static MainCharacter getInstance(int positionX, int positionY) {

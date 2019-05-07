@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
@@ -127,7 +128,7 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void reset() {
-        this.mainCharacter = new MainCharacter(600, 600);
+        this.mainCharacter = MainCharacter.getInstance(100, 600);
 //        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
     }
 
@@ -169,10 +170,14 @@ public class GraveyardScreen implements GameScreen {
         Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT));
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)), backgroundBlock.getHeight());
 
-
-//        if (portal.isInSuckingRange(mainCharacter.getSurroundingBox())) {
-//            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
-//        }
+        Pair<Boolean,PointF> pair = portal.isInSuckingRange(mainCharacter.getSurroundingBox());
+        if (pair.first) {
+            MainCharacter.getInstance((int) (pair.second.x * Constants.MAIN_CHARACTER_V_X * 0.75f  + mainCharacter.getCurrentPosition().x), (int) (mainCharacter.getCurrentPosition().y));
+        }
+        if (portal.isInTransitionRange(mainCharacter.getSurroundingBox())) {
+            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
+            Constants.IS_SWITCH_GAME_STATE = true;
+        }
     }
 
     @Override
@@ -187,12 +192,12 @@ public class GraveyardScreen implements GameScreen {
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth() * i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-        if (portal.isInRange()) {this.portal.draw(canvas);}
 //        RectF temp = new RectF();
 //        for (RectF box : boxes) {
 //            temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);
 //            canvas.drawRect(temp, paint);
 //        }
+        if (portal.isInRange()) {this.portal.draw(canvas);}
         this.mainCharacter.draw(canvas);
 //        if (Constants.JOYSTICK_JUMP_STATE)
 //            mainCharacter.hurt(1);
@@ -246,8 +251,8 @@ public class GraveyardScreen implements GameScreen {
         this.boxes.add(new RectF(5216.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 5249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
         this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
         this.boxes.add(new RectF(5575f, Constants.SCREEN_HEIGHT * 0.269922879f, 5625f, Constants.SCREEN_HEIGHT * 0.809768638f));
-        this.boxes.add(new RectF(5545f, Constants.SCREEN_HEIGHT * 0.43f, 5600f, Constants.SCREEN_HEIGHT * 0.53f));
-        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.34f, 5655f, Constants.SCREEN_HEIGHT * 0.44f));
+        this.boxes.add(new RectF(5545f, Constants.SCREEN_HEIGHT * 0.45f, 5600f, Constants.SCREEN_HEIGHT * 0.51f));
+        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.36f, 5655f, Constants.SCREEN_HEIGHT * 0.43f));
         this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5820f, Constants.SCREEN_HEIGHT * 0.467128027f, 5850f, Constants.SCREEN_HEIGHT * 0.536332179f));
         this.boxes.add(new RectF(5975f, Constants.SCREEN_HEIGHT * 0.269922879f, 6025f, Constants.SCREEN_HEIGHT * 0.809768638f));

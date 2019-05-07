@@ -9,6 +9,7 @@ public class Constants {
     public static Context CURRENT_CONTEXT;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS}
     public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.PLAY;
+    public static boolean IS_SWITCH_GAME_STATE = false;
     public static GAME_STATE PREVIOUS_GAME_STATE;
     public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE};
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
@@ -59,7 +60,7 @@ public class Constants {
 
     public static final int FIRE_TRAP_DAMAGE = 50;
     public static final int CAMP_FIRE_DAMAGE = 10;
-    public static final int SPEAR_DAMAGE = 1000;
+    public static final int SPEAR_DAMAGE = 100;
     public static final int SPEAR_HORIZONTAL_DAMAGE = 30;
     public static final int SPEAR_VERTICAL_DAMAGE = 30;
 
