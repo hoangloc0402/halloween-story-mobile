@@ -14,6 +14,7 @@ import com.halloween.GameObjects.MainCharacter;
 
 public class Enemy implements GameObject {
 
+    public static final float EPSILON = 0.00000000001f;
     float currentHP;
     public Animation currentAnimation;
     Animation diedAnimation;
@@ -129,6 +130,15 @@ public class Enemy implements GameObject {
         }
     }
 
+    public boolean IsInReach(PointF position){
+        if (position.x < rightLandMark.x && position.x > leftLandMark.x){
+            if (position.y < Math.max(leftLandMark.y, rightLandMark.y) && position.y > Math.min(leftLandMark.y,rightLandMark.y)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void Hurt(int attack) {
         if (isAlive) {
             currentHP -= attack;
@@ -139,5 +149,66 @@ public class Enemy implements GameObject {
                 ChangeState(State.Died);
             }
         }
+    }
+
+    public float sign(float x){
+        if (x<0)
+            return -1f;
+        else
+            return 1f;
+    }
+
+    public void MoveToDestination(PointF position, float velocity){
+        float dx = position.x - currentPosition.x;
+        float dy = position.y - currentPosition.y;
+
+        if(dy == 0 ){
+            this.v_x = velocity * (dx/Math.abs(dx + EPSILON));
+            this.v_y = 0;
+        }else{
+            float d = dx/dy;
+            double alpha = Math.atan(d);
+            this.v_x = (float) (velocity * Math.sin(alpha) * sign((float) (alpha*dx)));
+            this.v_y = (float) (velocity * Math.cos(alpha) * sign(dy));
+        }
+
+        currentPosition.x += this.v_x;
+        currentPosition.y += this.v_y;
+
+        System.out.println("character position " + position);
+        System.out.println("current position " + currentPosition);
+
+    }
+
+//    public void MoveToDestination(PointF position){
+//        float dx = position.x - currentPosition.x;
+//        System.out.println("dx = " + dx);
+//        float dy = position.y - currentPosition.y;
+//        if(dx != 0){
+//            this.v_x = Constants.GARGOYLE_V * (dx/Math.abs(dx));
+//        }
+//        else{
+//            if(isMovingForward){
+//                this.v_x = Constants.GARGOYLE_V;
+//            }
+//            else{
+//                this.v_x = -Constants.GARGOYLE_V;
+//
+//            }
+//        }
+//
+//        if(dy != 0){
+//            this.v_y = this.v_x * (dy/dx) * (dy/Math.abs(dy));
+//        }
+//        else
+//            this.v_y = 0;
+//        currentPosition.x += this.v_x;
+//        System.out.println("v_x = " + this.v_x);
+//        System.out.println("Zombie" + currentPosition);
+//        currentPosition.y += this.v_y;
+//    }
+
+    public void GetMovingForward(){
+
     }
 }
