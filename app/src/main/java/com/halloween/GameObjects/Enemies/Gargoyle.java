@@ -15,8 +15,8 @@ public class Gargoyle extends Enemy {
 
         LoadAnimation();
 
-        this.v_x = Constants.GARGOYLE_V_X;
-        this.v_y = Constants.GARGOYLE_V_Y;
+        this.v_x = Constants.GARGOYLE_V;
+        this.v_y = this.v_x;
 
         currentState = previousState = State.Move;
 
@@ -25,7 +25,7 @@ public class Gargoyle extends Enemy {
         this.surroundingBox = new RectF();
 
 //        this.currentPosition = new PointF(700, 0.8f * Constants.SCREEN_HEIGHT - currentAnimation.frameHeight);
-        this.currentPosition = new PointF(700, 100);
+        this.currentPosition = new PointF(rightLandMark.x, rightLandMark.y);
 
 
         this.currentAnimation.play();
@@ -67,28 +67,23 @@ public class Gargoyle extends Enemy {
                 case Move:
                     ChangeState(State.Move);
                     if (isAlive) {
-                        if(IsInScreen()){
-                            MoveToDestination(playerSurroundingBox);
+//                        if(IsInScreen() && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))){
+//                            if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
+//                                isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
+//                            }
+//                            MoveToDestination(new PointF(playerSurroundingBox.left + 200 , playerSurroundingBox.top), Constants.GARGOYLE_V);
+//                        }
+//                        else {
+                        if (isMovingForward) {
+                            MoveToDestination(rightLandMark, Constants.GARGOYLE_V);
+                        } else {
+                            MoveToDestination(leftLandMark, Constants.GARGOYLE_V);
                         }
-                        else {
-                            if (isMovingForward) {
-                                currentPosition.x = currentPosition.x + this.v_x;
-                                currentPosition.y = currentPosition.y + this.v_y;
-                            } else {
-                                currentPosition.x = currentPosition.x - this.v_x;
-                                currentPosition.y = currentPosition.y - this.v_y;
-                            }
-                            if (currentPosition.x <= leftLandMark.x - Constants.BACKGROUND_X_AXIS && currentPosition.y >= leftLandMark.y) {
-                                isMovingForward = true;
-                            } else if (currentPosition.x >= rightLandMark.x - Constants.BACKGROUND_X_AXIS) {
-                                isMovingForward = false;
-                            }
+                        if (currentPosition.x <= leftLandMark.x) {
+                            isMovingForward = true;
+                        } else if (currentPosition.x >= rightLandMark.x) {
+                            isMovingForward = false;
                         }
-
-                    }
-                    if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
-//                        if (IsPlayerInRange(playerSurroundingBox, attackDistance))
-                        isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
                     }
                     break;
                 default:
@@ -99,10 +94,5 @@ public class Gargoyle extends Enemy {
         }
     }
 
-    public void MoveToDestination(RectF playerSurroundingBox){
-        float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
-        float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
-        currentPosition.x += v_x * (dx/Math.abs(dx));
-        currentPosition.y += v_y * (dy/Math.abs(dy));
-    }
+
 }

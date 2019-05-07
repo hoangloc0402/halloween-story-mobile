@@ -34,7 +34,7 @@ public class Constants {
     public final static int GARGOYLE_DAMAGE = 20;
     public final static float GARGOYLE_STARTING_HP = 50;
     public final static int GARGOYLE_POINT = 100;
-    public final static float GARGOYLE_V = 10;
+    public final static float GARGOYLE_V = 5;
     public final static int GARGOYLE_SCALE = 2;
     public final static float GARGOYLE_FOLLOW_DISTANCE = 4000000;
     public final static float GARGOYLE_ATTACK_DISTANCE = 10000;

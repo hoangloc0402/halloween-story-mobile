@@ -175,40 +175,10 @@ public class Enemy implements GameObject {
         currentPosition.x += this.v_x;
         currentPosition.y += this.v_y;
 
-        System.out.println("character position " + position);
-        System.out.println("current position " + currentPosition);
+    }
+
+    public void HitPlayer(){
 
     }
 
-//    public void MoveToDestination(PointF position){
-//        float dx = position.x - currentPosition.x;
-//        System.out.println("dx = " + dx);
-//        float dy = position.y - currentPosition.y;
-//        if(dx != 0){
-//            this.v_x = Constants.GARGOYLE_V * (dx/Math.abs(dx));
-//        }
-//        else{
-//            if(isMovingForward){
-//                this.v_x = Constants.GARGOYLE_V;
-//            }
-//            else{
-//                this.v_x = -Constants.GARGOYLE_V;
-//
-//            }
-//        }
-//
-//        if(dy != 0){
-//            this.v_y = this.v_x * (dy/dx) * (dy/Math.abs(dy));
-//        }
-//        else
-//            this.v_y = 0;
-//        currentPosition.x += this.v_x;
-//        System.out.println("v_x = " + this.v_x);
-//        System.out.println("Zombie" + currentPosition);
-//        currentPosition.y += this.v_y;
-//    }
-
-    public void GetMovingForward(){
-
-    }
 }

@@ -76,7 +76,7 @@ public class Zombie extends Enemy {
                 case Move:
                     ChangeState(State.Move);
                     if (isAlive) {
-                        currentHP -= 0.01f;
+                        currentHP -= 0.1f;
                         if (IsPlayerInRange(playerSurroundingBox, attackDistance)) {
                             ChangeState(State.Attack);
                         } else {
@@ -85,13 +85,10 @@ public class Zombie extends Enemy {
                             }
                             if (isMovingForward) {
                                 MoveToDestination(rightLandMark, Constants.ZOMBIE_V);
-//                                System.out.println("Right Landmark "+ rightLandMark);
                             } else {
                                 MoveToDestination(leftLandMark, Constants.ZOMBIE_V);
                             }
                             if (currentPosition.x <= leftLandMark.x) {
-
-//                                System.out.println("Here");
                                 isMovingForward = true;
                             } else if (currentPosition.x >= rightLandMark.x) {
                                 isMovingForward = false;
