@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
@@ -133,7 +134,7 @@ public class GraveyardScreen implements GameScreen {
 //        this.mainCharacter = new MainCharacter();
 //        this.zombie = new Zombie(new PointF(100, 700), new PointF(600, 700));
         this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
-        this.mainCharacter = new MainCharacter(100, 600);
+        this.mainCharacter = MainCharacter.getInstance(100, 600);
         this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
     }
 
@@ -179,9 +180,14 @@ public class GraveyardScreen implements GameScreen {
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)), backgroundBlock.getHeight());
 
 
-//        if (portal.isInSuckingRange(mainCharacter.getSurroundingBox())) {
-//            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
-//        }
+        Pair<Boolean,PointF> pair = portal.isInSuckingRange(mainCharacter.getSurroundingBox());
+        if (pair.first) {
+            MainCharacter.getInstance((int) (pair.second.x * Constants.MAIN_CHARACTER_V_X * 0.75f  + mainCharacter.getCurrentPosition().x), (int) (mainCharacter.getCurrentPosition().y));
+        }
+        if (portal.isInTransitionRange(mainCharacter.getSurroundingBox())) {
+            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
+            Constants.IS_SWITCH_GAME_STATE = true;
+        }
     }
 
     @Override

@@ -39,7 +39,6 @@ public class MainCharacter {
         this.paint = this.normalPaint;
     }
 
-
     public static MainCharacter getInstance() {
         if (MainCharacter.instance == null)
             MainCharacter.instance = new MainCharacter(0, 0);
@@ -82,7 +81,7 @@ public class MainCharacter {
         this.idleAnimationUlti      = new Animation(R.drawable.main_character_ulti_idle_139x181x8, 139 * SCALE2, 181 * SCALE2 , 8, 100, new PointF(29*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
         this.walkAnimationUlti      = new Animation(R.drawable.main_character_ulti_walk_133x179x8, 133 * SCALE2, 179 * SCALE2, 8, 100, new PointF(24*SCALE2, 44*SCALE2), new PointF(45*SCALE2, 0));
         this.jumpAnimationUlti      = idleAnimationUlti;
-        this.attackAnimationUlti    = new Animation(R.drawable.main_character_ulti_attack_772x348x18_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 18, 50, new PointF(492 * SCALE2, 140 * SCALE2), new PointF(214 * SCALE2, 83 * SCALE2));
+        this.attackAnimationUlti    = new Animation(R.drawable.main_character_ulti_attack_772x348x20_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 20, 50, new PointF(492 * SCALE2, 140 * SCALE2), new PointF(214 * SCALE2, 83 * SCALE2));
         this.appearAnimationUtil    = new Animation(R.drawable.main_character_ulti_appear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73*SCALE2, 69*SCALE2), new PointF(63*SCALE2, 26*SCALE2));
         this.disappearAnimationUlti = new Animation(R.drawable.main_character_ulti_disappear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73*SCALE2, 69*SCALE2), new PointF(63*SCALE2, 26*SCALE2));
     }
@@ -92,8 +91,8 @@ public class MainCharacter {
 //        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
 //        RectF atk = getAttackRange();
 //        if (atk!=null)
-//            canvas.drawRect(Constants.getRelativeXPosition(atk.left, Constants.CURRENT_GAME_STATE), atk.top, Constants.getRelativeXPosition(atk.right, Constants.CURRENT_GAME_STATE), atk.bottom , this.redPaint);
-        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
+//            canvas.drawRect(atk.left, atk.top, atk.right, atk.bottom , this.redPaint);
+//        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
     }
 
     public void update(ArrayList<RectF> boxes) {
@@ -120,16 +119,19 @@ public class MainCharacter {
             } else this.velocity.x = 0;
 
             if (this.currentAnimation == this.attackAnimationUlti){
+                this.allowLeft = this.allowRight = false;
                 this.isAttacking = !this.attackAnimationUlti.isLastFrame();
             }
-            else if (Constants.JOYSTICK_ATK_STATE)
+            else if (Constants.JOYSTICK_ATK_STATE){
                 this.isAttacking = true;
+                this.attackPower = this.isInUltimateForm?Constants.MAIN_CHARACTER_ULTIMATE_ATTACK_POWER:Constants.MAIN_CHARACTER_ATTACK_POWER;
+            }
             else {
                 this.isAttacking = false;
                 this.position.y += 10;
             }
             if (!isJumping && Constants.JOYSTICK_JUMP_STATE) {
-                Constants.JOYSTICK_JUMP_STATE = false;
+
                 this.velocity.y = Constants.MAIN_CHARACTER_V_Y;
                 this.position.y += this.velocity.y;
                 this.isJumping = true;
@@ -159,6 +161,7 @@ public class MainCharacter {
                         this.position.y = box.top - surroundingBox.height();
                         this.velocity.y = 0;
                         this.isJumping = false;
+                        Constants.JOYSTICK_JUMP_STATE = false;
                     } else if (surroundingBox.top < box.bottom && surroundingBox.bottom > box.bottom) {
                         this.position.y = box.bottom;
                         this.velocity.y = 0;
@@ -320,7 +323,11 @@ public class MainCharacter {
             return null;
         int frameIndex = currentAnimation.getCurrentFrameIndex();
         if (isInUltimateForm) {
-            return this.attackRect;
+            if (frameIndex >=4 && frameIndex <=15){
+                this.attackRect = this.currentAnimation.getDestinationRect(this.position);
+                return this.attackRect;
+            }
+            else return  null;
         }
         else {
             if (currentAnimation == attackAnimation[0])
@@ -329,7 +336,6 @@ public class MainCharacter {
             if (currentAnimation == attackAnimation[1])
                 if ((frameIndex == 1 || frameIndex == 2))
                     return null;
-//        if (currentAnimation == attackAnimation[2])
             if (currentAnimation == attackAnimation[3])
                 if ((frameIndex > 1 && frameIndex < 5))
                     return null;
@@ -356,6 +362,10 @@ public class MainCharacter {
     public void setPosition(int x, int y) {
         this.position.x = x;
         this.position.y = y;
+    }
+
+    public void move(int deltaX){
+        this.position.x += deltaX;
     }
 
     public RectF getSurroundingBox() {

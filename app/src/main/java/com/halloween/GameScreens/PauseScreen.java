@@ -86,14 +86,16 @@ public class PauseScreen implements GameScreen {
             case RESUME:
                 this.paint.setAlpha(this.paint.getAlpha() - 50);
                 if (this.paint.getAlpha() <= 50){
-                    Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PLAY;
+                    if (Constants.isInGraveyard)
+                        Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PLAY;
+                    else Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
                     this.reset();
                 }
                 break;
             case EXIT:
                 this.paint.setAlpha(this.paint.getAlpha() - 30);
                 if (this.paint.getAlpha() <= 30){
-//
+                    Constants.MAIN_ACTIVITY.finish();
                 }
                 break;
         }

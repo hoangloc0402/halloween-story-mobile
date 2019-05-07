@@ -21,12 +21,14 @@ public class ScreenManager {
     public GameScreen getActiveScreen(){
         switch (Constants.CURRENT_GAME_STATE){
             case PLAY:
+                Constants.isInGraveyard = true;
                 return graveyardScreen;
             case MAIN_MENU:
                 return mainMenuScreen;
             case PAUSE:
                 return pauseScreen;
             case BOSS:
+                Constants.isInGraveyard = false;
                 return bossScreen;
             default:
                 return null;
@@ -42,7 +44,15 @@ public class ScreenManager {
     }
 
     public void draw(Canvas canvas){
-        this.getActiveScreen().draw(canvas);
+        if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PAUSE) {
+            if (Constants.isInGraveyard)
+                graveyardScreen.draw(canvas);
+            else
+                bossScreen.draw(canvas);
+            this.getActiveScreen().draw(canvas);
+        }
+        else
+            this.getActiveScreen().draw(canvas);
     }
 
 
