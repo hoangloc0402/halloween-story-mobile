@@ -16,7 +16,7 @@ public class Zombie extends Enemy {
 
         LoadAnimation();
 
-        this.v_x = Constants.ZOMBIE_V_X;
+        this.v_x = Constants.ZOMBIE_V;
         this.v_y = 0;
 
         currentState = previousState = State.Move;
@@ -25,7 +25,7 @@ public class Zombie extends Enemy {
 
         this.surroundingBox = new RectF();
 
-        this.currentPosition = new PointF(700, 0.8f * Constants.SCREEN_HEIGHT - currentAnimation.frameHeight);
+        this.currentPosition = new PointF(rightLandMark.x, rightLandMark.y);
 
         this.currentAnimation.play();
 
@@ -77,23 +77,26 @@ public class Zombie extends Enemy {
                     ChangeState(State.Move);
                     if (isAlive) {
                         currentHP -= 0.01f;
-                        if (isMovingForward) {
-                            currentPosition.x = currentPosition.x + this.v_x;
-                            currentPosition.y = currentPosition.y + this.v_y;
-                        } else {
-                            currentPosition.x = currentPosition.x - this.v_x;
-                            currentPosition.y = currentPosition.y - this.v_y;
-                        }
-                        if (currentPosition.x <= leftLandMark.x) {
-                            isMovingForward = true;
-                        } else if (currentPosition.x >= rightLandMark.x) {
-                            isMovingForward = false;
-                        }
-                    }
-                    if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
-                        if (IsPlayerInRange(playerSurroundingBox, attackDistance))
+                        if (IsPlayerInRange(playerSurroundingBox, attackDistance)) {
                             ChangeState(State.Attack);
-                        isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
+                        } else {
+                            if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
+                                isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
+                            }
+                            if (isMovingForward) {
+                                MoveToDestination(rightLandMark, Constants.ZOMBIE_V);
+//                                System.out.println("Right Landmark "+ rightLandMark);
+                            } else {
+                                MoveToDestination(leftLandMark, Constants.ZOMBIE_V);
+                            }
+                            if (currentPosition.x <= leftLandMark.x) {
+
+//                                System.out.println("Here");
+                                isMovingForward = true;
+                            } else if (currentPosition.x >= rightLandMark.x) {
+                                isMovingForward = false;
+                            }
+                        }
                     }
                     break;
                 default:
