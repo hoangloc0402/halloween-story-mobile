@@ -139,7 +139,7 @@ public class BossScreen implements GameScreen {
 
     @Override
     public void reset() {
-        this.mainCharacter = MainCharacter.getInstance(100,100);
+        this.mainCharacter = MainCharacter.getInstance(600,600);
     }
 
     @Override

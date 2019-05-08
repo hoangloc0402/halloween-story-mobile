@@ -41,7 +41,7 @@ public class MainCharacter {
 
     public static MainCharacter getInstance() {
         if (MainCharacter.instance == null)
-            MainCharacter.instance = new MainCharacter(0, 0);
+            MainCharacter.instance = new MainCharacter(100, 100);
         return MainCharacter.instance;
     }
 
