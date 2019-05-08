@@ -92,7 +92,7 @@ public class MainCharacter {
 //        RectF atk = getAttackRange();
 //        if (atk!=null)
 //            canvas.drawRect(atk.left, atk.top, atk.right, atk.bottom , this.redPaint);
-//        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
+        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
     }
 
     public void update(ArrayList<RectF> boxes) {

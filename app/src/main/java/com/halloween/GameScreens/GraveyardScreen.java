@@ -138,6 +138,12 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void update() {
+
+        if (Constants.IS_SWITCH_GAME_STATE) {
+            Constants.IS_SWITCH_GAME_STATE = false;
+            this.reset();
+        }
+
         backgroundCloudOffset += 1;
         backgroundCloudSmallOffset += 1.5f;
         if (backgroundCloudOffset > backgroundCloud.getWidth()) backgroundCloudOffset = 0f;
