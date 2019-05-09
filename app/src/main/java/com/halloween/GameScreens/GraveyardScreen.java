@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 
@@ -18,10 +17,12 @@ import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.GameObjects.Enemies.Gargoyle;
 import com.halloween.GameObjects.Enemies.Zombie;
-import com.halloween.GameObjects.HealthPotion;
+import com.halloween.GameObjects.Potion;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.GameObjects.Potions.BigHealthPotion;
+import com.halloween.GameObjects.Potions.BigManaPotion;
 import com.halloween.GameObjects.Potions.SmallHealthPotion;
+import com.halloween.GameObjects.Potions.SmallManaPotion;
 import com.halloween.GameObjects.Trap;
 import com.halloween.GameObjects.Traps.CampFire;
 import com.halloween.GameObjects.Traps.FireTrap;
@@ -31,9 +32,6 @@ import com.halloween.GameObjects.Traps.SpearVertical;
 import com.halloween.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import static android.content.ContentValues.TAG;
 
 public class GraveyardScreen implements GameScreen {
 
@@ -63,7 +61,7 @@ public class GraveyardScreen implements GameScreen {
 
     private ArrayList<Trap> traps;
     private ArrayList<Enemy> enemies;
-    private ArrayList<HealthPotion> healthPotions;
+    private ArrayList<Potion> potions;
 
     public GraveyardScreen() {
         this.paint = new Paint();
@@ -95,7 +93,7 @@ public class GraveyardScreen implements GameScreen {
         this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
-        this.healthPotions = new ArrayList<>();
+        this.potions = new ArrayList<>();
         this.initPotions();
 
         this.traps = new ArrayList<>();
@@ -109,7 +107,8 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initPotions() {
-        this.healthPotions.add(new BigHealthPotion(new PointF(200f, 200f), this.boxes));
+        this.potions.add(new BigHealthPotion(new PointF(200f, 200f), this.boxes));
+        this.potions.add(new BigManaPotion(new PointF(300f, 200f), this.boxes));
     }
 
     private void initTraps() {
@@ -161,7 +160,10 @@ public class GraveyardScreen implements GameScreen {
     @Override
     public void update() {
         if (Constants.JOYSTICK_ATK_STATE)
-            this.healthPotions.add(new SmallHealthPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
+            this.potions.add(new SmallHealthPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
+
+        if (Constants.JOYSTICK_JUMP_STATE)
+            this.potions.add(new SmallManaPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
 
         if (Constants.IS_SWITCH_GAME_STATE) {
             Constants.IS_SWITCH_GAME_STATE = false;
@@ -209,7 +211,7 @@ public class GraveyardScreen implements GameScreen {
             trap.update();
         }
 
-        for (HealthPotion healthPotion : healthPotions) {
+        for (Potion healthPotion : potions) {
             healthPotion.update();
         }
 
@@ -294,7 +296,7 @@ public class GraveyardScreen implements GameScreen {
             trap.draw(canvas);
         }
 
-        for (HealthPotion healthPotion : healthPotions) {
+        for (Potion healthPotion : potions) {
             healthPotion.draw(canvas);
         }
 

@@ -57,6 +57,8 @@ public class Constants {
     public static final long BLINK_TIME = 150;
     public static final int SMALL_HEALTH_POTION_VOLUME = 100;
     public static final int BIG_HEALTH_POTION_VOLUME = 500;
+    public static final int SMALL_MANA_POTION_VOLUME = 100;
+    public static final int BIG_MANA_POTION_VOLUME = 500;
 
 //    public static final long JUMP_TIME = 16;
 

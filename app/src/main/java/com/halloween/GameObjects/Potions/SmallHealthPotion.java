@@ -6,17 +6,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.halloween.Constants;
-import com.halloween.GameObjects.HealthPotion;
+import com.halloween.GameObjects.Potion;
 import com.halloween.R;
 
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
-public class SmallHealthPotion extends HealthPotion {
+public class SmallHealthPotion extends Potion {
     private Bitmap smallHealthPotion;
     private PointF droppingPosition;
     private static float scale = 0.35f * Constants.SCREEN_HEIGHT / 578f;
@@ -32,9 +29,6 @@ public class SmallHealthPotion extends HealthPotion {
         this.smallHealthPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.health_potion);
         this.potionHeight = (int) (this.smallHealthPotion.getHeight() * scale);
         this.potionWidth = (int) (this.smallHealthPotion.getWidth() * scale);
-        Log.d(TAG, "SmallHealthPotion potion height: " + potionHeight);
-        Log.d(TAG, "SmallHealthPotion potion width: " + potionWidth);
-        Log.d(TAG, "SmallHealthPotion potion scale: " + scale);
         this.smallHealthPotion = Bitmap.createScaledBitmap(this.smallHealthPotion, potionWidth, potionHeight, false);
     }
 

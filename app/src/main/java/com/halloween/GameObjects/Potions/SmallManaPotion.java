@@ -13,23 +13,23 @@ import com.halloween.R;
 
 import java.util.ArrayList;
 
-public class BigHealthPotion extends Potion {
-    private Bitmap bigHealthPotion;
+public class SmallManaPotion extends Potion {
+    private Bitmap smallManaPotion;
     private PointF droppingPosition;
-    private static float scale = 0.25f * Constants.SCREEN_HEIGHT / 578f;
+    private static float scale = 0.35f * Constants.SCREEN_HEIGHT / 578f;
 
-    public BigHealthPotion(PointF position, ArrayList<RectF> boxes) {
+    public SmallManaPotion(PointF position, ArrayList<RectF> boxes) {
         surroundingBox = new RectF();
         this.isActive = false;
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
         getPotionPosition(boxes);
-        this.healthVolume = Constants.BIG_HEALTH_POTION_VOLUME;
+        this.healthVolume = Constants.SMALL_MANA_POTION_VOLUME;
 
-        this.bigHealthPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.big_health_potion);
-        this.potionHeight = (int) (this.bigHealthPotion.getHeight() * scale);
-        this.potionWidth = (int) (this.bigHealthPotion.getWidth() * scale);
-        this.bigHealthPotion = Bitmap.createScaledBitmap(this.bigHealthPotion, potionWidth, potionHeight, false);
+        this.smallManaPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.mana_potion);
+        this.potionHeight = (int) (this.smallManaPotion.getHeight() * scale);
+        this.potionWidth = (int) (this.smallManaPotion.getWidth() * scale);
+        this.smallManaPotion = Bitmap.createScaledBitmap(this.smallManaPotion, potionWidth, potionHeight, false);
     }
 
     public void getPotionPosition(ArrayList<RectF> boxes) {
@@ -56,7 +56,7 @@ public class BigHealthPotion extends Potion {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(this.bigHealthPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y - this.potionHeight, new Paint());
+        canvas.drawBitmap(this.smallManaPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y - this.potionHeight, new Paint());
     }
 
     @Override
