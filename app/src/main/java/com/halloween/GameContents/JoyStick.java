@@ -328,7 +328,7 @@ public class JoyStick implements GameObject {
             pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - pauseButton.getWidth()), 50);
         }
         if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.BOSS) {
-            pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH * 0.4f + offset * 3), 50);
+            pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH * 0.5f - pauseButton.getWidth() * 0.5f), 55);
         }
     }
 }
