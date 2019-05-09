@@ -25,21 +25,21 @@ public class Constants {
     public static final int MAX_HEALTH_BOSS = 1000;
 
     public final static int INVINCIBLE_TIME_ENEMY = 500;
-    public final static int ZOMBIE_ATTACK = 30;
-    public final static int ZOMBIE_DAMAGE = 20;
-    public final static float ZOMBIE_STARTING_HP = 50;
+    public final static int ZOMBIE_ATTACK = 50;
+    public final static int ZOMBIE_DAMAGE = 10;
+    public final static float ZOMBIE_STARTING_HP = 20;
     public final static int ZOMBIE_POINT = 100;
     public final static int ZOMBIE_V = 2;
     public final static float ZOMBIE_SCALE = 1.5f;
     public final static float ZOMBIE_FOLLOW_DISTANCE = 25000;
     public final static float ZOMBIE_ATTACK_DISTANCE = 1500;
 
-    public final static int GARGOYLE_ATTACK= 30;
-    public final static int GARGOYLE_DAMAGE = 20;
-    public final static float GARGOYLE_STARTING_HP = 50;
+    public final static int GARGOYLE_ATTACK= 100;
+    public final static int GARGOYLE_DAMAGE = 100;
+    public final static float GARGOYLE_STARTING_HP = 30;
     public final static int GARGOYLE_POINT = 100;
     public final static float GARGOYLE_V = 5;
-    public final static float GARGOYLE_SCALE = 2;
+    public final static float GARGOYLE_SCALE = 1.5f;
     public final static float GARGOYLE_FOLLOW_DISTANCE = 4000000;
     public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
 

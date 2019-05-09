@@ -144,7 +144,7 @@ public class GraveyardScreen implements GameScreen {
         traps.add(new FireTrap(new PointF(7885, (float) (0.8 * Constants.SCREEN_HEIGHT - 377 * fireTrapScale)), 2000, fireTrapScale));
     }
 
-    private void initEnemies() {
+    private void initEnemies(){
         enemies.add(new Gargoyle(new PointF(500, 700), new PointF(800, 200)));
         enemies.add(new Zombie(new PointF(100, 720), new PointF(700, 720)));
     }
@@ -155,7 +155,7 @@ public class GraveyardScreen implements GameScreen {
         this.mainCharacter = MainCharacter.getInstance(200, 600);
         this.mainCharacter.resetAllValue();
         this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
-    }
+}
 
     @Override
     public void update() {
@@ -191,9 +191,7 @@ public class GraveyardScreen implements GameScreen {
         mainCharacter.update(boxes);
 
         joyStick.update();
-        if (portal.isInRange()) {
-            this.portal.update();
-        }
+        if (portal.isInRange()) {this.portal.update();}
 
         healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
         healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
@@ -202,8 +200,8 @@ public class GraveyardScreen implements GameScreen {
         tempSurroundingMain = mainCharacter.getSurroundingBox();
         tempAttackRangeMain = mainCharacter.getAttackRange();
         for (Trap trap : traps) {
-            tempSurrounding = trap.getSurroundingBox();
-            if (tempSurrounding != null) {
+            tempSurrounding= trap.getSurroundingBox();
+            if (tempSurrounding!=null){
                 if (tempSurrounding.intersect(tempSurroundingMain))
                     mainCharacter.decreaseHealth(trap.getDamage());
             }
@@ -214,22 +212,29 @@ public class GraveyardScreen implements GameScreen {
             healthPotion.update();
         }
 
-        for (Enemy enemy : enemies) {
-            tempSurrounding = enemy.getSurroundingBox();
-            if (tempSurrounding != null) {
-                if (tempSurrounding.intersect(tempSurroundingMain))
-                    mainCharacter.decreaseHealth(enemy.getDamage());
+        for (Enemy enemy :enemies){
+            if (enemy.isActive()){
+                tempSurrounding = enemy.getSurroundingBox();
+                if (tempAttackRangeMain!=null){
+//                    System.out.println("main " + tempAttackRangeMain);
+//                    System.out.println(tempAttackRangeMain.intersect(tempSurrounding));
+                    if (tempAttackRangeMain.intersect(tempSurrounding))
+                    {
+                        enemy.decreaseHealth(mainCharacter.getAttackPower());
+                    }
+                }
+                enemy.update(tempSurroundingMain);
+                tempAttackRange = enemy.getAttackRange();
+                if (tempAttackRange!=null){
+                    if (tempAttackRange.intersect(tempSurroundingMain))
+                        mainCharacter.decreaseHealth(enemy.getAttack());
+                }
+                if (tempSurrounding!=null){
+                    if (tempSurrounding.intersect(tempSurroundingMain))
+                        mainCharacter.decreaseHealth(enemy.getDamage());
+                }
             }
-            tempAttackRange = enemy.getAttackRange();
-            if (tempAttackRange != null) {
-                if (tempAttackRange.intersect(tempSurroundingMain))
-                    mainCharacter.decreaseHealth(10);
-            }
-            if (tempAttackRangeMain != null) {
-                if (tempAttackRangeMain.intersect(tempSurrounding))
-                    enemy.decreaseHealth(mainCharacter.getAttackPower());
-            }
-            enemy.update(tempSurroundingMain);
+
         }
 
         // Update background X axis pos
@@ -244,9 +249,9 @@ public class GraveyardScreen implements GameScreen {
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)), backgroundBlock.getHeight());
 
 
-        Pair<Boolean, PointF> pair = portal.isInSuckingRange(mainCharacter.getSurroundingBox());
+        Pair<Boolean,PointF> pair = portal.isInSuckingRange(mainCharacter.getSurroundingBox());
         if (pair.first) {
-            MainCharacter.getInstance((int) (pair.second.x * Constants.MAIN_CHARACTER_V_X * 0.75f + mainCharacter.getCurrentPosition().x), (int) (mainCharacter.getCurrentPosition().y));
+            MainCharacter.getInstance((int) (pair.second.x * Constants.MAIN_CHARACTER_V_X * 0.75f  + mainCharacter.getCurrentPosition().x), (int) (mainCharacter.getCurrentPosition().y));
         }
         if (portal.isInTransitionRange(mainCharacter.getSurroundingBox())) {
             Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
@@ -266,9 +271,7 @@ public class GraveyardScreen implements GameScreen {
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth() * i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-        if (portal.isInRange()) {
-            this.portal.draw(canvas);
-        }
+        if (portal.isInRange()) {this.portal.draw(canvas);}
 //        RectF temp = new RectF();
 //        for (RectF box : boxes) {
 //            temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);
@@ -297,7 +300,7 @@ public class GraveyardScreen implements GameScreen {
 //        for (Enemy enemy:enemies){
 //            enemy.draw(canvas);
 //        }
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy:enemies){
             enemy.draw(canvas);
         }
 
@@ -340,8 +343,7 @@ public class GraveyardScreen implements GameScreen {
         this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
         this.boxes.add(new RectF(5575f, Constants.SCREEN_HEIGHT * 0.269922879f, 5625f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5545f, Constants.SCREEN_HEIGHT * 0.45f, 5600f, Constants.SCREEN_HEIGHT * 0.51f));
-        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.36f, 5655f, Constants.SCREEN_HEIGHT * 0.43f));
-        this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.36f, 5655f, Constants.SCREEN_HEIGHT * 0.43f));this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5820f, Constants.SCREEN_HEIGHT * 0.467128027f, 5850f, Constants.SCREEN_HEIGHT * 0.536332179f));
         this.boxes.add(new RectF(5975f, Constants.SCREEN_HEIGHT * 0.269922879f, 6025f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5935f, Constants.SCREEN_HEIGHT * 0.389273356f, 5980f, Constants.SCREEN_HEIGHT * 0.458477509f));

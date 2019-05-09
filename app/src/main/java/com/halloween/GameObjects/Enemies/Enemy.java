@@ -25,7 +25,14 @@ public class Enemy implements GameObject {
     Animation hurtAnimation;
     Animation ultimateAttackAnimation;
 
-    boolean isAlive, isActive, isInvincible;
+    boolean isAlive;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    boolean isActive;
+    boolean isInvincible;
 
     long invincibleStartTime;
 
@@ -98,6 +105,9 @@ public class Enemy implements GameObject {
         if (isActive) {
             if (this.IsInScreen()) {
                 this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y));
+//                RectF sur = getAttackRange();
+//                if(sur!=null)
+//                    canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
             }
         }
     }
@@ -105,9 +115,11 @@ public class Enemy implements GameObject {
     @Override
     public void update(){
         long elapseTime = System.nanoTime();
-        if ((elapseTime - invincibleStartTime) / 1000000 > Constants.INVINCIBLE_TIME_ENEMY) {
-            this.isInvincible = false;
-            ChangeState(State.Move);
+        if(this.isInvincible){
+            if ((elapseTime - invincibleStartTime) / 1000000 > Constants.INVINCIBLE_TIME_ENEMY) {
+                this.isInvincible = false;
+                ChangeState(State.Move);
+            }
         }
     }
 
@@ -160,7 +172,7 @@ public class Enemy implements GameObject {
     }
 
     public void decreaseHealth(int damage) {
-//        this.isAttacked = true;
+        System.out.println("Hereeeeeeee");
         if (this.isInvincible)
             return;
         else {
