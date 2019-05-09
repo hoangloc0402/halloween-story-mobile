@@ -31,6 +31,9 @@ public class Zombie extends Enemy {
         this.currentAnimation.play();
 
         this.isMovingForward = false;
+
+        this.damage = Constants.ZOMBIE_DAMAGE;
+        this.attack = Constants.ZOMBIE_ATTACK;
     }
 
     public void LoadAnimation() {
@@ -48,19 +51,20 @@ public class Zombie extends Enemy {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if (isActive) {
-            if (this.IsInScreen()) {
-                RectF attack = getSurroundingBox();
-//                System.out.println(attack);;
-//                System.out.println("current Position "+ currentPosition);
-                if(attack !=null){
-                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
-                }
-
-            }
-        }
+//        if (isActive) {
+//            if (this.IsInScreen()) {
+//                RectF attack = getSurroundingBox();
+////                System.out.println(attack);;
+////                System.out.println("current Position "+ currentPosition);
+//                if(attack !=null){
+//                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
+//                }
+//
+//            }
+//        }
     }
 
+    @Override
     public RectF getAttackRange() {
         if (currentAnimation != attackAnimation){
             return null;
