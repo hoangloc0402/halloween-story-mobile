@@ -9,14 +9,14 @@ import com.halloween.Animation;
 import com.halloween.Constants;
 import com.halloween.R;
 
-public class Gargoyle extends Enemy {
+public class Phantom extends Enemy {
 
-    public Gargoyle(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.GARGOYLE_STARTING_HP, leftLandMark, rightLandMark, Constants.GARGOYLE_FOLLOW_DISTANCE, Constants.GARGOYLE_ATTACK_DISTANCE);
+    public Phantom(PointF leftLandMark, PointF rightLandMark) {
+        super(Constants.PHANTOM_STARTING_HP, leftLandMark, rightLandMark, Constants.PHANTOM_FOLLOW_DISTANCE, Constants.PHANTOM_ATTACK_DISTANCE);
 
         LoadAnimation();
 
-        this.v_x = Constants.GARGOYLE_V;
+        this.v_x = Constants.PHANTOM_V;
         this.v_y = this.v_x;
 
         currentState = previousState = State.Move;
@@ -33,19 +33,28 @@ public class Gargoyle extends Enemy {
 
         this.isMovingForward = false;
 
-        this.damage = Constants.GARGOYLE_DAMAGE;
-        this.attack  = Constants.GARGOYLE_ATTACK;
+        this.damage = Constants.PHANTOM_DAMAGE;
+        this.attack  = Constants.PHANTOM_ATTACK;
     }
 
     public void LoadAnimation() {
-        this.moveAnimation = new Animation(R.drawable.gargoyle_move_103x118x4_10x20, 103 * Constants.GARGOYLE_SCALE, 118 * Constants.GARGOYLE_SCALE, 4, 100,
-                new PointF(15 *Constants.GARGOYLE_SCALE, 47*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
-        this.diedAnimation = new Animation(R.drawable.gargoyle_died_103x118x6_0x0, 103 * Constants.GARGOYLE_SCALE,
-                118 * Constants.GARGOYLE_SCALE, 6, 100,
-                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
-        this.hurtAnimation = new Animation(R.drawable.gargoyly_hurt_103x118x1_0x0, 103 * Constants.GARGOYLE_SCALE,
-                118 * Constants.GARGOYLE_SCALE, 1, 100,
-                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
+        this.moveAnimation = new Animation(R.drawable.phantom_move_114x91x6, 114 * Constants.PHANTOM_SCALE, 91 * Constants.PHANTOM_SCALE, 6, 100,
+                new PointF(15 *Constants.PHANTOM_SCALE, 47*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+        this.diedAnimation = new Animation(R.drawable.phantom_died_114x91x6, 114 * Constants.PHANTOM_SCALE,
+                91 * Constants.PHANTOM_SCALE, 6, 100,
+                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+        this.hurtAnimation = new Animation(R.drawable.phantom_hurt_114x91x1, 114 * Constants.PHANTOM_SCALE,
+                91 * Constants.PHANTOM_SCALE, 1, 100,
+                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+        this.attackAnimation = new Animation(R.drawable.phantom_attack_114x91x12, 114 * Constants.PHANTOM_SCALE,
+                91 * Constants.PHANTOM_SCALE, 12, 100,
+                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+        this.idleAnimation = new Animation(R.drawable.phantom_idle_114x91x4, 114 * Constants.PHANTOM_SCALE,
+                91 * Constants.PHANTOM_SCALE, 4, 100,
+                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+        this.appearAnimation = new Animation(R.drawable.phantom_appear_114x91x6, 114 * Constants.PHANTOM_SCALE,
+                91 * Constants.PHANTOM_SCALE, 6, 100,
+                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
     }
 
     @Override
@@ -53,8 +62,8 @@ public class Gargoyle extends Enemy {
         if (isActive) {
             if (this.IsInScreen()) {
                 RectF attack = getAttackRange();
-//                RectF sur = getSurroundingBox();
-//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+                RectF sur = getSurroundingBox();
+                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 //                System.out.println(attack);;
 //                System.out.println("current Position "+ currentPosition);
                 if(attack !=null){

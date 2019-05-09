@@ -19,6 +19,8 @@ public class Enemy implements GameObject {
     float currentHP;
     public Animation currentAnimation;
     Animation diedAnimation;
+    Animation idleAnimation;
+    Animation appearAnimation;
     Animation moveAnimation;
     Animation attackAnimation;
     Animation defenseAnimation;
@@ -82,11 +84,13 @@ public class Enemy implements GameObject {
 
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance){
         float dx;
-        float dy = playerSurroundingBox.top - getSurroundingBox().top;
+        float dy1 = playerSurroundingBox.top - getSurroundingBox().top;
+        float dy2 = playerSurroundingBox.bottom - getSurroundingBox().bottom;
+        float dy = Math.min(Math.abs(dy1), Math.abs(dy2));
         if(currentAnimation.isFlip){
             dx = playerSurroundingBox.left - getSurroundingBox().left - currentAnimation.getAbsoluteAnimationWidth();
         }else{
-            dx = playerSurroundingBox.left - getSurroundingBox().left;
+            dx = playerSurroundingBox.right - getSurroundingBox().left;
         }
         float d =  dx*dx + dy*dy;
         if (d <maxDistance)
@@ -102,7 +106,7 @@ public class Enemy implements GameObject {
 //        return currentHP > 0;
 //    }
 
-    public enum State { Move , Attack, Defense , UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
+    public enum State { Appear, Idle, Move , Attack, Defense , UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
     protected State currentState, previousState;
 
     @Override
@@ -159,6 +163,12 @@ public class Enemy implements GameObject {
                     break;
                 case UltimateAttack:
                     currentAnimation = ultimateAttackAnimation;
+                    break;
+                case Idle:
+                    currentAnimation = idleAnimation;
+                    break;
+                case Appear:
+                    currentAnimation = appearAnimation;
                     break;
                 default:
                     break;

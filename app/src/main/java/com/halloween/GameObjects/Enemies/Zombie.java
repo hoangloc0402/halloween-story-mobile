@@ -78,12 +78,11 @@ public class Zombie extends Enemy {
             float left, right;
             float width = currentAnimation.getAbsoluteFrameWidth();
             if (currentAnimation.isFlip) {
-                right = this.currentPosition.x + width + currentAnimation.getAbsoluteOffsetTopLeftX();;
-                left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+                left = this.currentPosition.x + width/4;
             } else {
                 left = this.currentPosition.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
-                right = left + Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
             }
+            right = left + 3*currentAnimation.getAbsoluteFrameWidth()/4;
             this.attackRect.set(left, top, right , bottom);
             return this.attackRect;
         }

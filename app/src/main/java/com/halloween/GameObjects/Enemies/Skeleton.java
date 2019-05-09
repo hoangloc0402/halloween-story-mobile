@@ -56,8 +56,8 @@ public class Skeleton extends Enemy {
         if (isActive) {
             if (this.IsInScreen()) {
                 RectF attack = getAttackRange();
-                RectF sur = getSurroundingBox();
-                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+//                RectF sur = getSurroundingBox();
+//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 //                System.out.println(attack);;
 //                System.out.println("current Position "+ currentPosition);
                 if(attack !=null){
