@@ -98,7 +98,7 @@ public class Zombie extends Enemy {
                 isAlive = false;
                 ChangeState(State.Died);
             }
-            System.out.println("current state zombie " + currentState);
+//            System.out.println("current state zombie " + currentState);
             switch (currentState) {
                 case Died:
                     ChangeState(State.Died);

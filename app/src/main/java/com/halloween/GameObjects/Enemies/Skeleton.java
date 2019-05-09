@@ -101,8 +101,8 @@ public class Skeleton extends Enemy {
                 isAlive = false;
                 ChangeState(State.Died);
             }
-            System.out.println("Current state " + currentState);
-            System.out.println("Current position " + currentPosition);
+//            System.out.println("Current state " + currentState);
+//            System.out.println("Current position " + currentPosition);
             switch (currentState) {
                 case Died:
                     ChangeState(State.Died);
