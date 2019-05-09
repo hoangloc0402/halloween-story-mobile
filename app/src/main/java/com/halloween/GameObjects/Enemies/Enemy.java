@@ -34,6 +34,7 @@ public class Enemy implements GameObject {
     RectF surroundingBox;
 
     float v_x, v_y;
+    RectF attackRect;
 
     float followDistance, attackDistance;
 
@@ -52,7 +53,7 @@ public class Enemy implements GameObject {
 
     //Check if the object is in the playing screen
     public boolean IsInScreen(){
-        return Constants.isInScreenRange(currentPosition.x, currentAnimation.frameWidth, Constants.CURRENT_GAME_STATE);
+        return Constants.isInScreenRange(currentPosition.x, currentAnimation.getAbsoluteAnimationWidth(), Constants.CURRENT_GAME_STATE);
 //        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
     }
 
@@ -156,6 +157,25 @@ public class Enemy implements GameObject {
                 ChangeState(State.Died);
             }
         }
+    }
+
+    public RectF getAttackRange() {
+        if (currentAnimation != attackAnimation){
+            return null;
+        }
+
+        float top = this.currentPosition.y - currentAnimation.getAbsoluteOffsetTopLeftY();
+        float bottom = top + currentAnimation.getAbsoluteFrameHeight();
+        float left, right;
+        if (currentAnimation.isFlip) {
+            left = this.currentPosition.x + currentAnimation.getAbsoluteAnimationWidth();
+            right = left +  currentAnimation.getAbsoluteOffsetTopLeftX();
+        } else {
+            left = this.currentPosition.x - currentAnimation.getAbsoluteOffsetTopLeftX();
+            right = this.currentPosition.x;
+        }
+        this.attackRect.set(left, top, right, bottom);
+        return this.attackRect;
     }
 
     public float sign(float x){
