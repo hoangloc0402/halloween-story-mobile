@@ -123,19 +123,19 @@ public class PauseScreen implements GameScreen {
         float y = event.getY();
 
         if (isInRangeOfMainMenuButton(x, y))
-            currentButtonMainMenu = buttonMainMenu;
-        else
             currentButtonMainMenu = buttonMainMenuHover;
+        else
+            currentButtonMainMenu = buttonMainMenu;
 
         if (isInRangeOfResumeButton(x, y))
-            currentButtonResume = buttonResume;
-        else
             currentButtonResume = buttonResumeHover;
+        else
+            currentButtonResume = buttonResume;
 
         if (isInRangeOfExitButton(x, y))
-            currentButtonExit = buttonExit;
-        else
             currentButtonExit = buttonExitHover;
+        else
+            currentButtonExit = buttonExit;
 
         switch(event.getAction())
         {

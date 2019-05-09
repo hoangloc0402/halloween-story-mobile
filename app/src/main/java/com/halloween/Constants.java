@@ -9,7 +9,7 @@ public class Constants {
     public static int SCREEN_HEIGHT;
     public static Context CURRENT_CONTEXT;
     public static Activity MAIN_ACTIVITY;
-    public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS}
+    public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS, WIN}
     public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
@@ -31,7 +31,7 @@ public class Constants {
     public final static int ZOMBIE_V = 2;
     public final static float ZOMBIE_SCALE = 1.5f;
     public final static float ZOMBIE_FOLLOW_DISTANCE = 25000;
-    public final static float ZOMBIE_ATTACK_DISTANCE = 1600;
+    public final static float ZOMBIE_ATTACK_DISTANCE = 1500;
 
     public final static int GARGOYLE_ATTACK= 30;
     public final static int GARGOYLE_DAMAGE = 20;
@@ -52,7 +52,7 @@ public class Constants {
     public static final int MANA_INCREASE_SPEED = 40;
     public static final int MANA_DECREASE_SPEED = 5;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
-    public static final long INVINCIBLE_TIME = 3000;
+    public static final long INVINCIBLE_TIME = 1500;
     public static final long BLINK_TIME = 150;
     public static final int SMALL_HEALTH_POTION_VOLUME = 100;
     public static final int BIG_HEALTH_POTION_VOLUME = 500;

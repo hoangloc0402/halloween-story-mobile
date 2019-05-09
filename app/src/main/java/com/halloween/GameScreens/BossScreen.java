@@ -149,7 +149,7 @@ public class BossScreen implements GameScreen {
 //            canvas.drawRect(temp, paint);
 //        }
         if (this.isStarting) {
-            this.mainCharacter.draw(canvas, paint);
+            this.mainCharacter.draw(canvas);
         } else {
             this.mainCharacter.draw(canvas);
         }
