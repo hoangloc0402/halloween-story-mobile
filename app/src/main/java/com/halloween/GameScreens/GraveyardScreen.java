@@ -18,7 +18,9 @@ import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.GameObjects.Enemies.Gargoyle;
 import com.halloween.GameObjects.Enemies.Zombie;
+import com.halloween.GameObjects.HealthPotion;
 import com.halloween.GameObjects.MainCharacter;
+import com.halloween.GameObjects.Potions.SmallHealthPotion;
 import com.halloween.GameObjects.Trap;
 import com.halloween.GameObjects.Traps.CampFire;
 import com.halloween.GameObjects.Traps.FireTrap;
@@ -60,12 +62,7 @@ public class GraveyardScreen implements GameScreen {
 
     private ArrayList<Trap> traps;
     private ArrayList<Enemy> enemies;
-
-    private FireTrap fireTrap;
-    private CampFire campFire;
-    private Spear spear;
-    private SpearHorizontal spearHorizontal;
-    private SpearVertical spearVertical;
+    private ArrayList<HealthPotion> healthPotions;
 
     public GraveyardScreen() {
         this.paint = new Paint();
@@ -97,6 +94,7 @@ public class GraveyardScreen implements GameScreen {
         this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
+        this.healthPotions = new ArrayList<>();
 
         this.traps = new ArrayList<>();
         this.enemies = new ArrayList<>();
@@ -148,8 +146,11 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void reset() {
-        this.mainCharacter = MainCharacter.getInstance(600, 600);
-    }
+        this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
+        this.mainCharacter = MainCharacter.getInstance(200, 600);
+        this.mainCharacter.resetAllValue();
+        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
+}
 
     @Override
     public void update() {
@@ -197,6 +198,10 @@ public class GraveyardScreen implements GameScreen {
                     mainCharacter.decreaseHealth(trap.getDamage());
             }
             trap.update();
+        }
+
+        for (HealthPotion healthPotion : healthPotions) {
+            healthPotion.update();
         }
 
         for (Enemy enemy :enemies){
@@ -273,6 +278,13 @@ public class GraveyardScreen implements GameScreen {
             trap.draw(canvas);
         }
 
+        for (HealthPotion healthPotion : healthPotions) {
+            healthPotion.draw(canvas);
+        }
+
+//        for (Enemy enemy:enemies){
+//            enemy.draw(canvas);
+//        }
         for (Enemy enemy:enemies){
             enemy.draw(canvas);
         }

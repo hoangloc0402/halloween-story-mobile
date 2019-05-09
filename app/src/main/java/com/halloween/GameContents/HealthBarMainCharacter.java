@@ -137,7 +137,6 @@ public class HealthBarMainCharacter implements GameObject {
             updateNewMana();
         if (System.currentTimeMillis() - this.lastUpdateTime > 1000 / 60) {
             updateHealthBar();
-            Log.d(TAG, "update health: "+this.newHealth);
             this.lastUpdateTime = System.currentTimeMillis();
         }
         updateManaBar();
