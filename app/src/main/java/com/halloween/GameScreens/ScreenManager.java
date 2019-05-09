@@ -1,6 +1,7 @@
 package com.halloween.GameScreens;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
@@ -12,8 +13,8 @@ public class ScreenManager {
     private BossScreen bossScreen;
 
     public ScreenManager() {
-        graveyardScreen = new GraveyardScreen();
         mainMenuScreen = new MainMenuScreen();
+        graveyardScreen = new GraveyardScreen();
         pauseScreen = new PauseScreen();
         bossScreen = new BossScreen();
     }

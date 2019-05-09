@@ -10,7 +10,7 @@ public class Constants {
     public static Context CURRENT_CONTEXT;
     public static Activity MAIN_ACTIVITY;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS}
-    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.PLAY;
+    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
     public static GAME_STATE PREVIOUS_GAME_STATE;
