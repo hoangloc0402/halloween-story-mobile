@@ -86,7 +86,9 @@ public class Enemy implements GameObject {
         float dx;
         float dy1 = playerSurroundingBox.top - getSurroundingBox().top;
         float dy2 = playerSurroundingBox.bottom - getSurroundingBox().bottom;
+        float dy3 = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
         float dy = Math.min(Math.abs(dy1), Math.abs(dy2));
+        dy = Math.min(dy, Math.abs(dy3));
         if(currentAnimation.isFlip){
             dx = playerSurroundingBox.left - getSurroundingBox().left - currentAnimation.getAbsoluteAnimationWidth();
         }else{

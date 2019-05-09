@@ -17,7 +17,7 @@ public class Phantom extends Enemy {
         LoadAnimation();
 
         this.v_x = Constants.PHANTOM_V;
-        this.v_y = this.v_x;
+        this.v_y = Constants.PHANTOM_V;
 
         currentState = previousState = State.Appear;
 
@@ -48,7 +48,7 @@ public class Phantom extends Enemy {
                 new PointF(30 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
         this.attackAnimation = new Animation(R.drawable.phantom_attack_114x91x12, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 12, 100,
-                new PointF(30 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE), new PointF(10 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(30 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
         this.idleAnimation = new Animation(R.drawable.phantom_idle_114x91x4, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 4, 100,
                 new PointF(40 *Constants.PHANTOM_SCALE, 5*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 5*Constants.PHANTOM_SCALE));
@@ -62,8 +62,8 @@ public class Phantom extends Enemy {
         if (isActive) {
             if (this.IsInScreen()) {
                 RectF attack = getAttackRange();
-                RectF sur = getSurroundingBox();
-                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+//                RectF sur = getSurroundingBox();
+//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 //                System.out.println(attack);;
 //                System.out.println("current Position "+ currentPosition);
                 if(attack !=null){
@@ -87,7 +87,7 @@ public class Phantom extends Enemy {
             float left, right;
             float width = currentAnimation.getAbsoluteFrameWidth();
             if (currentAnimation.isFlip) {
-                right = this.currentPosition.x + width - (currentAnimation.getAbsoluteOffsetTopLeftX() + currentAnimation.getAbsoluteOffsetBottomRightX())/2;
+                right = this.currentPosition.x + 9*width/10;
                 left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
             } else {
                 left = this.currentPosition.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
@@ -107,6 +107,7 @@ public class Phantom extends Enemy {
                 isAlive = false;
                 ChangeState(State.Died);
             }
+            System.out.println("current state "+ currentState);
             switch (currentState) {
                 case Died:
                     ChangeState(State.Died);
@@ -121,7 +122,7 @@ public class Phantom extends Enemy {
                         ChangeState(State.Move);
                     } else
                         ChangeState(State.Attack);
-                    isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
+                    isMovingForward = playerSurroundingBox.centerX() > this.currentPosition.x;
                     break;
                 case Move:
                     ChangeState(State.Move);
@@ -129,8 +130,19 @@ public class Phantom extends Enemy {
                         if (IsPlayerInRange(playerSurroundingBox, attackDistance)) {
                             ChangeState(State.Attack);
                         } else {
-                            MoveToDestination(new PointF(playerSurroundingBox.left, playerSurroundingBox.top), Constants.PHANTOM_V);
 
+                            float x, y;
+                            if(isMovingForward){
+                                x = playerSurroundingBox.centerX() - (currentAnimation.getAbsoluteFrameWidth()/2 + playerSurroundingBox.width()/2);
+                            }
+                            else{
+                                x = playerSurroundingBox.centerX() + (currentAnimation.getAbsoluteFrameWidth()/2 - playerSurroundingBox.width()/2);
+                            }
+                            isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
+                            y = playerSurroundingBox.centerY()-currentAnimation.getAbsoluteFrameHeight()/2;
+                            System.out.println("is moving forward " + isMovingForward);
+
+                            MoveToDestination(new PointF(x, y), Constants.PHANTOM_V);
                         }
                     }
                     break;

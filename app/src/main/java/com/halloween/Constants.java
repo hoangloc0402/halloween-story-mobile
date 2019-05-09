@@ -60,10 +60,10 @@ public class Constants {
     public final static int PHANTOM_DAMAGE = 100;
     public final static float PHANTOM_STARTING_HP = 30;
     public final static int PHANTOM_POINT = 100;
-    public final static float PHANTOM_V = 10;
-    public final static float PHANTOM_SCALE = 2f;
+    public final static float PHANTOM_V = 5;
+    public final static float PHANTOM_SCALE = 1.5f;
     public final static float PHANTOM_FOLLOW_DISTANCE = 4000000;
-    public final static float PHANTOM_ATTACK_DISTANCE = 1000 *SKELETON_SCALE*SKELETON_SCALE;
+    public final static float PHANTOM_ATTACK_DISTANCE = 300 *PHANTOM_SCALE*PHANTOM_SCALE;
     public final static float PHANTOM_HEIGHT = 91;
 
     public static final float MAIN_CHARACTER_V_X = 15f;
