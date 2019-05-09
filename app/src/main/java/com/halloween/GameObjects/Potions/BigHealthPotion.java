@@ -3,15 +3,19 @@ package com.halloween.GameObjects.Potions;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.halloween.Constants;
 import com.halloween.GameObjects.Potion;
 import com.halloween.R;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class BigHealthPotion extends Potion {
     private Bitmap bigHealthPotion;
@@ -56,6 +60,10 @@ public class BigHealthPotion extends Potion {
 
     @Override
     public void draw(Canvas canvas) {
+        Paint redPaint = new Paint();
+        redPaint.setColor(Color.RED);
+        redPaint.setAlpha(100);
+        canvas.drawRect(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y, Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE) + this.potionWidth, this.position.y - this.potionHeight, redPaint);
         canvas.drawBitmap(this.bigHealthPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y - this.potionHeight, new Paint());
     }
 
