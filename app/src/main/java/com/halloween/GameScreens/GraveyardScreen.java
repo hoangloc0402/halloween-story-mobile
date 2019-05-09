@@ -18,7 +18,10 @@ import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.GameObjects.Enemies.Gargoyle;
 import com.halloween.GameObjects.Enemies.Zombie;
+import com.halloween.GameObjects.HealthPotion;
 import com.halloween.GameObjects.MainCharacter;
+import com.halloween.GameObjects.Potions.BigHealthPotion;
+import com.halloween.GameObjects.Potions.SmallHealthPotion;
 import com.halloween.GameObjects.Trap;
 import com.halloween.GameObjects.Traps.CampFire;
 import com.halloween.GameObjects.Traps.FireTrap;
@@ -60,12 +63,7 @@ public class GraveyardScreen implements GameScreen {
 
     private ArrayList<Trap> traps;
     private ArrayList<Enemy> enemies;
-
-    private FireTrap fireTrap;
-    private CampFire campFire;
-    private Spear spear;
-    private SpearHorizontal spearHorizontal;
-    private SpearVertical spearVertical;
+    private ArrayList<HealthPotion> healthPotions;
 
     public GraveyardScreen() {
         this.paint = new Paint();
@@ -97,14 +95,21 @@ public class GraveyardScreen implements GameScreen {
         this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
+        this.healthPotions = new ArrayList<>();
+        this.initPotions();
 
         this.traps = new ArrayList<>();
         this.enemies = new ArrayList<>();
+        this.initEnemies();
         this.initTraps();
         this.tempSurroundingMain = new RectF();
         this.tempSurrounding = new RectF();
         this.tempAttackRange = new RectF();
         this.tempAttackRangeMain = new RectF();
+    }
+
+    private void initPotions() {
+        this.healthPotions.add(new BigHealthPotion(new PointF(200f, 200f), this.boxes));
     }
 
     private void initTraps() {
@@ -155,6 +160,9 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void update() {
+        if (Constants.JOYSTICK_ATK_STATE)
+            this.healthPotions.add(new SmallHealthPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
+
         if (Constants.IS_SWITCH_GAME_STATE) {
             Constants.IS_SWITCH_GAME_STATE = false;
             this.isStarting = true;
@@ -201,23 +209,34 @@ public class GraveyardScreen implements GameScreen {
             trap.update();
         }
 
-//        for (Enemy enemy :enemies){
-//            tempSurrounding = enemy.getSurroundingBox();
-//            if (tempSurrounding!=null){
-//                if (tempSurrounding.intersect(tempSurrounding))
-//                    mainCharacter.decreaseHealth(enemy.getDamage());
-//            }
-//            tempAttackRange = enemy.getAttackRange();
-//            if (tempAttackRange!=null){
-//                if (tempAttackRange.intersect(tempSurroundingMain))
-//                    mainCharacter.decreaseHealth(10);
-//            }
-//            if (tempAttackRangeMain!=null){
-//                if (tempAttackRangeMain.intersect(tempSurrounding))
-//                    enemy.decreaseHealth(mainCharacter.getAttackPower());
-//            }
-//            enemy.update();
-//        }
+        for (HealthPotion healthPotion : healthPotions) {
+            healthPotion.update();
+        }
+
+        for (Enemy enemy :enemies){
+            if (enemy.isActive()){
+                tempSurrounding = enemy.getSurroundingBox();
+                if (tempAttackRangeMain!=null){
+//                    System.out.println("main " + tempAttackRangeMain);
+//                    System.out.println(tempAttackRangeMain.intersect(tempSurrounding));
+                    if (tempAttackRangeMain.intersect(tempSurrounding))
+                    {
+                        enemy.decreaseHealth(mainCharacter.getAttackPower());
+                    }
+                }
+                enemy.update(tempSurroundingMain);
+                tempAttackRange = enemy.getAttackRange();
+                if (tempAttackRange!=null){
+                    if (tempAttackRange.intersect(tempSurroundingMain))
+                        mainCharacter.decreaseHealth(enemy.getAttack());
+                }
+                if (tempSurrounding!=null){
+                    if (tempSurrounding.intersect(tempSurroundingMain))
+                        mainCharacter.decreaseHealth(enemy.getDamage());
+                }
+            }
+
+        }
 
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
@@ -275,9 +294,16 @@ public class GraveyardScreen implements GameScreen {
             trap.draw(canvas);
         }
 
+        for (HealthPotion healthPotion : healthPotions) {
+            healthPotion.draw(canvas);
+        }
+
 //        for (Enemy enemy:enemies){
 //            enemy.draw(canvas);
 //        }
+        for (Enemy enemy:enemies){
+            enemy.draw(canvas);
+        }
 
 
         if (this.isStarting) {
