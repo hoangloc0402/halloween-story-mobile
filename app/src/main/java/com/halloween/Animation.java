@@ -17,9 +17,9 @@ public class Animation {
     private long frameInterval;
     private long lastFrameTime;
     private int frameCount;
-    public int frameWidth, frameHeight;
-    public float animationWidth, animationHeight;
-    public PointF offsetTopLeft, offsetBottomRight;
+    private int frameWidth, frameHeight;
+    private float animationWidth, animationHeight;
+    private PointF offsetTopLeft, offsetBottomRight;
     private Rect sourceRect;
     private RectF destinationRect, surroundingRect;
     private Paint myPaint;
@@ -79,7 +79,7 @@ public class Animation {
         RectF whereToDraw = getDestinationRect(position);
         if (isFlip) {
             canvas.save();
-            canvas.scale(-1,1, position.x + animationWidth/2, 0);
+            canvas.scale(-1,1, position.x + animationWidth, 0);
             canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
             canvas.restore();
         }
@@ -142,4 +142,20 @@ public class Animation {
     public int getCurrentFrameIndex() {
         return currentFrameIndex;
     }
+
+    public float getAbsoluteFrameWidth() { return Constants.getAbsoluteXLength(frameWidth); }
+
+    public float getAbsoluteFrameHeight() { return frameHeight; }
+
+    public float getAbsoluteOffsetTopLeftX() { return Constants.getAbsoluteXLength(offsetTopLeft.x); }
+
+    public float getAbsoluteOffsetTopLeftY() { return offsetTopLeft.y; }
+
+    public float getAbsoluteOffsetBottomRightX() { return Constants.getAbsoluteXLength(offsetBottomRight.x); }
+
+    public float getAbsoluteOffsetBottomRightY() { return offsetBottomRight.y; }
+
+    public float getAbsoluteAnimationWidth() { return animationWidth; }
+
+    public float getAbsoluteAnimationHeight() { return animationHeight; }
 }

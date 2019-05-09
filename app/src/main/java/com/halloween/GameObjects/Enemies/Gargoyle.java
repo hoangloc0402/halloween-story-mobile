@@ -35,11 +35,13 @@ public class Gargoyle extends Enemy {
 
     public void LoadAnimation() {
         this.moveAnimation = new Animation(R.drawable.gargoyle_move_103x118x4_10x20, 103 * Constants.GARGOYLE_SCALE, 118 * Constants.GARGOYLE_SCALE, 4, 100,
-                new PointF(0, 0), new PointF(0, 0));
+                new PointF(30 *Constants.GARGOYLE_SCALE, 53*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 25*Constants.GARGOYLE_SCALE));
         this.diedAnimation = new Animation(R.drawable.gargoyle_died_103x118x6_0x0, 103 * Constants.GARGOYLE_SCALE,
-                118 * Constants.GARGOYLE_SCALE, 6, 100, new PointF(0, 0), new PointF(0, 0));
+                118 * Constants.GARGOYLE_SCALE, 6, 100,
+                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 25*Constants.GARGOYLE_SCALE));
         this.hurtAnimation = new Animation(R.drawable.gargoyly_hurt_103x118x1_0x0, 103 * Constants.GARGOYLE_SCALE,
-                118 * Constants.GARGOYLE_SCALE, 1, 100, new PointF(0, 0), new PointF(0, 0));
+                118 * Constants.GARGOYLE_SCALE, 1, 100,
+                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 25*Constants.GARGOYLE_SCALE));
     }
 
     @Override

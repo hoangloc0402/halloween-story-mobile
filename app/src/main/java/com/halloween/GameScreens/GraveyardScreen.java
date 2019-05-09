@@ -94,8 +94,6 @@ public class GraveyardScreen implements GameScreen {
         this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
-//        this.healthBarMainCharacter.setNewHealth(1000);
-//        this.healthBarMainCharacter.setNewScore(1000);
 
         this.traps = new ArrayList<>();
         this.initTraps();
@@ -229,11 +227,11 @@ public class GraveyardScreen implements GameScreen {
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
         if (portal.isInRange()) {this.portal.draw(canvas);}
-//        RectF temp = new RectF();
-//        for (RectF box : boxes) {
-//            temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);
-//            canvas.drawRect(temp, paint);
-//        }
+        RectF temp = new RectF();
+        for (RectF box : boxes) {
+            temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);
+            canvas.drawRect(temp, paint);
+        }
 
 //        if (Constants.JOYSTICK_JUMP_STATE)
 //            mainCharacter.hurt(1);

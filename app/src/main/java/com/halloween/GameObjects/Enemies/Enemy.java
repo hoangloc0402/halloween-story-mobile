@@ -24,7 +24,9 @@ public class Enemy implements GameObject {
     Animation hurtAnimation;
     Animation ultimateAttackAnimation;
 
-    boolean isAlive, isActive;
+    boolean isAlive, isActive, isInvincible;
+
+    long invincibleStartTime;
 
     PointF currentPosition;
     PointF leftLandMark;
@@ -32,6 +34,7 @@ public class Enemy implements GameObject {
     RectF surroundingBox;
 
     float v_x, v_y;
+    RectF attackRect;
 
     float followDistance, attackDistance;
 
@@ -43,19 +46,20 @@ public class Enemy implements GameObject {
         this.attackDistance = attackDistance;
         isAlive = true;
         isActive = true;
+        this.isInvincible = false;
     }
 
     boolean isMovingForward;
 
     //Check if the object is in the playing screen
     public boolean IsInScreen(){
-        return Constants.isInScreenRange(currentPosition.x, currentAnimation.frameWidth, Constants.CURRENT_GAME_STATE);
+        return Constants.isInScreenRange(currentPosition.x, currentAnimation.getAbsoluteAnimationWidth(), Constants.CURRENT_GAME_STATE);
 //        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
     }
 
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance){
-        float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
-        float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
+        float dy = playerSurroundingBox.top - getSurroundingBox().top;
+        float dx = playerSurroundingBox.left - getSurroundingBox().left;
         float d =  dx*dx + dy*dy;
         if (d <maxDistance)
             return true;
@@ -84,7 +88,10 @@ public class Enemy implements GameObject {
 
     @Override
     public void update(){
-
+        long elapseTime = System.nanoTime();
+        if ((elapseTime - invincibleStartTime) / 1000000 > Constants.INVINCIBLE_TIME) {
+            this.isInvincible = false;
+        }
     }
 
     public void update(RectF playerSurroundingBox){
@@ -92,11 +99,7 @@ public class Enemy implements GameObject {
     }
 
     public RectF getSurroundingBox(){
-        this.surroundingBox.left = currentPosition.x;
-        this.surroundingBox.top =  currentPosition.y;
-        this.surroundingBox.right = currentPosition.x + currentAnimation.frameWidth;
-        this.surroundingBox.bottom = currentPosition.y + currentAnimation.frameHeight;
-        return this.surroundingBox;
+        return currentAnimation.getSurroundingBox(this.currentPosition);
     }
 
     public void ChangeState(State state){
@@ -139,16 +142,40 @@ public class Enemy implements GameObject {
         return false;
     }
 
-    public void Hurt(int attack) {
-        if (isAlive) {
-            currentHP -= attack;
+    public void decreaseHealth(int damage) {
+        if (this.isInvincible)
+            return;
+        else {
+            currentHP -= damage;
             isAlive = currentHP > 0;
-            if (isAlive) {
+            if (isAlive){
                 ChangeState(State.Hurt);
-            } else {
+                this.isInvincible = true;
+                this.invincibleStartTime  = System.nanoTime();
+            }
+            else {
                 ChangeState(State.Died);
             }
         }
+    }
+
+    public RectF getAttackRange() {
+        if (currentAnimation != attackAnimation){
+            return null;
+        }
+
+        float top = this.currentPosition.y - currentAnimation.getAbsoluteOffsetTopLeftY();
+        float bottom = top + currentAnimation.getAbsoluteFrameHeight();
+        float left, right;
+        if (currentAnimation.isFlip) {
+            left = this.currentPosition.x + currentAnimation.getAbsoluteAnimationWidth();
+            right = left +  currentAnimation.getAbsoluteOffsetTopLeftX();
+        } else {
+            left = this.currentPosition.x - currentAnimation.getAbsoluteOffsetTopLeftX();
+            right = this.currentPosition.x;
+        }
+        this.attackRect.set(left, top, right, bottom);
+        return this.attackRect;
     }
 
     public float sign(float x){
