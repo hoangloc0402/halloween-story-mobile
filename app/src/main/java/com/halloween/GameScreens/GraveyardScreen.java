@@ -137,8 +137,8 @@ public class GraveyardScreen implements GameScreen {
     @Override
     public void reset() {
         this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
-        this.mainCharacter = MainCharacter.getInstance(200, 600);
-        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
+        this.mainCharacter = MainCharacter.getInstance(600, 600);
+        this.zombie = new Zombie(new PointF(100, 720), new PointF(700, 720));
     }
 
     @Override
@@ -255,7 +255,7 @@ public class GraveyardScreen implements GameScreen {
 //        this.zombie.draw(canvas);
 
 
-//        this.zombie.draw(canvas);
+        this.zombie.draw(canvas);
         this.gargoyle.draw(canvas);
         if (this.isStarting) {
             this.mainCharacter.draw(canvas, paint);
