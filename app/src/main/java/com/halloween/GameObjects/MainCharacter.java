@@ -86,6 +86,11 @@ public class MainCharacter {
         this.disappearAnimationUlti = new Animation(R.drawable.main_character_ulti_disappear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73*SCALE2, 69*SCALE2), new PointF(63*SCALE2, 26*SCALE2));
     }
 
+    public void draw(Canvas canvas, Paint paint) {
+        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), paint);
+    }
+
+
     public void draw(Canvas canvas) {
         RectF sur = currentAnimation.getSurroundingBox(position);
         canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
