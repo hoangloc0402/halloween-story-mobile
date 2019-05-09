@@ -87,12 +87,12 @@ public class MainCharacter {
     }
 
     public void draw(Canvas canvas) {
-//        RectF sur = currentAnimation.getSurroundingBox(position);
-//        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
-//        RectF atk = getAttackRange();
-//        if (atk!=null)
-//            canvas.drawRect(atk.left, atk.top, atk.right, atk.bottom , this.redPaint);
-        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), this.paint);
+        RectF sur = currentAnimation.getSurroundingBox(position);
+        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
+        RectF atk = getAttackRange();
+        if (atk!=null)
+            canvas.drawRect(Constants.getRelativeXPosition(atk.left), atk.top, Constants.getRelativeXPosition(atk.right) , atk.bottom , this.redPaint);
+        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x), this.position.y), this.paint);
     }
 
     public void update(ArrayList<RectF> boxes) {
@@ -324,7 +324,18 @@ public class MainCharacter {
         int frameIndex = currentAnimation.getCurrentFrameIndex();
         if (isInUltimateForm) {
             if (frameIndex >=4 && frameIndex <=15){
-                this.attackRect = this.currentAnimation.getDestinationRect(this.position);
+                float top = this.position.y;
+                float bottom = this.position.y + this.currentAnimation.getAbsoluteFrameHeight()/2;
+                float left, right;
+                float width = currentAnimation.getAbsoluteFrameWidth();
+                if (currentAnimation.isFlip) {
+                    right = this.position.x + width + currentAnimation.getAbsoluteOffsetTopLeftX();;
+                    left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+                } else {
+                    left = this.position.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
+                    right = left + Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+                }
+                this.attackRect.set(left + currentAnimation.getAbsoluteAnimationWidth(), top, right - width, bottom);
                 return this.attackRect;
             }
             else return  null;
@@ -340,14 +351,14 @@ public class MainCharacter {
                 if ((frameIndex > 1 && frameIndex < 5))
                     return null;
 
-            float top = this.position.y - currentAnimation.offsetTopLeft.y;
-            float bottom = top + currentAnimation.frameHeight;
+            float top = this.position.y - currentAnimation.getAbsoluteOffsetTopLeftY();
+            float bottom = top + currentAnimation.getAbsoluteFrameHeight();
             float left, right;
             if (currentAnimation.isFlip) {
-                left = this.position.x + currentAnimation.animationWidth / 2;
-                right = left + currentAnimation.animationWidth;
+                left = this.position.x + currentAnimation.getAbsoluteAnimationWidth();
+                right = left +  currentAnimation.getAbsoluteOffsetTopLeftX();
             } else {
-                left = this.position.x - currentAnimation.animationWidth;
+                left = this.position.x - currentAnimation.getAbsoluteOffsetTopLeftX();
                 right = this.position.x;
             }
             this.attackRect.set(left, top, right, bottom);
