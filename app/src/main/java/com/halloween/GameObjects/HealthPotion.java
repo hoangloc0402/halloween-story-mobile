@@ -7,6 +7,9 @@ public abstract class HealthPotion implements GameObject {
     protected boolean isActive;
     protected int healthVolume;
     protected PointF position;
+    protected RectF surroundingBox;
+    protected int potionHeight;
+    protected int potionWidth;
 
     public RectF getSurroundingBox(){
         return null;
