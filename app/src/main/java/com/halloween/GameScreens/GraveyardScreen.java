@@ -17,7 +17,9 @@ import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Gargoyle;
 import com.halloween.GameObjects.Enemies.Zombie;
+import com.halloween.GameObjects.HealthPotion;
 import com.halloween.GameObjects.MainCharacter;
+import com.halloween.GameObjects.Potions.SmallHealthPotion;
 import com.halloween.GameObjects.Trap;
 import com.halloween.GameObjects.Traps.CampFire;
 import com.halloween.GameObjects.Traps.FireTrap;
@@ -57,12 +59,7 @@ public class GraveyardScreen implements GameScreen {
 //    private Zombie zombie;
 
     private ArrayList<Trap> traps;
-
-    private FireTrap fireTrap;
-    private CampFire campFire;
-    private Spear spear;
-    private SpearHorizontal spearHorizontal;
-    private SpearVertical spearVertical;
+    private ArrayList<HealthPotion> healthPotions;
 
     public GraveyardScreen() {
         this.paint = new Paint();
@@ -94,6 +91,7 @@ public class GraveyardScreen implements GameScreen {
         this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
+        this.healthPotions = new ArrayList<>();
 
         this.traps = new ArrayList<>();
         this.initTraps();
@@ -176,20 +174,25 @@ public class GraveyardScreen implements GameScreen {
         this.gargoyle.update(mainCharacter.getSurroundingBox());
 
         joyStick.update();
-        if (portal.isInRange()) {this.portal.update();}
+        if (portal.isInRange()) {
+            this.portal.update();
+        }
 
         healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
         healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
         healthBarMainCharacter.update();
-
         tempSurrounding = mainCharacter.getSurroundingBox();
         for (Trap trap : traps) {
             tempRect = trap.getSurroundingBox();
-            if (tempRect!=null){
+            if (tempRect != null) {
                 if (tempSurrounding.intersect(tempRect))
                     mainCharacter.decreaseHealth(trap.getDamage());
             }
             trap.update();
+        }
+
+        for (HealthPotion healthPotion : healthPotions) {
+            healthPotion.update();
         }
 
         // Update background X axis pos
@@ -204,9 +207,9 @@ public class GraveyardScreen implements GameScreen {
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)), backgroundBlock.getHeight());
 
 
-        Pair<Boolean,PointF> pair = portal.isInSuckingRange(mainCharacter.getSurroundingBox());
+        Pair<Boolean, PointF> pair = portal.isInSuckingRange(mainCharacter.getSurroundingBox());
         if (pair.first) {
-            MainCharacter.getInstance((int) (pair.second.x * Constants.MAIN_CHARACTER_V_X * 0.75f  + mainCharacter.getCurrentPosition().x), (int) (mainCharacter.getCurrentPosition().y));
+            MainCharacter.getInstance((int) (pair.second.x * Constants.MAIN_CHARACTER_V_X * 0.75f + mainCharacter.getCurrentPosition().x), (int) (mainCharacter.getCurrentPosition().y));
         }
         if (portal.isInTransitionRange(mainCharacter.getSurroundingBox())) {
             Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
@@ -226,7 +229,9 @@ public class GraveyardScreen implements GameScreen {
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth() * i, Constants.SCREEN_HEIGHT * 0.3f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
-        if (portal.isInRange()) {this.portal.draw(canvas);}
+        if (portal.isInRange()) {
+            this.portal.draw(canvas);
+        }
 //        RectF temp = new RectF();
 //        for (RectF box : boxes) {
 //            temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);
@@ -247,6 +252,11 @@ public class GraveyardScreen implements GameScreen {
         for (Trap trap : traps) {
             trap.draw(canvas);
         }
+
+        for (HealthPotion healthPotion : healthPotions) {
+            healthPotion.draw(canvas);
+        }
+
         /*this.fireTrap.draw(canvas);
         this.campFire.draw(canvas);
         this.spear.draw(canvas);
@@ -295,7 +305,8 @@ public class GraveyardScreen implements GameScreen {
         this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
         this.boxes.add(new RectF(5575f, Constants.SCREEN_HEIGHT * 0.269922879f, 5625f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5545f, Constants.SCREEN_HEIGHT * 0.45f, 5600f, Constants.SCREEN_HEIGHT * 0.51f));
-        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.36f, 5655f, Constants.SCREEN_HEIGHT * 0.43f));this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.36f, 5655f, Constants.SCREEN_HEIGHT * 0.43f));
+        this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5820f, Constants.SCREEN_HEIGHT * 0.467128027f, 5850f, Constants.SCREEN_HEIGHT * 0.536332179f));
         this.boxes.add(new RectF(5975f, Constants.SCREEN_HEIGHT * 0.269922879f, 6025f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5935f, Constants.SCREEN_HEIGHT * 0.389273356f, 5980f, Constants.SCREEN_HEIGHT * 0.458477509f));
