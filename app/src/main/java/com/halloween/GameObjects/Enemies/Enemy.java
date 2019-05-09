@@ -69,6 +69,10 @@ public class Enemy implements GameObject {
         return this.damage;
     }
 
+    public int getAttack(){
+        return this.attack;
+    }
+
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance){
         float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
         float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
