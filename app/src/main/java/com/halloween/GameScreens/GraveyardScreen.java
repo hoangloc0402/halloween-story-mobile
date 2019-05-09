@@ -205,21 +205,28 @@ public class GraveyardScreen implements GameScreen {
         }
 
         for (Enemy enemy :enemies){
-            tempSurrounding = enemy.getSurroundingBox();
-            if (tempSurrounding!=null){
-                if (tempSurrounding.intersect(tempSurrounding))
-                    mainCharacter.decreaseHealth(enemy.getDamage());
+            if (enemy.isActive()){
+                tempSurrounding = enemy.getSurroundingBox();
+                if (tempAttackRangeMain!=null){
+//                    System.out.println("main " + tempAttackRangeMain);
+//                    System.out.println(tempAttackRangeMain.intersect(tempSurrounding));
+                    if (tempAttackRangeMain.intersect(tempSurrounding))
+                    {
+                        enemy.decreaseHealth(mainCharacter.getAttackPower());
+                    }
+                }
+                enemy.update(tempSurroundingMain);
+                tempAttackRange = enemy.getAttackRange();
+                if (tempAttackRange!=null){
+                    if (tempAttackRange.intersect(tempSurroundingMain))
+                        mainCharacter.decreaseHealth(enemy.getAttack());
+                }
+                if (tempSurrounding!=null){
+                    if (tempSurrounding.intersect(tempSurroundingMain))
+                        mainCharacter.decreaseHealth(enemy.getDamage());
+                }
             }
-            tempAttackRange = enemy.getAttackRange();
-            if (tempAttackRange!=null){
-                if (tempAttackRange.intersect(tempSurroundingMain))
-                    mainCharacter.decreaseHealth(10);
-            }
-            if (tempAttackRangeMain!=null){
-                if (tempAttackRangeMain.intersect(tempSurrounding))
-                    enemy.decreaseHealth(mainCharacter.getAttackPower());
-            }
-            enemy.update(tempSurroundingMain);
+
         }
 
         // Update background X axis pos
