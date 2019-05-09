@@ -19,9 +19,9 @@ public class Phantom extends Enemy {
         this.v_x = Constants.PHANTOM_V;
         this.v_y = this.v_x;
 
-        currentState = previousState = State.Move;
+        currentState = previousState = State.Appear;
 
-        currentAnimation = moveAnimation;
+        currentAnimation = appearAnimation;
 
         this.surroundingBox = new RectF();
 
@@ -53,7 +53,7 @@ public class Phantom extends Enemy {
                 91 * Constants.PHANTOM_SCALE, 4, 100,
                 new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
         this.appearAnimation = new Animation(R.drawable.phantom_appear_114x91x6, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 6, 100,
+                91 * Constants.PHANTOM_SCALE, 6, 5000,
                 new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
     }
 
@@ -84,6 +84,14 @@ public class Phantom extends Enemy {
                 ChangeState(State.Died);
             }
             switch (currentState) {
+                case Idle:
+                    break;
+                case Appear:
+                    if(this.currentAnimation.isLastFrame()){
+                        ChangeState(State.Move);
+                    }else{
+                        ChangeState(State.Appear);
+                    }
                 case Died:
                     ChangeState(State.Died);
                     if (this.currentAnimation.isLastFrame())
