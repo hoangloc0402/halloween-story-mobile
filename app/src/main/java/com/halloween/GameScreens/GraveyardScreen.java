@@ -32,6 +32,12 @@ import java.util.Iterator;
 import static android.content.ContentValues.TAG;
 
 public class GraveyardScreen implements GameScreen {
+
+    //for transition
+    private boolean isStarting;
+    private long startingTime;
+    private int startingAlpha;
+
     private MainCharacter mainCharacter;
     private JoyStick joyStick;
     private HealthBarMainCharacter healthBarMainCharacter;
@@ -60,6 +66,7 @@ public class GraveyardScreen implements GameScreen {
 
     public GraveyardScreen() {
         this.paint = new Paint();
+        this.paint.setAlpha(0);
         this.boxes = new ArrayList<>();
         this.initBoxes();
         // Map Stuff
@@ -132,7 +139,7 @@ public class GraveyardScreen implements GameScreen {
     @Override
     public void reset() {
         this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
-        this.mainCharacter = MainCharacter.getInstance(600, 600);
+        this.mainCharacter = MainCharacter.getInstance(200, 600);
         this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
     }
 
@@ -141,7 +148,22 @@ public class GraveyardScreen implements GameScreen {
 
         if (Constants.IS_SWITCH_GAME_STATE) {
             Constants.IS_SWITCH_GAME_STATE = false;
+            this.isStarting = true;
+            this.startingTime = System.currentTimeMillis();
+            this.startingAlpha = 0;
+            this.paint.setAlpha(this.startingAlpha);
             this.reset();
+        }
+        if (this.isStarting) {
+            long now = System.currentTimeMillis();
+            if (now - this.startingTime > 50) {
+                this.startingTime = now;
+                this.startingAlpha += 10;
+                this.paint.setAlpha(Math.min(this.startingAlpha, 255));
+                if (startingAlpha >= 255) {
+                    this.isStarting = false;
+                }
+            }
         }
 
         backgroundCloudOffset += 1;
@@ -237,7 +259,7 @@ public class GraveyardScreen implements GameScreen {
 
 //        this.zombie.draw(canvas);
         this.gargoyle.draw(canvas);
-        this.mainCharacter.draw(canvas);
+        this.mainCharacter.draw(canvas, paint);
 
         this.joyStick.draw(canvas);
     }

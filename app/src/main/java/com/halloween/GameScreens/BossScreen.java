@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
@@ -19,6 +20,11 @@ import com.halloween.R;
 import java.util.ArrayList;
 
 public class BossScreen implements GameScreen {
+
+    //for transition
+    private boolean isStarting;
+    private long startingTime;
+    private int startingAlpha;
 
     private MainCharacter mainCharacter;
 
@@ -84,8 +90,24 @@ public class BossScreen implements GameScreen {
 
         if (Constants.IS_SWITCH_GAME_STATE) {
             Constants.IS_SWITCH_GAME_STATE = false;
+            this.isStarting = true;
+            this.startingTime = System.currentTimeMillis();
+            this.startingAlpha = 0;
+            this.paint.setAlpha(this.startingAlpha);
             this.reset();
         }
+        if (this.isStarting) {
+            long now = System.currentTimeMillis();
+            if (now - this.startingTime > 50) {
+                this.startingTime = now;
+                this.startingAlpha += 10;
+                this.paint.setAlpha(Math.min(this.startingAlpha, 255));
+                if (startingAlpha >= 255) {
+                    this.isStarting = false;
+                }
+            }
+        }
+
 
 
         this.healthBarBoss.update();
@@ -126,7 +148,7 @@ public class BossScreen implements GameScreen {
 //            temp.set(Constants.getRelativeXPosition(box.left,Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right,Constants.CURRENT_GAME_STATE), box.bottom);
 //            canvas.drawRect(temp, paint);
 //        }
-        this.mainCharacter.draw(canvas);
+        this.mainCharacter.draw(canvas, paint);
         this.healthBarBoss.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
@@ -139,7 +161,7 @@ public class BossScreen implements GameScreen {
 
     @Override
     public void reset() {
-        this.mainCharacter = MainCharacter.getInstance(600,600);
+        this.mainCharacter = MainCharacter.getInstance(200,600);
     }
 
     @Override
