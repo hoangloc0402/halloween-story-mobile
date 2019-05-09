@@ -8,6 +8,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 import com.halloween.Constants;
 import com.halloween.MainActivity;
@@ -17,16 +20,26 @@ public class GameOverScreen implements GameScreen {
     private Bitmap background;
     private Bitmap currentButtonRestart, buttonRestart, buttonRestartHover;
     private Bitmap currentButtonExit, buttonExit, buttonExitHover;
+    private Bitmap scoreBar;
     private Point buttonRestartPosition;
     private Point buttonExitPosition;
+    private Point scoreBarPosition;
 
-    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, EXIT}
+    private float currentPercent = 0;
+    private boolean isFill = true;
+    private Rect whatToDraw;
+    private RectF whereToDraw;
+
+    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, RESTART}
     private MENU_STATE currentMenuState;
     private Paint paint;
 
     public GameOverScreen() {
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.gameover_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
+
+        this.scoreBar = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.score);
+        this.scoreBar = Bitmap.createScaledBitmap(scoreBar, (int) (0.26135f * Constants.SCREEN_WIDTH), (int) (0.036458f * Constants.SCREEN_HEIGHT), false);
 
         int width = Constants.SCREEN_WIDTH/4;
         int height = Constants.SCREEN_HEIGHT/10;
@@ -43,6 +56,7 @@ public class GameOverScreen implements GameScreen {
 
         this.buttonRestartPosition = new Point((Constants.SCREEN_WIDTH - buttonRestart.getWidth())/2, (int) (0.61f *Constants.SCREEN_HEIGHT));
         this.buttonExitPosition = new Point(buttonRestartPosition.x, buttonRestartPosition.y + height + 25);
+        this.scoreBarPosition = new Point((int)(0.36896f * Constants.SCREEN_WIDTH),(int)(0.52865f * Constants.SCREEN_HEIGHT));
         this.paint = new Paint();
         this.reset();
     }
@@ -53,10 +67,25 @@ public class GameOverScreen implements GameScreen {
         currentButtonRestart = buttonRestart;
         currentButtonExit = buttonExit;
         paint.setAlpha(0);
+        currentPercent = 0;
+        isFill = true;
+        whatToDraw = new Rect(0, 0, scoreBar.getWidth(), scoreBar.getHeight());
+        whereToDraw = new RectF(scoreBarPosition.x, scoreBarPosition.y, scoreBarPosition.x, scoreBarPosition.y + scoreBar.getHeight());
+
     }
 
     @Override
     public void update() {
+        if (isFill) {
+            currentPercent += 2f;
+            float maxPercent = Math.min(100 * Constants.CURRENT_SCORE / Constants.MAX_SCORE, 100);
+            if (currentPercent > maxPercent) {
+                isFill = false;
+            } else {
+                whereToDraw.set(scoreBarPosition.x, scoreBarPosition.y, scoreBarPosition.x + currentPercent * scoreBar.getWidth() / 100, scoreBarPosition.y + scoreBar.getHeight());
+            }
+        }
+
         switch (currentMenuState){
             case WAITING:
                 break;
@@ -74,10 +103,17 @@ public class GameOverScreen implements GameScreen {
                     this.reset();
                 }
                 break;
-            case EXIT:
+            case RESTART:
                 this.paint.setAlpha(this.paint.getAlpha() - 10);
-                if (this.paint.getAlpha() <= 30){
-                    Constants.MAIN_ACTIVITY.finish();
+                if (this.paint.getAlpha() <= 50){
+                    if (Constants.isInGraveyard) {
+                        Constants.IS_SWITCH_GAME_STATE = true;
+                        Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PLAY;
+                    } else {
+                        Constants.IS_SWITCH_GAME_STATE = true;
+                        Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
+                    }
+                    this.reset();
                 }
                 break;
         }
@@ -86,6 +122,7 @@ public class GameOverScreen implements GameScreen {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, paint);
+        canvas.drawBitmap(scoreBar, whatToDraw, whereToDraw, paint);
         canvas.drawBitmap(currentButtonRestart, buttonRestartPosition.x, buttonRestartPosition.y, paint);
         canvas.drawBitmap(currentButtonExit, buttonExitPosition.x, buttonExitPosition.y, paint);
     }
@@ -117,10 +154,10 @@ public class GameOverScreen implements GameScreen {
         {
             case MotionEvent.ACTION_UP:
                 if (isInRangeOfRestartButton(x, y)) {
-                    currentMenuState = MENU_STATE.BACK_TO_MAIN;
+                    currentMenuState = MENU_STATE.RESTART;
                 }
                 else if (isInRangeOfExitButton(x, y)) {
-                    currentMenuState = MENU_STATE.EXIT;
+                    currentMenuState = MENU_STATE.BACK_TO_MAIN;
                 }
                 break;
         }

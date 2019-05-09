@@ -166,6 +166,9 @@ public class BossScreen implements GameScreen {
     @Override
     public void reset() {
         this.mainCharacter = MainCharacter.getInstance(200,600);
+        if (!this.mainCharacter.isActive) {
+            this.mainCharacter.resetAllValue();
+        }
     }
 
     @Override

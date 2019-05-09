@@ -87,13 +87,13 @@ public class MainCharacter {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y), paint);
+        this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x), this.position.y), paint);
     }
 
 
     public void draw(Canvas canvas) {
         RectF sur = currentAnimation.getSurroundingBox(position);
-        System.out.println(sur);
+
         canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
         RectF atk = getAttackRange();
         if (atk!=null)

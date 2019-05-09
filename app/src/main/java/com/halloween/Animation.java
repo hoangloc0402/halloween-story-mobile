@@ -79,7 +79,9 @@ public class Animation {
         RectF whereToDraw = getDestinationRect(position);
         if (isFlip) {
             canvas.save();
-            canvas.scale(-1,1, position.x + getAbsoluteAnimationWidth(), 0);
+
+            canvas.scale(-1,1, position.x - getAbsoluteOffsetTopLeftX() + getAbsoluteFrameWidth() / 2, 0);
+            canvas.translate(-getAbsoluteOffsetTopLeftX(), 0);
             canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
             canvas.restore();
         }
