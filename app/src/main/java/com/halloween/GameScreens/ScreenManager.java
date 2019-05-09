@@ -12,6 +12,7 @@ public class ScreenManager {
     private PauseScreen pauseScreen;
     private BossScreen bossScreen;
     private GameOverScreen gameOverScreen;
+    private WinningScreen winningScreen;
 
     public ScreenManager() {
         mainMenuScreen = new MainMenuScreen();
@@ -19,6 +20,7 @@ public class ScreenManager {
         pauseScreen = new PauseScreen();
         bossScreen = new BossScreen();
         gameOverScreen = new GameOverScreen();
+        winningScreen = new WinningScreen();
     }
 
     public GameScreen getActiveScreen(){
@@ -32,6 +34,8 @@ public class ScreenManager {
                 return pauseScreen;
             case GAME_OVER:
                 return gameOverScreen;
+            case WIN:
+                return winningScreen;
             case BOSS:
                 Constants.isInGraveyard = false;
                 return bossScreen;

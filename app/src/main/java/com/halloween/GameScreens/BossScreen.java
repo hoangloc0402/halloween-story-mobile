@@ -109,7 +109,8 @@ public class BossScreen implements GameScreen {
         }
 
 
-
+        this.healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
+        this.healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
         this.healthBarBoss.update();
         this.healthBarMainCharacter.update();
         this.mainCharacter.update(boxes);

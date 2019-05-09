@@ -107,7 +107,7 @@ public class MainCharacter {
         this.updateAnimation();
         this.updateMana();
         if (!this.isActive)
-            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.GAME_OVER;
+            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.WIN;
     }
 
     private void updateMovement(ArrayList<RectF> boxes) {
