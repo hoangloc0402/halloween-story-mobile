@@ -16,6 +16,7 @@ import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.GameObjects.Enemies.Gargoyle;
+import com.halloween.GameObjects.Enemies.Skeleton;
 import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.Potion;
 import com.halloween.GameObjects.MainCharacter;
@@ -146,7 +147,8 @@ public class GraveyardScreen implements GameScreen {
 
     private void initEnemies(){
         enemies.add(new Gargoyle(new PointF(500, 700), new PointF(800, 200)));
-        enemies.add(new Zombie(new PointF(100, 720), new PointF(700, 720)));
+        enemies.add(new Zombie(new PointF(300, 720), new PointF(800, 720)));
+//        enemies.add(new Skeleton(new PointF(100, 650), new PointF(700, 650)));
     }
 
     @Override

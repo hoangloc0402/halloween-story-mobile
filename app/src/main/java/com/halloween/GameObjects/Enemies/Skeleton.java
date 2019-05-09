@@ -9,15 +9,15 @@ import com.halloween.Animation;
 import com.halloween.Constants;
 import com.halloween.R;
 
-public class Zombie extends Enemy {
+public class Skeleton extends Enemy {
 
 
-    public Zombie(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.ZOMBIE_STARTING_HP, leftLandMark, rightLandMark, Constants.ZOMBIE_FOLLOW_DISTANCE, Constants.ZOMBIE_ATTACK_DISTANCE);
+    public Skeleton(PointF leftLandMark, PointF rightLandMark) {
+        super(Constants.SKELETON_STARTING_HP, leftLandMark, rightLandMark, Constants.SKELETON_FOLLOW_DISTANCE, Constants.SKELETON_ATTACK_DISTANCE);
 
         LoadAnimation();
 
-        this.v_x = Constants.ZOMBIE_V;
+        this.v_x = Constants.SKELETON_V;
         this.v_y = 0;
 
         currentState = previousState = State.Move;
@@ -32,19 +32,22 @@ public class Zombie extends Enemy {
 
         this.isMovingForward = false;
 
-        this.damage = Constants.ZOMBIE_DAMAGE;
-        this.attack = Constants.ZOMBIE_ATTACK;
+        this.damage = Constants.SKELETON_DAMAGE;
+        this.attack = Constants.SKELETON_ATTACK;
     }
 
     public void LoadAnimation() {
-        this.moveAnimation = new Animation(R.drawable.zombie_move_83x97x4, 83 * Constants.ZOMBIE_SCALE, 97 * Constants.ZOMBIE_SCALE, 4, 100,
-                new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
-        this.attackAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE,
-                97 * Constants.ZOMBIE_SCALE, 4, 100, new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
-        this.diedAnimation = new Animation(R.drawable.zombie_die_83x97x11, 83 * Constants.ZOMBIE_SCALE,
-                97 * Constants.ZOMBIE_SCALE, 11, 100, new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
-        this.hurtAnimation = new Animation(R.drawable.zombie_hurt_83x97x1, 83 * Constants.ZOMBIE_SCALE,
-                97 * Constants.ZOMBIE_SCALE, 1, 1000, new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
+        this.moveAnimation = new Animation(R.drawable.skeleton_move_129x127x5, 129 * Constants.SKELETON_SCALE, 127 * Constants.SKELETON_SCALE, 5, 100,
+                new PointF(30 *Constants.SKELETON_SCALE, 0), new PointF(30 *Constants.SKELETON_SCALE, 0));
+        this.attackAnimation = new Animation(R.drawable.skeleton_attack_215x132x8, 215 * Constants.SKELETON_SCALE,
+                132 * Constants.SKELETON_SCALE, 8, 50,
+                new PointF(70 *Constants.SKELETON_SCALE, 0), new PointF(70 *Constants.SKELETON_SCALE, 0));
+        this.diedAnimation = new Animation(R.drawable.skeleton_died_132x134x12, 132 * Constants.SKELETON_SCALE,
+                134 * Constants.SKELETON_SCALE, 12, 100,
+                new PointF(33 *Constants.SKELETON_SCALE, 0), new PointF(28 *Constants.SKELETON_SCALE, 0));
+        this.hurtAnimation = new Animation(R.drawable.skeleton_hurt_132x134x1, 132 * Constants.SKELETON_SCALE,
+                134 * Constants.SKELETON_SCALE, 1, 1000,
+                new PointF(33 *Constants.SKELETON_SCALE, 0), new PointF(28 *Constants.SKELETON_SCALE, 0));
     }
 
 
@@ -53,8 +56,8 @@ public class Zombie extends Enemy {
         if (isActive) {
             if (this.IsInScreen()) {
                 RectF attack = getAttackRange();
-//                RectF sur = getSurroundingBox();
-//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+                RectF sur = getSurroundingBox();
+                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 //                System.out.println(attack);;
 //                System.out.println("current Position "+ currentPosition);
                 if(attack !=null){
@@ -72,13 +75,13 @@ public class Zombie extends Enemy {
             return null;
         }
         int frameIndex = currentAnimation.getCurrentFrameIndex();
-        if (frameIndex >=2 && frameIndex <=3){
+        if (frameIndex >=4 && frameIndex <=5){
             float top = this.currentPosition.y;
             float bottom = this.currentPosition.y + this.currentAnimation.getAbsoluteFrameHeight();
             float left, right;
             float width = currentAnimation.getAbsoluteFrameWidth();
             if (currentAnimation.isFlip) {
-                right = this.currentPosition.x + width + currentAnimation.getAbsoluteOffsetTopLeftX();;
+                right = this.currentPosition.x + width - (currentAnimation.getAbsoluteOffsetTopLeftX() + currentAnimation.getAbsoluteOffsetBottomRightX())/2;
                 left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
             } else {
                 left = this.currentPosition.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
@@ -98,7 +101,8 @@ public class Zombie extends Enemy {
                 isAlive = false;
                 ChangeState(State.Died);
             }
-            System.out.println("current state zombie " + currentState);
+            System.out.println("Current state " + currentState);
+            System.out.println("Current position " + currentPosition);
             switch (currentState) {
                 case Died:
                     ChangeState(State.Died);
@@ -110,6 +114,7 @@ public class Zombie extends Enemy {
                     break;
                 case Attack:
                     if (!IsPlayerInRange(playerSurroundingBox, attackDistance)) {
+//                        System.out.println();
                         ChangeState(State.Move);
                     } else
                         ChangeState(State.Attack);

@@ -81,8 +81,13 @@ public class Enemy implements GameObject {
     }
 
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance){
-        float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
-        float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
+        float dx;
+        float dy = playerSurroundingBox.top - getSurroundingBox().top;
+        if(currentAnimation.isFlip){
+            dx = playerSurroundingBox.left - getSurroundingBox().left - currentAnimation.getAbsoluteAnimationWidth();
+        }else{
+            dx = playerSurroundingBox.left - getSurroundingBox().left;
+        }
         float d =  dx*dx + dy*dy;
         if (d <maxDistance)
             return true;
@@ -172,7 +177,6 @@ public class Enemy implements GameObject {
     }
 
     public void decreaseHealth(int damage) {
-        System.out.println("Hereeeeeeee");
         if (this.isInvincible)
             return;
         else {
