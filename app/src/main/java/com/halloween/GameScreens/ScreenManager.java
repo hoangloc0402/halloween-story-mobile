@@ -11,12 +11,14 @@ public class ScreenManager {
     private MainMenuScreen mainMenuScreen;
     private PauseScreen pauseScreen;
     private BossScreen bossScreen;
+    private GameOverScreen gameOverScreen;
 
     public ScreenManager() {
         mainMenuScreen = new MainMenuScreen();
         graveyardScreen = new GraveyardScreen();
         pauseScreen = new PauseScreen();
         bossScreen = new BossScreen();
+        gameOverScreen = new GameOverScreen();
     }
 
     public GameScreen getActiveScreen(){
@@ -28,6 +30,8 @@ public class ScreenManager {
                 return mainMenuScreen;
             case PAUSE:
                 return pauseScreen;
+            case GAME_OVER:
+                return gameOverScreen;
             case BOSS:
                 Constants.isInGraveyard = false;
                 return bossScreen;
@@ -45,7 +49,7 @@ public class ScreenManager {
     }
 
     public void draw(Canvas canvas){
-        if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PAUSE) {
+        if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PAUSE || Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.GAME_OVER || Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.WIN) {
             if (Constants.isInGraveyard)
                 graveyardScreen.draw(canvas);
             else

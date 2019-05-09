@@ -20,7 +20,7 @@ public class JoyStick implements GameObject {
     private float offset = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.05);
     private float baseSize = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.32);
     private float buttonSize = (float)(baseSize * 0.5);
-    private Paint paint = new Paint();
+    private Paint paintLeft = new Paint(), paintRight = new Paint();
     private PointF joystickBasePosition = new PointF(offset * 2, (float) (Constants.SCREEN_HEIGHT - offset - baseSize * 0.8));
     private PointF joystickCenterPosition = new PointF((float)(joystickBasePosition.x + 0.5*baseSize), (float) (joystickBasePosition.y + 0.5*baseSize));
     private PointF joystickButtonPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
@@ -61,7 +61,8 @@ public class JoyStick implements GameObject {
         this.transformButtonHover = Bitmap.createScaledBitmap(transformButtonHover, (int)(0.7f * buttonSize)  , (int) (0.7f * buttonSize), false);
         this.transformButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 3.5f - jumpButton.getWidth() - atkButton.getWidth() - transformButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - offset - atkButton.getHeight() + 0.5f * (atkButton.getHeight() - transformButton.getHeight())));
 
-        this.paint.setAlpha(255);
+        this.paintLeft.setAlpha(255);
+        this.paintRight.setAlpha(255);
     }
 
     public boolean isInRangeOfJoyStick(float x, float y) {
@@ -167,35 +168,41 @@ public class JoyStick implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-//        canvas.drawBitmap(joystickBase, joystickBasePosition.x, joystickBasePosition.y, paint);
-        if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.MIDDLE && !Constants.JOYSTICK_JUMP_STATE && !Constants.JOYSTICK_ATK_STATE) {
-            paint.setAlpha(185);
-        } else {
-            paint.setAlpha(255);
-        }
-        if (isPressedPause) {
-            canvas.drawBitmap(pauseButtonHover, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
-        } else {
-            canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
-        }
-        if (Constants.MAIN_CHARACTER_IS_FULL_MANA) {
-            if (isPressedTransform) {
-                canvas.drawBitmap(transformButtonHover, transformButtonPosition.x, transformButtonPosition.y, new Paint());
+        if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PLAY || Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.BOSS) {
+            if (!Constants.JOYSTICK_JUMP_STATE && !Constants.JOYSTICK_ATK_STATE) {
+                paintRight.setAlpha(185);
             } else {
-                canvas.drawBitmap(transformButton, transformButtonPosition.x, transformButtonPosition.y, new Paint());
+                paintRight.setAlpha(255);
             }
+            if (Constants.CURRENT_JOYSTICK_STATE == Constants.JOYSTICK_STATE.MIDDLE) {
+                paintLeft.setAlpha(185);
+            } else {
+                paintLeft.setAlpha(255);
+            }
+            if (isPressedPause) {
+                canvas.drawBitmap(pauseButtonHover, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
+            } else {
+                canvas.drawBitmap(pauseButton, pauseButtonPosition.x, pauseButtonPosition.y, new Paint());
+            }
+            if (Constants.MAIN_CHARACTER_IS_FULL_MANA) {
+                if (isPressedTransform) {
+                    canvas.drawBitmap(transformButtonHover, transformButtonPosition.x, transformButtonPosition.y, new Paint());
+                } else {
+                    canvas.drawBitmap(transformButton, transformButtonPosition.x, transformButtonPosition.y, new Paint());
+                }
+            }
+            if (Constants.JOYSTICK_ATK_STATE) {
+                canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paintRight);
+            } else {
+                canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paintRight);
+            }
+            if (Constants.JOYSTICK_JUMP_STATE) {
+                canvas.drawBitmap(jumpButtonHover, jumpButtonPosition.x, jumpButtonPosition.y, paintRight);
+            } else {
+                canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paintRight);
+            }
+            canvas.drawBitmap(joystickButton, joystickButtonPosition.x, joystickButtonPosition.y, paintLeft);
         }
-        if (Constants.JOYSTICK_ATK_STATE) {
-            canvas.drawBitmap(atkButtonHover, atkButtonPosition.x, atkButtonPosition.y, paint);
-        } else {
-            canvas.drawBitmap(atkButton, atkButtonPosition.x, atkButtonPosition.y, paint);
-        }
-        if (Constants.JOYSTICK_JUMP_STATE) {
-            canvas.drawBitmap(jumpButtonHover, jumpButtonPosition.x, jumpButtonPosition.y, paint);
-        } else {
-            canvas.drawBitmap(jumpButton, jumpButtonPosition.x, jumpButtonPosition.y, paint);
-        }
-        canvas.drawBitmap(joystickButton, joystickButtonPosition.x, joystickButtonPosition.y, paint);
     }
 
     public void receiveTouch(MotionEvent event) {
