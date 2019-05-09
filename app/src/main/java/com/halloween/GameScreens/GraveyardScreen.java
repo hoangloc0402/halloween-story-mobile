@@ -161,12 +161,10 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void update() {
-        if (Constants.JOYSTICK_ATK_STATE)
-            this.potions.add(new SmallHealthPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
-
-        if (Constants.JOYSTICK_JUMP_STATE)
-            this.potions.add(new SmallManaPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
-
+//        if (Constants.JOYSTICK_ATK_STATE)
+//            this.potions.add(new SmallHealthPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
+//        if (Constants.JOYSTICK_JUMP_STATE)
+//            this.potions.add(new SmallManaPotion(new PointF(mainCharacter.getCurrentPosition().x, mainCharacter.getCurrentPosition().y), this.boxes));
         if (Constants.IS_SWITCH_GAME_STATE) {
             Constants.IS_SWITCH_GAME_STATE = false;
             this.isStarting = true;
@@ -193,10 +191,9 @@ public class GraveyardScreen implements GameScreen {
         if (backgroundCloudSmallOffset > backgroundCloudSmall.getWidth())
             backgroundCloudSmallOffset = 0f;
 
-        mainCharacter.update(boxes);
-
         joyStick.update();
-        if (portal.isInRange()) {this.portal.update();}
+
+        mainCharacter.update(boxes);
 
         healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
         healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
@@ -221,10 +218,7 @@ public class GraveyardScreen implements GameScreen {
             if (enemy.isActive()){
                 tempSurrounding = enemy.getSurroundingBox();
                 if (tempAttackRangeMain!=null){
-//                    System.out.println("main " + tempAttackRangeMain);
-//                    System.out.println(tempAttackRangeMain.intersect(tempSurrounding));
-                    if (tempAttackRangeMain.intersect(tempSurrounding))
-                    {
+                    if (tempAttackRangeMain.intersect(tempSurrounding)) {
                         enemy.decreaseHealth(mainCharacter.getAttackPower());
                     }
                 }
@@ -239,20 +233,18 @@ public class GraveyardScreen implements GameScreen {
                         mainCharacter.decreaseHealth(enemy.getDamage());
                 }
             }
-
         }
 
-        // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
         if (mainPosition.x < Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT) * 0.3) {
             Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT) * 0.3);
-        } else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + 0.6f * (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)) {
+        }
+        else if (mainPosition.x > Constants.BACKGROUND_X_AXIS + 0.6f * (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)) {
             Constants.BACKGROUND_X_AXIS = (float) (mainPosition.x - 0.6f * (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT));
         }
         Constants.BACKGROUND_X_AXIS = Math.max(Constants.BACKGROUND_X_AXIS, (float) 0.0);
         Constants.BACKGROUND_X_AXIS = Math.min(Constants.BACKGROUND_X_AXIS, (float) backgroundBlock.getWidth() - (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT));
         this.backgroundBlockWhat.set((int) Constants.BACKGROUND_X_AXIS, (int) 0, (int) (Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT)), backgroundBlock.getHeight());
-
 
         Pair<Boolean,PointF> pair = portal.isInSuckingRange(mainCharacter.getSurroundingBox());
         if (pair.first) {
@@ -262,11 +254,11 @@ public class GraveyardScreen implements GameScreen {
             Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
             Constants.IS_SWITCH_GAME_STATE = true;
         }
+        if (portal.isInRange()) {this.portal.update();}
     }
 
     @Override
     public void draw(Canvas canvas) {
-//        Log.d("BG: ", Constants.BACKGROUND_X_AXIS + " " + backgroundBlock.getWidth() + " " + mainCharacter.getCurrentPosition().x);
         canvas.drawBitmap(background, 0, 0, paint);
         canvas.drawBitmap(backgroundMoon, (float) (Constants.SCREEN_WIDTH * 0.7), (float) (Constants.SCREEN_HEIGHT * 0.125), paint);
         for (int i = 0; i < backgroundCloudCount; i++) {
