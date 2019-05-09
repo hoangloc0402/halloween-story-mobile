@@ -109,7 +109,8 @@ public class BossScreen implements GameScreen {
         }
 
 
-
+        this.healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
+        this.healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
         this.healthBarBoss.update();
         this.healthBarMainCharacter.update();
         this.mainCharacter.update(boxes);
@@ -166,6 +167,9 @@ public class BossScreen implements GameScreen {
     @Override
     public void reset() {
         this.mainCharacter = MainCharacter.getInstance(200,600);
+        if (!this.mainCharacter.isActive) {
+            this.mainCharacter.resetAllValue();
+        }
     }
 
     @Override

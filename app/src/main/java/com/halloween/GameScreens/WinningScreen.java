@@ -16,7 +16,7 @@ import com.halloween.Constants;
 import com.halloween.MainActivity;
 import com.halloween.R;
 
-public class GameOverScreen implements GameScreen {
+public class WinningScreen implements GameScreen {
     private Bitmap background;
     private Bitmap currentButtonRestart, buttonRestart, buttonRestartHover;
     private Bitmap currentButtonExit, buttonExit, buttonExitHover;
@@ -30,12 +30,12 @@ public class GameOverScreen implements GameScreen {
     private Rect whatToDraw;
     private RectF whereToDraw;
 
-    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, RESTART}
+    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, EXIT}
     private MENU_STATE currentMenuState;
     private Paint paint;
 
-    public GameOverScreen() {
-        this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.gameover_bg);
+    public WinningScreen() {
+        this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.winning_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
 
         this.scoreBar = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.score);
@@ -44,9 +44,9 @@ public class GameOverScreen implements GameScreen {
         int width = Constants.SCREEN_WIDTH/4;
         int height = Constants.SCREEN_HEIGHT/10;
 
-        this.buttonRestart = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.restart);
+        this.buttonRestart = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.menu);
         this.buttonRestart = Bitmap.createScaledBitmap(buttonRestart, width, height, false);
-        this.buttonRestartHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.restart_hover);
+        this.buttonRestartHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.menu_hover);
         this.buttonRestartHover = Bitmap.createScaledBitmap(buttonRestartHover, width, height, false);
 
         this.buttonExit = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.exit);
@@ -103,17 +103,10 @@ public class GameOverScreen implements GameScreen {
                     this.reset();
                 }
                 break;
-            case RESTART:
+            case EXIT:
                 this.paint.setAlpha(this.paint.getAlpha() - 10);
-                if (this.paint.getAlpha() <= 50){
-                    if (Constants.isInGraveyard) {
-                        Constants.IS_SWITCH_GAME_STATE = true;
-                        Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PLAY;
-                    } else {
-                        Constants.IS_SWITCH_GAME_STATE = true;
-                        Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
-                    }
-                    this.reset();
+                if (this.paint.getAlpha() <= 30){
+                    Constants.MAIN_ACTIVITY.finish();
                 }
                 break;
         }
@@ -154,10 +147,10 @@ public class GameOverScreen implements GameScreen {
         {
             case MotionEvent.ACTION_UP:
                 if (isInRangeOfRestartButton(x, y)) {
-                    currentMenuState = MENU_STATE.RESTART;
+                    currentMenuState = MENU_STATE.BACK_TO_MAIN;
                 }
                 else if (isInRangeOfExitButton(x, y)) {
-                    currentMenuState = MENU_STATE.BACK_TO_MAIN;
+                    currentMenuState = MENU_STATE.EXIT;
                 }
                 break;
         }

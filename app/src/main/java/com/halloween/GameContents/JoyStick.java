@@ -13,6 +13,8 @@ import com.halloween.Constants;
 import com.halloween.GameObjects.GameObject;
 import com.halloween.R;
 
+import java.util.zip.CheckedOutputStream;
+
 public class JoyStick implements GameObject {
     private Bitmap joystickBase, joystickButton;
 
@@ -322,5 +324,11 @@ public class JoyStick implements GameObject {
 
     @Override
     public void update() {
+        if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PLAY) {
+            pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - pauseButton.getWidth()), 50);
+        }
+        if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.BOSS) {
+            pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH * 0.5f - pauseButton.getWidth() * 0.5f), 55);
+        }
     }
 }

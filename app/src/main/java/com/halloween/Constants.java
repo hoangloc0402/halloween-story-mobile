@@ -10,7 +10,7 @@ public class Constants {
     public static Context CURRENT_CONTEXT;
     public static Activity MAIN_ACTIVITY;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS, WIN}
-    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
+    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.BOSS;
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
     public static GAME_STATE PREVIOUS_GAME_STATE;
@@ -55,6 +55,8 @@ public class Constants {
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final long INVINCIBLE_TIME = 1500;
     public static final long BLINK_TIME = 150;
+    public static final int MAX_SCORE = 100;
+    public static final int CURRENT_SCORE = 100;
     public static final int SMALL_HEALTH_POTION_VOLUME = 100;
     public static final int BIG_HEALTH_POTION_VOLUME = 500;
     public static final int SMALL_MANA_POTION_VOLUME = 100;
@@ -67,7 +69,7 @@ public class Constants {
 
     public static final int FIRE_TRAP_DAMAGE = 50;
     public static final int CAMP_FIRE_DAMAGE = 10;
-    public static final int SPEAR_DAMAGE = 100;
+    public static final int SPEAR_DAMAGE = 300;
     public static final int SPEAR_HORIZONTAL_DAMAGE = 30;
     public static final int SPEAR_VERTICAL_DAMAGE = 30;
 
