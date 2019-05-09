@@ -20,6 +20,7 @@ import com.halloween.GameObjects.Enemies.Gargoyle;
 import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.HealthPotion;
 import com.halloween.GameObjects.MainCharacter;
+import com.halloween.GameObjects.Potions.BigHealthPotion;
 import com.halloween.GameObjects.Potions.SmallHealthPotion;
 import com.halloween.GameObjects.Trap;
 import com.halloween.GameObjects.Traps.CampFire;
@@ -108,7 +109,7 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initPotions() {
-        this.healthPotions.add(new SmallHealthPotion(new PointF(200f, 200f), this.boxes));
+        this.healthPotions.add(new BigHealthPotion(new PointF(200f, 200f), this.boxes));
     }
 
     private void initTraps() {

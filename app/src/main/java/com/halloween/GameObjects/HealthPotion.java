@@ -14,4 +14,12 @@ public abstract class HealthPotion implements GameObject {
     public RectF getSurroundingBox(){
         return null;
     }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public int getHealthVolume() {
+        return healthVolume;
+    }
 }

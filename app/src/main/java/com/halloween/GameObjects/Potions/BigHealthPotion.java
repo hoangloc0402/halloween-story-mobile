@@ -16,26 +16,23 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-public class SmallHealthPotion extends HealthPotion {
-    private Bitmap smallHealthPotion;
+public class BigHealthPotion extends HealthPotion {
+    private Bitmap bigHealthPotion;
     private PointF droppingPosition;
     private static float scale = 0.35f * Constants.SCREEN_HEIGHT / 578f;
 
-    public SmallHealthPotion(PointF position, ArrayList<RectF> boxes) {
+    public BigHealthPotion(PointF position, ArrayList<RectF> boxes) {
         surroundingBox = new RectF();
         this.isActive = false;
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
         getPotionPosition(boxes);
-        this.healthVolume = Constants.SMALL_HEALTH_POTION_VOLUME;
+        this.healthVolume = Constants.BIG_HEALTH_POTION_VOLUME;
 
-        this.smallHealthPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.health_potion);
-        this.potionHeight = (int) (this.smallHealthPotion.getHeight() * scale);
-        this.potionWidth = (int) (this.smallHealthPotion.getWidth() * scale);
-        Log.d(TAG, "SmallHealthPotion potion height: " + potionHeight);
-        Log.d(TAG, "SmallHealthPotion potion width: " + potionWidth);
-        Log.d(TAG, "SmallHealthPotion potion scale: " + scale);
-        this.smallHealthPotion = Bitmap.createScaledBitmap(this.smallHealthPotion, potionWidth, potionHeight, false);
+        this.bigHealthPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.big_health_potion);
+        this.potionHeight = (int) (this.bigHealthPotion.getHeight() * scale);
+        this.potionWidth = (int) (this.bigHealthPotion.getWidth() * scale);
+        this.bigHealthPotion = Bitmap.createScaledBitmap(this.bigHealthPotion, potionWidth, potionHeight, false);
     }
 
     public void getPotionPosition(ArrayList<RectF> boxes) {
@@ -62,7 +59,7 @@ public class SmallHealthPotion extends HealthPotion {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(this.smallHealthPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y - this.potionHeight, new Paint());
+        canvas.drawBitmap(this.bigHealthPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y - this.potionHeight, new Paint());
     }
 
     @Override
