@@ -257,7 +257,11 @@ public class GraveyardScreen implements GameScreen {
 
 //        this.zombie.draw(canvas);
         this.gargoyle.draw(canvas);
-        this.mainCharacter.draw(canvas, paint);
+        if (this.isStarting) {
+            this.mainCharacter.draw(canvas, paint);
+        } else {
+            this.mainCharacter.draw(canvas);
+        }
 
         this.joyStick.draw(canvas);
     }

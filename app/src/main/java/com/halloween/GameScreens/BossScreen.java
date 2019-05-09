@@ -148,7 +148,11 @@ public class BossScreen implements GameScreen {
 //            temp.set(Constants.getRelativeXPosition(box.left,Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right,Constants.CURRENT_GAME_STATE), box.bottom);
 //            canvas.drawRect(temp, paint);
 //        }
-        this.mainCharacter.draw(canvas, paint);
+        if (this.isStarting) {
+            this.mainCharacter.draw(canvas, paint);
+        } else {
+            this.mainCharacter.draw(canvas);
+        }
         this.healthBarBoss.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
         this.joyStick.draw(canvas);
