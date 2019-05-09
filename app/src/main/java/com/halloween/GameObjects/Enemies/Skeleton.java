@@ -135,9 +135,9 @@ public class Skeleton extends Enemy {
 //                                    System.out.println("isMovingForward "+ isMovingForward);
                             }
                             if (isMovingForward) {
-                                MoveToDestination(rightLandMark, Constants.ZOMBIE_V);
+                                MoveToDestination(rightLandMark, Constants.SKELETON_V);
                             } else {
-                                MoveToDestination(leftLandMark, Constants.ZOMBIE_V);
+                                MoveToDestination(leftLandMark, Constants.SKELETON_V);
                             }
 
 

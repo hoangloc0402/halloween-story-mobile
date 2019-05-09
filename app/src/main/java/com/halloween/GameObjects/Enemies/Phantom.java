@@ -39,22 +39,22 @@ public class Phantom extends Enemy {
 
     public void LoadAnimation() {
         this.moveAnimation = new Animation(R.drawable.phantom_move_114x91x6, 114 * Constants.PHANTOM_SCALE, 91 * Constants.PHANTOM_SCALE, 6, 100,
-                new PointF(15 *Constants.PHANTOM_SCALE, 47*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(40 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
         this.diedAnimation = new Animation(R.drawable.phantom_died_114x91x6, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 6, 100,
-                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(40 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
         this.hurtAnimation = new Animation(R.drawable.phantom_hurt_114x91x1, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 1, 100,
-                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(30 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
         this.attackAnimation = new Animation(R.drawable.phantom_attack_114x91x12, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 12, 100,
-                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(30 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE), new PointF(10 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
         this.idleAnimation = new Animation(R.drawable.phantom_idle_114x91x4, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 4, 100,
-                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(40 *Constants.PHANTOM_SCALE, 5*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 5*Constants.PHANTOM_SCALE));
         this.appearAnimation = new Animation(R.drawable.phantom_appear_114x91x6, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 6, 5000,
-                new PointF(10 *Constants.PHANTOM_SCALE, 60*Constants.PHANTOM_SCALE), new PointF(40 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                91 * Constants.PHANTOM_SCALE, 6, 100,
+                new PointF(30 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(0 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
     }
 
     @Override
@@ -76,6 +76,30 @@ public class Phantom extends Enemy {
     }
 
     @Override
+    public RectF getAttackRange() {
+        if (currentAnimation != attackAnimation){
+            return null;
+        }
+        int frameIndex = currentAnimation.getCurrentFrameIndex();
+        if (frameIndex >=7 && frameIndex <=11){
+            float top = this.currentPosition.y;
+            float bottom = this.currentPosition.y + this.currentAnimation.getAbsoluteFrameHeight();
+            float left, right;
+            float width = currentAnimation.getAbsoluteFrameWidth();
+            if (currentAnimation.isFlip) {
+                right = this.currentPosition.x + width - (currentAnimation.getAbsoluteOffsetTopLeftX() + currentAnimation.getAbsoluteOffsetBottomRightX())/2;
+                left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+            } else {
+                left = this.currentPosition.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
+                right = left + Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+            }
+            this.attackRect.set(left, top, right , bottom);
+            return this.attackRect;
+        }
+        else return  null;
+    }
+
+    @Override
     public void update(RectF playerSurroundingBox) {
         super.update();
         if (isActive) {
@@ -84,14 +108,6 @@ public class Phantom extends Enemy {
                 ChangeState(State.Died);
             }
             switch (currentState) {
-                case Idle:
-                    break;
-                case Appear:
-                    if(this.currentAnimation.isLastFrame()){
-                        ChangeState(State.Move);
-                    }else{
-                        ChangeState(State.Appear);
-                    }
                 case Died:
                     ChangeState(State.Died);
                     if (this.currentAnimation.isLastFrame())
@@ -100,26 +116,31 @@ public class Phantom extends Enemy {
                 case Hurt:
                     ChangeState(State.Hurt);
                     break;
+                case Attack:
+                    if (!IsPlayerInRange(playerSurroundingBox, attackDistance)) {
+                        ChangeState(State.Move);
+                    } else
+                        ChangeState(State.Attack);
+                    isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
+                    break;
                 case Move:
                     ChangeState(State.Move);
                     if (isAlive) {
-//                        if(IsInScreen() && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))){
-//                            if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
-//                                isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
-//                            }
-//                            MoveToDestination(new PointF(playerSurroundingBox.left + 200 , playerSurroundingBox.top), Constants.GARGOYLE_V);
-//                        }
-//                        else {
-                        if (isMovingForward) {
-                            MoveToDestination(rightLandMark, Constants.GARGOYLE_V);
+                        if (IsPlayerInRange(playerSurroundingBox, attackDistance)) {
+                            ChangeState(State.Attack);
                         } else {
-                            MoveToDestination(leftLandMark, Constants.GARGOYLE_V);
+                            MoveToDestination(new PointF(playerSurroundingBox.left, playerSurroundingBox.top), Constants.PHANTOM_V);
+
                         }
-                        if (currentPosition.x <= leftLandMark.x) {
-                            isMovingForward = true;
-                        } else if (currentPosition.x >= rightLandMark.x) {
-                            isMovingForward = false;
-                        }
+                    }
+                    break;
+                case Idle:
+                    ChangeState(State.Idle);
+                    break;
+                case Appear:
+                    ChangeState(State.Appear);
+                    if(this.currentAnimation.isLastFrame()){
+                        ChangeState(State.Move);
                     }
                     break;
                 default:
