@@ -1,5 +1,6 @@
 package com.halloween.GameObjects.Enemies;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -47,6 +48,7 @@ public class Enemy implements GameObject {
         isAlive = true;
         isActive = true;
         this.isInvincible = false;
+        this.attackRect = new RectF();
     }
 
     boolean isMovingForward;
@@ -159,24 +161,6 @@ public class Enemy implements GameObject {
         }
     }
 
-    public RectF getAttackRange() {
-        if (currentAnimation != attackAnimation){
-            return null;
-        }
-
-        float top = this.currentPosition.y - currentAnimation.getAbsoluteOffsetTopLeftY();
-        float bottom = top + currentAnimation.getAbsoluteFrameHeight();
-        float left, right;
-        if (currentAnimation.isFlip) {
-            left = this.currentPosition.x + currentAnimation.getAbsoluteAnimationWidth();
-            right = left +  currentAnimation.getAbsoluteOffsetTopLeftX();
-        } else {
-            left = this.currentPosition.x - currentAnimation.getAbsoluteOffsetTopLeftX();
-            right = this.currentPosition.x;
-        }
-        this.attackRect.set(left, top, right, bottom);
-        return this.attackRect;
-    }
 
     public float sign(float x){
         if (x<0)
@@ -204,8 +188,5 @@ public class Enemy implements GameObject {
 
     }
 
-    public void HitPlayer(){
-
-    }
 
 }
