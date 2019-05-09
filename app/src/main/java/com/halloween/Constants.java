@@ -31,18 +31,20 @@ public class Constants {
     public final static float ZOMBIE_STARTING_HP = 20;
     public final static int ZOMBIE_POINT = 100;
     public final static int ZOMBIE_V = 2;
-    public final static float ZOMBIE_SCALE = 1.5f;
-    public final static float ZOMBIE_FOLLOW_DISTANCE = 25000;
-    public final static float ZOMBIE_ATTACK_DISTANCE = 1600;
+    public final static float ZOMBIE_SCALE = 1.3f;
+    public final static float ZOMBIE_FOLLOW_DISTANCE = 40000;
+    public final static float ZOMBIE_ATTACK_DISTANCE = 100 * ZOMBIE_SCALE *ZOMBIE_SCALE;
+    public final static float ZOMBIE_HEIGHT = 97;
 
     public final static int SKELETON_ATTACK = 50;
     public final static int SKELETON_DAMAGE = 10;
     public final static float SKELETON_STARTING_HP = 20;
     public final static int SKELETON_POINT = 100;
     public final static int SKELETON_V = 5;
-    public final static float SKELETON_SCALE = 2f;
-    public final static float SKELETON_FOLLOW_DISTANCE = 50000;
-    public final static float SKELETON_ATTACK_DISTANCE = 10000;
+    public final static float SKELETON_SCALE = 1.5f;
+    public final static float SKELETON_FOLLOW_DISTANCE = 40000;
+    public final static float SKELETON_ATTACK_DISTANCE = 1000 *SKELETON_SCALE*SKELETON_SCALE;
+    public final static float SKELETON_HEIGHT = 127;
 
     public final static int GARGOYLE_ATTACK= 100;
     public final static int GARGOYLE_DAMAGE = 100;
@@ -52,6 +54,17 @@ public class Constants {
     public final static float GARGOYLE_SCALE = 1.5f;
     public final static float GARGOYLE_FOLLOW_DISTANCE = 4000000;
     public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
+    public final static float GARGOYLE_HEIGHT = 118;
+
+    public final static int PHANTOM_ATTACK= 100;
+    public final static int PHANTOM_DAMAGE = 100;
+    public final static float PHANTOM_STARTING_HP = 30;
+    public final static int PHANTOM_POINT = 100;
+    public final static float PHANTOM_V = 5;
+    public final static float PHANTOM_SCALE = 1.5f;
+    public final static float PHANTOM_FOLLOW_DISTANCE = 4000000;
+    public final static float PHANTOM_ATTACK_DISTANCE = 10000;
+    public final static float PHANTOM_HEIGHT = 118;
 
     public static final float MAIN_CHARACTER_V_X = 5f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
