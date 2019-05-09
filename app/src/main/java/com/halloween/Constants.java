@@ -31,7 +31,7 @@ public class Constants {
     public final static int ZOMBIE_V = 2;
     public final static float ZOMBIE_SCALE = 1.5f;
     public final static float ZOMBIE_FOLLOW_DISTANCE = 25000;
-    public final static float ZOMBIE_ATTACK_DISTANCE = 1600;
+    public final static float ZOMBIE_ATTACK_DISTANCE = 1500;
 
     public final static int GARGOYLE_ATTACK= 30;
     public final static int GARGOYLE_DAMAGE = 20;

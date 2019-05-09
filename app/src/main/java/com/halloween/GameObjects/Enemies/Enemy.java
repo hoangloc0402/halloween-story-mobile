@@ -1,5 +1,6 @@
 package com.halloween.GameObjects.Enemies;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -33,6 +34,8 @@ public class Enemy implements GameObject {
     PointF rightLandMark;
     RectF surroundingBox;
 
+    int damage, attack;
+
     float v_x, v_y;
     RectF attackRect;
 
@@ -47,6 +50,7 @@ public class Enemy implements GameObject {
         isAlive = true;
         isActive = true;
         this.isInvincible = false;
+        this.attackRect = new RectF();
     }
 
     boolean isMovingForward;
@@ -57,10 +61,23 @@ public class Enemy implements GameObject {
 //        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
     }
 
+    public RectF getAttackRange(){
+        return null;
+    }
+
+    public int getDamage(){
+        return this.damage;
+    }
+
+    public int getAttack(){
+        return this.attack;
+    }
+
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance){
-        float dy = playerSurroundingBox.top - getSurroundingBox().top;
-        float dx = playerSurroundingBox.left - getSurroundingBox().left;
+        float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
+        float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
         float d =  dx*dx + dy*dy;
+//        float d = dx*dx;
         if (d <maxDistance)
             return true;
         return false;
@@ -159,24 +176,6 @@ public class Enemy implements GameObject {
         }
     }
 
-    public RectF getAttackRange() {
-        if (currentAnimation != attackAnimation){
-            return null;
-        }
-
-        float top = this.currentPosition.y - currentAnimation.getAbsoluteOffsetTopLeftY();
-        float bottom = top + currentAnimation.getAbsoluteFrameHeight();
-        float left, right;
-        if (currentAnimation.isFlip) {
-            left = this.currentPosition.x + currentAnimation.getAbsoluteAnimationWidth();
-            right = left +  currentAnimation.getAbsoluteOffsetTopLeftX();
-        } else {
-            left = this.currentPosition.x - currentAnimation.getAbsoluteOffsetTopLeftX();
-            right = this.currentPosition.x;
-        }
-        this.attackRect.set(left, top, right, bottom);
-        return this.attackRect;
-    }
 
     public float sign(float x){
         if (x<0)
@@ -204,8 +203,5 @@ public class Enemy implements GameObject {
 
     }
 
-    public void HitPlayer(){
-
-    }
 
 }

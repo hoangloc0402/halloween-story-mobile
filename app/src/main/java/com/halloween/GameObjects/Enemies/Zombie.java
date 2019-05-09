@@ -1,6 +1,7 @@
 package com.halloween.GameObjects.Enemies;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -30,6 +31,9 @@ public class Zombie extends Enemy {
         this.currentAnimation.play();
 
         this.isMovingForward = false;
+
+        this.damage = Constants.ZOMBIE_DAMAGE;
+        this.attack = Constants.ZOMBIE_ATTACK;
     }
 
     public void LoadAnimation() {
@@ -47,6 +51,41 @@ public class Zombie extends Enemy {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+//        if (isActive) {
+//            if (this.IsInScreen()) {
+//                RectF attack = getSurroundingBox();
+////                System.out.println(attack);;
+////                System.out.println("current Position "+ currentPosition);
+//                if(attack !=null){
+//                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
+//                }
+//
+//            }
+//        }
+    }
+
+    @Override
+    public RectF getAttackRange() {
+        if (currentAnimation != attackAnimation){
+            return null;
+        }
+        int frameIndex = currentAnimation.getCurrentFrameIndex();
+        if (frameIndex >=2 && frameIndex <=3){
+            float top = this.currentPosition.y;
+            float bottom = this.currentPosition.y + this.currentAnimation.getAbsoluteFrameHeight();
+            float left, right;
+            float width = currentAnimation.getAbsoluteFrameWidth();
+            if (currentAnimation.isFlip) {
+                right = this.currentPosition.x + width + currentAnimation.getAbsoluteOffsetTopLeftX();;
+                left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+            } else {
+                left = this.currentPosition.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
+                right = left + Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+            }
+            this.attackRect.set(left, top, right , bottom);
+            return this.attackRect;
+        }
+        else return  null;
     }
 
     @Override
@@ -85,7 +124,7 @@ public class Zombie extends Enemy {
                                 isMovingForward = false;
                             }else if (IsPlayerInRange(playerSurroundingBox, followDistance) && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))) {
                                     isMovingForward = playerSurroundingBox.left > getSurroundingBox().left;
-                                    System.out.println("isMovingForward "+ isMovingForward);
+//                                    System.out.println("isMovingForward "+ isMovingForward);
                             }
                             if (isMovingForward) {
                                 MoveToDestination(rightLandMark, Constants.ZOMBIE_V);

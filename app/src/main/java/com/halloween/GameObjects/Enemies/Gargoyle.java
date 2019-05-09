@@ -1,6 +1,7 @@
 package com.halloween.GameObjects.Enemies;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -31,22 +32,37 @@ public class Gargoyle extends Enemy {
         this.currentAnimation.play();
 
         this.isMovingForward = false;
+
+        this.damage = Constants.GARGOYLE_DAMAGE;
+        this.attack  = Constants.GARGOYLE_ATTACK;
     }
 
     public void LoadAnimation() {
         this.moveAnimation = new Animation(R.drawable.gargoyle_move_103x118x4_10x20, 103 * Constants.GARGOYLE_SCALE, 118 * Constants.GARGOYLE_SCALE, 4, 100,
-                new PointF(30 *Constants.GARGOYLE_SCALE, 53*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 25*Constants.GARGOYLE_SCALE));
+                new PointF(15 *Constants.GARGOYLE_SCALE, 47*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
         this.diedAnimation = new Animation(R.drawable.gargoyle_died_103x118x6_0x0, 103 * Constants.GARGOYLE_SCALE,
                 118 * Constants.GARGOYLE_SCALE, 6, 100,
-                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 25*Constants.GARGOYLE_SCALE));
+                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
         this.hurtAnimation = new Animation(R.drawable.gargoyly_hurt_103x118x1_0x0, 103 * Constants.GARGOYLE_SCALE,
                 118 * Constants.GARGOYLE_SCALE, 1, 100,
-                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 25*Constants.GARGOYLE_SCALE));
+                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
+//        if (isActive) {
+//            if (this.IsInScreen()) {
+//                RectF attack = getSurroundingBox();
+////                System.out.println(attack);;
+////                System.out.println("current Position "+ currentPosition);
+//                if(attack !=null){
+//                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
+//                }
+//
+//            }
+//        }
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Animation {
         this.offsetBottomRight = offsetBottomRight;
         this.animationWidth = this.frameWidth - offsetTopLeft.x - offsetBottomRight.x;
         this.animationHeight = this.frameHeight - offsetTopLeft.y - offsetBottomRight.y;
-        this.animationWidth = Constants.getAbsoluteXLength(this.animationWidth);
+//        this.animationWidth = Constants.getAbsoluteXLength(this.animationWidth);
 //        this.animationHeight = Constants.getAbsoluteXLength(this.animationHeight);
         this.sourceRect = new Rect(0, 0, frameWidth, frameHeight);
         this.destinationRect = new RectF();
@@ -79,7 +79,7 @@ public class Animation {
         RectF whereToDraw = getDestinationRect(position);
         if (isFlip) {
             canvas.save();
-            canvas.scale(-1,1, position.x + animationWidth, 0);
+            canvas.scale(-1,1, position.x + getAbsoluteAnimationWidth(), 0);
             canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
             canvas.restore();
         }
@@ -106,8 +106,8 @@ public class Animation {
 //            this.sourceRect.left = (this.currentFrameIndex + 1) * this.frameWidth;
 //            this.sourceRect.right = this.sourceRect.left - this.frameWidth;
 //        } else {
-            this.sourceRect.left = this.currentFrameIndex * this.frameWidth;
-            this.sourceRect.right = this.sourceRect.left + this.frameWidth;
+        this.sourceRect.left = this.currentFrameIndex * this.frameWidth;
+        this.sourceRect.right = this.sourceRect.left + this.frameWidth;
 //        }
         return sourceRect;
     }
@@ -118,15 +118,15 @@ public class Animation {
 //            left = position.x - this.offsetBottomRight.x;
 //            top = position.y - this.offsetTopLeft.y;
 //        } else {
-            left = position.x - this.offsetTopLeft.x;
-            top = position.y - this.offsetTopLeft.y;
+        left = position.x - this.offsetTopLeft.x;
+        top = position.y - this.offsetTopLeft.y;
 //        }
         this.destinationRect.set(left, top, left + this.frameWidth, top + this.frameHeight);
         return destinationRect;
     }
 
     public RectF getSurroundingBox(PointF position) {
-        this.surroundingRect.set(position.x, position.y, position.x + this.animationWidth, position.y + this.animationHeight);
+        this.surroundingRect.set(position.x, position.y, position.x + this.getAbsoluteAnimationWidth(), position.y + this.animationHeight);
         return this.surroundingRect;
     }
 
@@ -155,7 +155,7 @@ public class Animation {
 
     public float getAbsoluteOffsetBottomRightY() { return offsetBottomRight.y; }
 
-    public float getAbsoluteAnimationWidth() { return animationWidth; }
+    public float getAbsoluteAnimationWidth() { return Constants.getAbsoluteXLength(animationWidth); }
 
     public float getAbsoluteAnimationHeight() { return animationHeight; }
 }

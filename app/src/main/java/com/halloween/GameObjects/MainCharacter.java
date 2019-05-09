@@ -93,6 +93,7 @@ public class MainCharacter {
 
     public void draw(Canvas canvas) {
         RectF sur = currentAnimation.getSurroundingBox(position);
+        System.out.println(sur);
         canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur. top, Constants.getRelativeXPosition(sur.right), sur.bottom , this.paint);
         RectF atk = getAttackRange();
         if (atk!=null)
@@ -332,15 +333,15 @@ public class MainCharacter {
                 float top = this.position.y;
                 float bottom = this.position.y + this.currentAnimation.getAbsoluteFrameHeight()/2;
                 float left, right;
-                float width = currentAnimation.getAbsoluteFrameWidth();
+                float width = currentAnimation.getAbsoluteAnimationWidth();
                 if (currentAnimation.isFlip) {
                     right = this.position.x + width + currentAnimation.getAbsoluteOffsetTopLeftX();;
-                    left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+                    left = right - currentAnimation.getAbsoluteFrameWidth();
                 } else {
                     left = this.position.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
-                    right = left + Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
+                    right = left + currentAnimation.getAbsoluteFrameWidth();
                 }
-                this.attackRect.set(left + currentAnimation.getAbsoluteAnimationWidth(), top, right - width, bottom);
+                this.attackRect.set(left + width, top, right - width, bottom);
                 return this.attackRect;
             }
             else return  null;
@@ -388,7 +389,11 @@ public class MainCharacter {
         return currentAnimation.getSurroundingBox(this.position);
     }
 
-//    public Boolean collide(Rect targetBox){
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    //    public Boolean collide(Rect targetBox){
 //        return targetBox.intersect(this.getSurroundingBox());
 //    }
 }
