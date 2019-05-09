@@ -52,7 +52,7 @@ public class Enemy implements GameObject {
 
     //Check if the object is in the playing screen
     public boolean IsInScreen(){
-        return Constants.isInScreenRange(currentPosition.x, currentAnimation.frameWidth, Constants.CURRENT_GAME_STATE);
+        return Constants.isInScreenRange(currentPosition.x, currentAnimation.getAbsoluteFrameWidth(), Constants.CURRENT_GAME_STATE);
 //        return currentPosition.x + currentAnimation.frameWidth >= Constants.BACKGROUND_X_AXIS && currentPosition.x <= Constants.BACKGROUND_X_AXIS + Constants.SCREEN_WIDTH;
     }
 
