@@ -77,7 +77,6 @@ public class Enemy implements GameObject {
         float dy = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
         float dx = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
         float d =  dx*dx + dy*dy;
-//        float d = dx*dx;
         if (d <maxDistance)
             return true;
         return false;
@@ -106,8 +105,9 @@ public class Enemy implements GameObject {
     @Override
     public void update(){
         long elapseTime = System.nanoTime();
-        if ((elapseTime - invincibleStartTime) / 1000000 > Constants.INVINCIBLE_TIME) {
+        if ((elapseTime - invincibleStartTime) / 1000000 > Constants.INVINCIBLE_TIME_ENEMY) {
             this.isInvincible = false;
+            ChangeState(State.Move);
         }
     }
 
@@ -160,6 +160,7 @@ public class Enemy implements GameObject {
     }
 
     public void decreaseHealth(int damage) {
+//        this.isAttacked = true;
         if (this.isInvincible)
             return;
         else {

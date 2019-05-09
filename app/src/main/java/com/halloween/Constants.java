@@ -24,7 +24,8 @@ public class Constants {
 
     public static final int MAX_HEALTH_BOSS = 1000;
 
-    public final static int ZOMBIE_ATTACK= 30;
+    public final static int INVINCIBLE_TIME_ENEMY = 500;
+    public final static int ZOMBIE_ATTACK = 30;
     public final static int ZOMBIE_DAMAGE = 20;
     public final static float ZOMBIE_STARTING_HP = 50;
     public final static int ZOMBIE_POINT = 100;

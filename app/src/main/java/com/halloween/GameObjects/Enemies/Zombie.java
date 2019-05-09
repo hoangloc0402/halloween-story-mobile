@@ -43,8 +43,8 @@ public class Zombie extends Enemy {
                 97 * Constants.ZOMBIE_SCALE, 4, 100, new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
         this.diedAnimation = new Animation(R.drawable.zombie_die_83x97x11, 83 * Constants.ZOMBIE_SCALE,
                 97 * Constants.ZOMBIE_SCALE, 11, 100, new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
-        this.hurtAnimation = new Animation(R.drawable.attack_83x97x4, 83 * Constants.ZOMBIE_SCALE,
-                97 * Constants.ZOMBIE_SCALE, 4, 100, new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
+        this.hurtAnimation = new Animation(R.drawable.zombie_hurt_83x97x1, 83 * Constants.ZOMBIE_SCALE,
+                97 * Constants.ZOMBIE_SCALE, 1, 100, new PointF(22 *Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
     }
 
 
@@ -91,7 +91,10 @@ public class Zombie extends Enemy {
     @Override
     public void update(RectF playerSurroundingBox) {
         super.update();
+//        getDamage();
+//        decreaseHealth(1);
         if (isActive) {
+            System.out.println("Zombie current state "+ currentState);
             if (currentHP <= 0) {
                 isAlive = false;
                 ChangeState(State.Died);

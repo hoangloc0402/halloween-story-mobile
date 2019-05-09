@@ -100,6 +100,7 @@ public class GraveyardScreen implements GameScreen {
 
         this.traps = new ArrayList<>();
         this.enemies = new ArrayList<>();
+        this.initEnemies();
         this.initTraps();
         this.tempSurroundingMain = new RectF();
         this.tempSurrounding = new RectF();
@@ -198,23 +199,23 @@ public class GraveyardScreen implements GameScreen {
             trap.update();
         }
 
-//        for (Enemy enemy :enemies){
-//            tempSurrounding = enemy.getSurroundingBox();
-//            if (tempSurrounding!=null){
-//                if (tempSurrounding.intersect(tempSurrounding))
-//                    mainCharacter.decreaseHealth(enemy.getDamage());
-//            }
-//            tempAttackRange = enemy.getAttackRange();
-//            if (tempAttackRange!=null){
-//                if (tempAttackRange.intersect(tempSurroundingMain))
-//                    mainCharacter.decreaseHealth(10);
-//            }
-//            if (tempAttackRangeMain!=null){
-//                if (tempAttackRangeMain.intersect(tempSurrounding))
-//                    enemy.decreaseHealth(mainCharacter.getAttackPower());
-//            }
-//            enemy.update();
-//        }
+        for (Enemy enemy :enemies){
+            tempSurrounding = enemy.getSurroundingBox();
+            if (tempSurrounding!=null){
+                if (tempSurrounding.intersect(tempSurrounding))
+                    mainCharacter.decreaseHealth(enemy.getDamage());
+            }
+            tempAttackRange = enemy.getAttackRange();
+            if (tempAttackRange!=null){
+                if (tempAttackRange.intersect(tempSurroundingMain))
+                    mainCharacter.decreaseHealth(10);
+            }
+            if (tempAttackRangeMain!=null){
+                if (tempAttackRangeMain.intersect(tempSurrounding))
+                    enemy.decreaseHealth(mainCharacter.getAttackPower());
+            }
+            enemy.update(tempSurroundingMain);
+        }
 
         // Update background X axis pos
         PointF mainPosition = mainCharacter.getCurrentPosition();
@@ -272,9 +273,9 @@ public class GraveyardScreen implements GameScreen {
             trap.draw(canvas);
         }
 
-//        for (Enemy enemy:enemies){
-//            enemy.draw(canvas);
-//        }
+        for (Enemy enemy:enemies){
+            enemy.draw(canvas);
+        }
 
 
         if (this.isStarting) {
