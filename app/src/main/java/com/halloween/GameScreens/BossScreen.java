@@ -81,7 +81,7 @@ public class BossScreen implements GameScreen {
 
     @Override
     public void update() {
-        // TODO: Think of something better
+
         if (Constants.IS_SWITCH_GAME_STATE) {
             Constants.IS_SWITCH_GAME_STATE = false;
             this.reset();
@@ -139,7 +139,7 @@ public class BossScreen implements GameScreen {
 
     @Override
     public void reset() {
-        this.mainCharacter = MainCharacter.getInstance(100,100);
+        this.mainCharacter = MainCharacter.getInstance(600,600);
     }
 
     @Override

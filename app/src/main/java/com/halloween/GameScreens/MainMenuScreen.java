@@ -57,6 +57,7 @@ public class MainMenuScreen implements GameScreen{
             case CLOSING:
                 this.paint.setAlpha(this.paint.getAlpha() - 15);
                 if (this.paint.getAlpha() <= 10){
+                    Constants.IS_SWITCH_GAME_STATE = true;
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PLAY;
                     this.reset();
                 }

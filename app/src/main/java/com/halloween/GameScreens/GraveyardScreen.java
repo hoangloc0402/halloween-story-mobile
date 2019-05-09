@@ -131,15 +131,19 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void reset() {
-//        this.mainCharacter = new MainCharacter();
-//        this.zombie = new Zombie(new PointF(100, 700), new PointF(600, 700));
         this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
-        this.mainCharacter = MainCharacter.getInstance(100, 600);
+        this.mainCharacter = MainCharacter.getInstance(600, 600);
         this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
     }
 
     @Override
     public void update() {
+
+        if (Constants.IS_SWITCH_GAME_STATE) {
+            Constants.IS_SWITCH_GAME_STATE = false;
+            this.reset();
+        }
+
         backgroundCloudOffset += 1;
         backgroundCloudSmallOffset += 1.5f;
         if (backgroundCloudOffset > backgroundCloud.getWidth()) backgroundCloudOffset = 0f;
@@ -208,7 +212,7 @@ public class GraveyardScreen implements GameScreen {
 //            temp.set(Constants.getRelativeXPosition(box.left, Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right, Constants.CURRENT_GAME_STATE), box.bottom);
 //            canvas.drawRect(temp, paint);
 //        }
-        this.mainCharacter.draw(canvas);
+
 //        if (Constants.JOYSTICK_JUMP_STATE)
 //            mainCharacter.hurt(1);
 //        RectF temp = this.mainCharacter.getAttackRange();
@@ -230,9 +234,12 @@ public class GraveyardScreen implements GameScreen {
         this.spearVertical.draw(canvas);*/
 //        this.zombie.draw(canvas);
 
-        this.joyStick.draw(canvas);
+
 //        this.zombie.draw(canvas);
         this.gargoyle.draw(canvas);
+        this.mainCharacter.draw(canvas);
+
+        this.joyStick.draw(canvas);
     }
 
     @Override
@@ -263,9 +270,8 @@ public class GraveyardScreen implements GameScreen {
         this.boxes.add(new RectF(5216.296296f, Constants.SCREEN_HEIGHT * 0.424164524f, 5249.62963f, Constants.SCREEN_HEIGHT * 0.501285347f));
         this.boxes.add(new RectF(5349.62963f, Constants.SCREEN_HEIGHT * 0.269922879f, 5382.962963f, Constants.SCREEN_HEIGHT * 0.347043702f));
         this.boxes.add(new RectF(5575f, Constants.SCREEN_HEIGHT * 0.269922879f, 5625f, Constants.SCREEN_HEIGHT * 0.809768638f));
-        this.boxes.add(new RectF(5545f, Constants.SCREEN_HEIGHT * 0.43f, 5600f, Constants.SCREEN_HEIGHT * 0.53f));
-        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.34f, 5655f, Constants.SCREEN_HEIGHT * 0.44f));
-        this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
+        this.boxes.add(new RectF(5545f, Constants.SCREEN_HEIGHT * 0.45f, 5600f, Constants.SCREEN_HEIGHT * 0.51f));
+        this.boxes.add(new RectF(5625f, Constants.SCREEN_HEIGHT * 0.36f, 5655f, Constants.SCREEN_HEIGHT * 0.43f));this.boxes.add(new RectF(5775f, Constants.SCREEN_HEIGHT * 0.424164524f, 5825f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5820f, Constants.SCREEN_HEIGHT * 0.467128027f, 5850f, Constants.SCREEN_HEIGHT * 0.536332179f));
         this.boxes.add(new RectF(5975f, Constants.SCREEN_HEIGHT * 0.269922879f, 6025f, Constants.SCREEN_HEIGHT * 0.809768638f));
         this.boxes.add(new RectF(5935f, Constants.SCREEN_HEIGHT * 0.389273356f, 5980f, Constants.SCREEN_HEIGHT * 0.458477509f));
