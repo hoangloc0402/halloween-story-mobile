@@ -16,6 +16,7 @@ import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
 import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.GameObjects.Enemies.Gargoyle;
+import com.halloween.GameObjects.Enemies.Phantom;
 import com.halloween.GameObjects.Enemies.Skeleton;
 import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.Potion;
@@ -146,17 +147,18 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initEnemies(){
-        enemies.add(new Gargoyle(new PointF(500, 700), new PointF(800, 200)));
-        enemies.add(new Zombie(new PointF(300, 720), new PointF(800, 720)));
-//        enemies.add(new Skeleton(new PointF(100, 650), new PointF(700, 650)));
+//        enemies.add(new Gargoyle(new PointF(500, 700), new PointF(800, 200)));
+        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
+//        enemies.add(new Skeleton(new PointF(100, 865.5f - 127*Constants.SKELETON_SCALE), new PointF(700, 865.5f - 127*Constants.SKELETON_SCALE)));
+        enemies.add(new Phantom(new PointF(100, 800), new PointF(700, 200)));
     }
 
     @Override
     public void reset() {
-        this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
+//        this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
         this.mainCharacter = MainCharacter.getInstance(200, 600);
         this.mainCharacter.resetAllValue();
-        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
+//        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
 }
 
     @Override

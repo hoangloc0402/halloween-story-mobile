@@ -64,7 +64,7 @@ public class Constants {
     public final static float PHANTOM_SCALE = 1.5f;
     public final static float PHANTOM_FOLLOW_DISTANCE = 4000000;
     public final static float PHANTOM_ATTACK_DISTANCE = 10000;
-    public final static float PHANTOM_HEIGHT = 118;
+    public final static float PHANTOM_HEIGHT = 91;
 
     public static final float MAIN_CHARACTER_V_X = 5f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
