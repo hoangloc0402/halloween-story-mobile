@@ -87,8 +87,6 @@ public class GraveyardScreen implements GameScreen {
         this.portal = new Portal();
 
         this.healthBarMainCharacter = new HealthBarMainCharacter();
-//        this.healthBarMainCharacter.setNewHealth(1000);
-//        this.healthBarMainCharacter.setNewScore(1000);
 
         this.traps = new ArrayList<>();
         this.initTraps();

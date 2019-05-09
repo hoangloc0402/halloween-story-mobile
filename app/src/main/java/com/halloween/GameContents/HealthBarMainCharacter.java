@@ -82,7 +82,7 @@ public class HealthBarMainCharacter implements GameObject {
         this.increasingMana = 0;
         this.blueMana = 0;
         this.yellowHealth = 0;
-        this.greyHealth = Constants.MAIN_CHARACTER_MAX_MANA;
+        this.greyHealth = 0;
         this.manaBarState = MANA_STATE.NORMAL;
 
         this.lastUpdateTime = System.currentTimeMillis();
@@ -117,10 +117,7 @@ public class HealthBarMainCharacter implements GameObject {
         greyManaBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(230, 214, 255), Color.rgb(122, 118, 119), Shader.TileMode.CLAMP));
 
         float blueManaWidth = this.manaBarWidth * this.blueMana / Constants.MAIN_CHARACTER_MAX_MANA;
-//        float greyManaWidth = this.manaBarWidth * this.greyMana / Constants.MAIN_CHARACTER_MAX_MANA;
 
-//        drawRectWithOneRounded(manaBarBase.x + blueManaWidth,
-//                manaBarBase.y, manaBarBase.x + blueManaWidth + greyManaWidth, manaBarBase.y + this.manaBarHeight, greyManaBarPaint, canvas);
         drawRectWithOneRounded(manaBarBase.x, manaBarBase.y, manaBarBase.x + blueManaWidth, manaBarBase.y + this.manaBarHeight, blueManaBarPaint, canvas);
 
         canvas.drawBitmap(this.healthBarBorder, 0, 0, paint);
@@ -140,6 +137,7 @@ public class HealthBarMainCharacter implements GameObject {
             updateNewMana();
         if (System.currentTimeMillis() - this.lastUpdateTime > 1000 / 60) {
             updateHealthBar();
+            Log.d(TAG, "update health: "+this.newHealth);
             this.lastUpdateTime = System.currentTimeMillis();
         }
         updateManaBar();
