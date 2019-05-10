@@ -148,7 +148,6 @@ public class BossScreen implements GameScreen {
             phantom.update(tempSurroundingMain);
 
             if (!phantom.isActive()) {
-                System.out.println("hahahahaahaha");
                 if (Constants.HEALTH_POTION_PROB > rand.nextInt(100))
                     potions.add(new SmallHealthPotion(phantom.getCurrentPosition(), boxes));
                 else if (Constants.MANA_POTION_PROB > rand.nextInt(100))

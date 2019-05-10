@@ -8,7 +8,10 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import java.util.HashMap;
+
 public class Animation {
+    private static HashMap<Integer, Bitmap> bitmapMap = new HashMap<>();
     private Bitmap sourceBitmap;
     public boolean isFlip;
     private int currentFrameIndex;
@@ -24,8 +27,13 @@ public class Animation {
     private Paint myPaint;
 
     public Animation(int drawable, int frameWidth, int frameHeight, int frameCount, int animTime, PointF offsetTopLeft, PointF offsetBottomRight) {
-        Bitmap bitmap = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), drawable);
-        this.sourceBitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount, frameHeight, false);
+        if (bitmapMap.containsKey(drawable))
+            this.sourceBitmap = bitmapMap.get(drawable);
+        else {
+            Bitmap bitmap = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), drawable);
+            this.sourceBitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount, frameHeight, false);
+            bitmapMap.put(drawable, this.sourceBitmap);
+        }
         this.isFlip = false;
         this.currentFrameIndex = 0;
         this.frameCount = frameCount;
