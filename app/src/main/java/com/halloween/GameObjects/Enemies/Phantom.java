@@ -11,8 +11,8 @@ import com.halloween.R;
 
 public class Phantom extends Enemy {
 
-    public Phantom(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.PHANTOM_STARTING_HP, leftLandMark, rightLandMark, Constants.PHANTOM_FOLLOW_DISTANCE, Constants.PHANTOM_ATTACK_DISTANCE);
+    public Phantom(PointF position) {
+        super(Constants.PHANTOM_STARTING_HP, null, null, Constants.PHANTOM_FOLLOW_DISTANCE, Constants.PHANTOM_ATTACK_DISTANCE);
 
         LoadAnimation();
 
@@ -26,7 +26,7 @@ public class Phantom extends Enemy {
         this.surroundingBox = new RectF();
 
 //        this.currentPosition = new PointF(700, 0.8f * Constants.SCREEN_HEIGHT - currentAnimation.frameHeight);
-        this.currentPosition = new PointF(rightLandMark.x, rightLandMark.y);
+        this.currentPosition = position;
 
 
         this.currentAnimation.play();
@@ -107,7 +107,7 @@ public class Phantom extends Enemy {
                 isAlive = false;
                 ChangeState(State.Died);
             }
-            System.out.println("current state "+ currentState);
+//            System.out.println("current state "+ currentState);
             switch (currentState) {
                 case Died:
                     ChangeState(State.Died);
@@ -140,7 +140,7 @@ public class Phantom extends Enemy {
                             }
                             isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
                             y = playerSurroundingBox.centerY()-currentAnimation.getAbsoluteFrameHeight()/2;
-                            System.out.println("is moving forward " + isMovingForward);
+//                            System.out.println("is moving forward " + isMovingForward);
 
                             MoveToDestination(new PointF(x, y), Constants.PHANTOM_V);
                         }
@@ -162,6 +162,12 @@ public class Phantom extends Enemy {
             currentAnimation.update();
         }
     }
-
+    public void reset(float newX, float newY) {
+        this.currentAnimation = appearAnimation;
+        this.isActive = this.isAlive = true;
+        this.currentHP = Constants.PHANTOM_STARTING_HP;
+        this.currentPosition.set(newX, newY);
+        this.currentState = this.previousState = State.Appear;
+    }
 
 }

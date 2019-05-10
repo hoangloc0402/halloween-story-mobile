@@ -14,10 +14,12 @@ import com.halloween.Constants;
 import com.halloween.GameContents.HealthBarBoss;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
+import com.halloween.GameObjects.Enemies.Phantom;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.R;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BossScreen implements GameScreen {
 
@@ -38,8 +40,12 @@ public class BossScreen implements GameScreen {
     private int backgroundCloudCount, backgroundCloudSmallCount;
 
     private ArrayList<RectF> boxes;
+    private RectF tempSurrounding, tempSurroundingMain;
+    private RectF tempAttackRange, tempAttackRangeMain;
 
     private Paint paint;
+    ArrayList<Phantom> phamtoms = new ArrayList<>();
+    private Random rand = new Random();
 
     public BossScreen() {
         super();
@@ -71,6 +77,16 @@ public class BossScreen implements GameScreen {
         this.mainCharacter = MainCharacter.getInstance();
 
         this.joyStick = new JoyStick();
+        tempSurrounding = new RectF();
+        tempSurroundingMain = new RectF();
+        this.tempAttackRange = new RectF();
+        this.tempAttackRangeMain = new RectF();
+
+        for (int i= 0 ; i< Constants.MAX_PHANTOM_COUNT; i++){
+            PointF newPoint = new PointF(rand.nextInt(Constants.SCREEN_WIDTH), rand.nextInt(Constants.SCREEN_HEIGHT));
+            newPoint.x = Constants.getAbsoluteXLength(newPoint.x) + Constants.BACKGROUND_X_AXIS;
+            this.phamtoms.add(new Phantom(newPoint));
+        }
     }
 
     private void initBoxes(){
@@ -108,6 +124,27 @@ public class BossScreen implements GameScreen {
             }
         }
 
+        tempSurroundingMain = mainCharacter.getSurroundingBox();
+        tempAttackRangeMain = mainCharacter.getAttackRange();
+        for (Phantom phantom:phamtoms){
+            if (!phantom.isActive()){
+                phantom.reset(Constants.getAbsoluteXLength(rand.nextInt(Constants.SCREEN_WIDTH)) + Constants.BACKGROUND_X_AXIS, rand.nextInt(Constants.SCREEN_HEIGHT));
+                continue;
+            }
+            tempSurrounding = phantom.getSurroundingBox();
+            tempAttackRange = phantom.getAttackRange();
+            if (tempAttackRangeMain!= null){
+                if (tempAttackRangeMain.intersect(tempSurrounding))
+                    phantom.decreaseHealth(mainCharacter.getAttackPower());
+            }
+            if (tempAttackRange!=null){
+                if (tempAttackRange.intersect(tempSurroundingMain))
+                    mainCharacter.decreaseHealth(phantom.getAttack());
+            }
+            else if (tempSurroundingMain.intersect(tempSurrounding))
+                mainCharacter.decreaseHealth(phantom.getDamage());
+            phantom.update(tempSurroundingMain);
+        }
 
         this.healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
         this.healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
@@ -154,6 +191,8 @@ public class BossScreen implements GameScreen {
         } else {
             this.mainCharacter.draw(canvas);
         }
+        for (Phantom phantom:phamtoms)
+            phantom.draw(canvas);
         this.healthBarBoss.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);
         this.joyStick.draw(canvas);

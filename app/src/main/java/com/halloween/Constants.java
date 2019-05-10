@@ -10,7 +10,7 @@ public class Constants {
     public static Context CURRENT_CONTEXT;
     public static Activity MAIN_ACTIVITY;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS, WIN}
-    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
+    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.BOSS;
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
     public static GAME_STATE PREVIOUS_GAME_STATE;
@@ -58,13 +58,14 @@ public class Constants {
 
     public final static int PHANTOM_ATTACK= 100;
     public final static int PHANTOM_DAMAGE = 100;
-    public final static float PHANTOM_STARTING_HP = 30;
+    public final static float PHANTOM_STARTING_HP = 10;
     public final static int PHANTOM_POINT = 100;
-    public final static float PHANTOM_V = 5;
+    public final static float PHANTOM_V = 3;
     public final static float PHANTOM_SCALE = 1.5f;
     public final static float PHANTOM_FOLLOW_DISTANCE = 4000000;
     public final static float PHANTOM_ATTACK_DISTANCE = 300 *PHANTOM_SCALE*PHANTOM_SCALE;
     public final static float PHANTOM_HEIGHT = 91;
+    public final static int MAX_PHANTOM_COUNT = 3;
 
     public static final float MAIN_CHARACTER_V_X = 15f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
