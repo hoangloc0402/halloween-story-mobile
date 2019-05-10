@@ -4,15 +4,15 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 public abstract class Potion implements GameObject {
+    public boolean isHealth;
     protected boolean isActive;
     protected int volume;
     protected PointF position;
     protected RectF surroundingBox;
     protected int potionHeight;
     protected int potionWidth;
-    public boolean isHealth;
 
-    public RectF getSurroundingBox(){
+    public RectF getSurroundingBox() {
         return null;
     }
 

@@ -25,7 +25,7 @@ public abstract class Trap implements GameObject {
         return position;
     }
 
-    public RectF getSurroundingBox(){
+    public RectF getSurroundingBox() {
         return null;
     }
 }

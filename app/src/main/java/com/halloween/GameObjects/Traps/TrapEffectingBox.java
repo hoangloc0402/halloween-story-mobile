@@ -15,16 +15,16 @@ public class TrapEffectingBox {
         return topLeft;
     }
 
+    public void setTopLeft(PointF topLeft) {
+        this.topLeft = topLeft;
+    }
+
     public float getWidth() {
         return bottomRight.x - topLeft.x;
     }
 
     public float getHeight() {
         return bottomRight.y - topLeft.y;
-    }
-
-    public void setTopLeft(PointF topLeft) {
-        this.topLeft = topLeft;
     }
 
     public PointF getBottomRight() {

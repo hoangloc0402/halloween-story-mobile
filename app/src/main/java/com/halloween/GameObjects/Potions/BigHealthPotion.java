@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.halloween.Constants;
 import com.halloween.GameObjects.Potion;
@@ -15,12 +14,10 @@ import com.halloween.R;
 
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
 public class BigHealthPotion extends Potion {
+    private static float scale = 0.25f * Constants.SCREEN_HEIGHT / 578f;
     private Bitmap bigHealthPotion;
     private PointF droppingPosition;
-    private static float scale = 0.25f * Constants.SCREEN_HEIGHT / 578f;
 
     public BigHealthPotion(PointF position, ArrayList<RectF> boxes) {
         surroundingBox = new RectF();

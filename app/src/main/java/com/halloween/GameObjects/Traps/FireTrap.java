@@ -1,12 +1,10 @@
 package com.halloween.GameObjects.Traps;
 
-import android.drm.DrmStore;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.halloween.Animation;
 import com.halloween.Constants;
@@ -46,7 +44,7 @@ public class FireTrap extends Trap {
         TrapEffectingBox trapEffectingBox = trapEffectingBoxes[burningFire.getCurrentFrameIndex()];
         PointF topLeft = trapEffectingBox.getTopLeft();
         PointF bottomRight = trapEffectingBox.getBottomRight();
-        surroundingBox.set(this.position.x + Constants.getAbsoluteXLength(topLeft.x * scale) , topLeft.y * scale + this.position.y, this.position.x + Constants.getAbsoluteXLength( bottomRight.x * scale), bottomRight.y * scale + this.position.y);
+        surroundingBox.set(this.position.x + Constants.getAbsoluteXLength(topLeft.x * scale), topLeft.y * scale + this.position.y, this.position.x + Constants.getAbsoluteXLength(bottomRight.x * scale), bottomRight.y * scale + this.position.y);
         return surroundingBox;
     }
 

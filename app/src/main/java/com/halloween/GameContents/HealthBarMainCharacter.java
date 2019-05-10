@@ -8,19 +8,12 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Shader;
-import android.util.Log;
 
 import com.halloween.Constants;
 import com.halloween.GameObjects.GameObject;
 import com.halloween.R;
 
-import static android.content.ContentValues.TAG;
-
 public class HealthBarMainCharacter implements GameObject {
-    private enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
-
-    private enum MANA_STATE {INCREASING, DECREASING, NORMAL}
-
     private PointF healthBarBase = new PointF();
     private PointF manaBarBase = new PointF();
     private double scale;
@@ -47,7 +40,6 @@ public class HealthBarMainCharacter implements GameObject {
     private HEALTH_STATE healthBarState;
     private Bitmap healthBarBorder;
     private Paint paint;
-
     public HealthBarMainCharacter() {
         this.healthBarBorder = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.health_bar_border_main_character);
         scale = Constants.SCREEN_WIDTH * 0.4 / this.healthBarBorder.getWidth();
@@ -307,4 +299,8 @@ public class HealthBarMainCharacter implements GameObject {
     public int getCurrentMana() {
         return currentMana;
     }
+
+    private enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
+
+    private enum MANA_STATE {INCREASING, DECREASING, NORMAL}
 }

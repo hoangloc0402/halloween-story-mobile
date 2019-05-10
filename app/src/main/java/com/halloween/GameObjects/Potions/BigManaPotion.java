@@ -14,9 +14,9 @@ import com.halloween.R;
 import java.util.ArrayList;
 
 public class BigManaPotion extends Potion {
+    private static float scale = 0.25f * Constants.SCREEN_HEIGHT / 578f;
     private Bitmap bigManaPotion;
     private PointF droppingPosition;
-    private static float scale = 0.25f * Constants.SCREEN_HEIGHT / 578f;
 
     public BigManaPotion(PointF position, ArrayList<RectF> boxes) {
         surroundingBox = new RectF();

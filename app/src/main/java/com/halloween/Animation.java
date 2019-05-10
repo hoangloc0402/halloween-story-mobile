@@ -12,8 +12,8 @@ import java.util.HashMap;
 
 public class Animation {
     private static HashMap<Integer, Bitmap> bitmapMap = new HashMap<>();
-    private Bitmap sourceBitmap;
     public boolean isFlip;
+    private Bitmap sourceBitmap;
     private int currentFrameIndex;
     private boolean isPlaying;
     private long frameInterval;
@@ -55,13 +55,15 @@ public class Animation {
     }
 
     public Animation(int drawable, float frameWidth, float frameHeight, int frameCount, int animTime) {
-        this(drawable, (int)frameWidth, (int)frameHeight, frameCount, animTime, new PointF(0f, 0f), new PointF(0f, 0f));
+        this(drawable, (int) frameWidth, (int) frameHeight, frameCount, animTime, new PointF(0f, 0f), new PointF(0f, 0f));
     }
+
     public Animation(int drawable, float frameWidth, float frameHeight, int frameCount, int animTime, PointF offsetTopLeft) {
-        this(drawable, (int)frameWidth, (int)frameHeight, frameCount, animTime, offsetTopLeft, new PointF(0f, 0f));
+        this(drawable, (int) frameWidth, (int) frameHeight, frameCount, animTime, offsetTopLeft, new PointF(0f, 0f));
     }
-    public Animation(int drawable, float frameWidth, float frameHeight, int frameCount, int animTime, PointF offsetTopLeft, PointF offsetBottomRight){
-        this(drawable, (int)frameWidth, (int)frameHeight, frameCount, animTime, offsetTopLeft, offsetBottomRight);
+
+    public Animation(int drawable, float frameWidth, float frameHeight, int frameCount, int animTime, PointF offsetTopLeft, PointF offsetBottomRight) {
+        this(drawable, (int) frameWidth, (int) frameHeight, frameCount, animTime, offsetTopLeft, offsetBottomRight);
     }
 
     public boolean isPlaying() {
@@ -86,12 +88,11 @@ public class Animation {
         RectF whereToDraw = getDestinationRect(position);
         if (isFlip) {
             canvas.save();
-            canvas.scale(-1,1, position.x + animationWidth/2, 0);
+            canvas.scale(-1, 1, position.x + animationWidth / 2, 0);
 //            canvas.translate(- offsetTopLeft.x, 0);
             canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
             canvas.restore();
-        }
-        else
+        } else
             canvas.drawBitmap(this.sourceBitmap, whatToDraw, whereToDraw, paint);
     }
 
@@ -151,19 +152,35 @@ public class Animation {
         return currentFrameIndex;
     }
 
-    public float getAbsoluteFrameWidth() { return Constants.getAbsoluteXLength(frameWidth); }
+    public float getAbsoluteFrameWidth() {
+        return Constants.getAbsoluteXLength(frameWidth);
+    }
 
-    public float getAbsoluteFrameHeight() { return frameHeight; }
+    public float getAbsoluteFrameHeight() {
+        return frameHeight;
+    }
 
-    public float getAbsoluteOffsetTopLeftX() { return Constants.getAbsoluteXLength(offsetTopLeft.x); }
+    public float getAbsoluteOffsetTopLeftX() {
+        return Constants.getAbsoluteXLength(offsetTopLeft.x);
+    }
 
-    public float getAbsoluteOffsetTopLeftY() { return offsetTopLeft.y; }
+    public float getAbsoluteOffsetTopLeftY() {
+        return offsetTopLeft.y;
+    }
 
-    public float getAbsoluteOffsetBottomRightX() { return Constants.getAbsoluteXLength(offsetBottomRight.x); }
+    public float getAbsoluteOffsetBottomRightX() {
+        return Constants.getAbsoluteXLength(offsetBottomRight.x);
+    }
 
-    public float getAbsoluteOffsetBottomRightY() { return offsetBottomRight.y; }
+    public float getAbsoluteOffsetBottomRightY() {
+        return offsetBottomRight.y;
+    }
 
-    public float getAbsoluteAnimationWidth() { return Constants.getAbsoluteXLength(animationWidth); }
+    public float getAbsoluteAnimationWidth() {
+        return Constants.getAbsoluteXLength(animationWidth);
+    }
 
-    public float getAbsoluteAnimationHeight() { return animationHeight; }
+    public float getAbsoluteAnimationHeight() {
+        return animationHeight;
+    }
 }

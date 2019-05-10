@@ -34,27 +34,27 @@ public class Phantom extends Enemy {
         this.isMovingForward = false;
 
         this.damage = Constants.PHANTOM_DAMAGE;
-        this.attack  = Constants.PHANTOM_ATTACK;
+        this.attack = Constants.PHANTOM_ATTACK;
     }
 
     public void LoadAnimation() {
         this.moveAnimation = new Animation(R.drawable.phantom_move_114x91x6, 114 * Constants.PHANTOM_SCALE, 91 * Constants.PHANTOM_SCALE, 6, 100,
-                new PointF(40 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(40 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.diedAnimation = new Animation(R.drawable.phantom_died_114x91x6, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 6, 100,
-                new PointF(40 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(40 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.hurtAnimation = new Animation(R.drawable.phantom_hurt_114x91x1, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 1, 100,
-                new PointF(30 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(30 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.attackAnimation = new Animation(R.drawable.phantom_attack_114x91x12, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 12, 100,
-                new PointF(30 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(30 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.idleAnimation = new Animation(R.drawable.phantom_idle_114x91x4, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 4, 100,
-                new PointF(40 *Constants.PHANTOM_SCALE, 5*Constants.PHANTOM_SCALE), new PointF(5 *Constants.PHANTOM_SCALE, 5*Constants.PHANTOM_SCALE));
+                new PointF(40 * Constants.PHANTOM_SCALE, 5 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 5 * Constants.PHANTOM_SCALE));
         this.appearAnimation = new Animation(R.drawable.phantom_appear_114x91x6, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 6, 100,
-                new PointF(30 *Constants.PHANTOM_SCALE, 10*Constants.PHANTOM_SCALE), new PointF(0 *Constants.PHANTOM_SCALE, 0*Constants.PHANTOM_SCALE));
+                new PointF(30 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(0 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Phantom extends Enemy {
 //                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 //                System.out.println(attack);;
 //                System.out.println("current Position "+ currentPosition);
-                if(attack !=null){
+                if (attack != null) {
                     canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
                 }
 
@@ -77,26 +77,25 @@ public class Phantom extends Enemy {
 
     @Override
     public RectF getAttackRange() {
-        if (currentAnimation != attackAnimation){
+        if (currentAnimation != attackAnimation) {
             return null;
         }
         int frameIndex = currentAnimation.getCurrentFrameIndex();
-        if (frameIndex >=7 && frameIndex <=11){
+        if (frameIndex >= 7 && frameIndex <= 11) {
             float top = this.currentPosition.y;
             float bottom = this.currentPosition.y + this.currentAnimation.getAbsoluteFrameHeight();
             float left, right;
             float width = currentAnimation.getAbsoluteFrameWidth();
             if (currentAnimation.isFlip) {
-                right = this.currentPosition.x + 9*width/10;
+                right = this.currentPosition.x + 9 * width / 10;
                 left = right - Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
             } else {
-                left = this.currentPosition.x -  currentAnimation.getAbsoluteOffsetTopLeftX();
+                left = this.currentPosition.x - currentAnimation.getAbsoluteOffsetTopLeftX();
                 right = left + Constants.getAbsoluteXLength(currentAnimation.getAbsoluteFrameWidth());
             }
-            this.attackRect.set(left, top, right , bottom);
+            this.attackRect.set(left, top, right, bottom);
             return this.attackRect;
-        }
-        else return  null;
+        } else return null;
     }
 
     @Override
@@ -132,14 +131,13 @@ public class Phantom extends Enemy {
                         } else {
 
                             float x, y;
-                            if(isMovingForward){
-                                x = playerSurroundingBox.centerX() - (currentAnimation.getAbsoluteFrameWidth()/2 + playerSurroundingBox.width()/2);
-                            }
-                            else{
-                                x = playerSurroundingBox.centerX() + (currentAnimation.getAbsoluteFrameWidth()/2 - playerSurroundingBox.width()/2);
+                            if (isMovingForward) {
+                                x = playerSurroundingBox.centerX() - (currentAnimation.getAbsoluteFrameWidth() / 2 + playerSurroundingBox.width() / 2);
+                            } else {
+                                x = playerSurroundingBox.centerX() + (currentAnimation.getAbsoluteFrameWidth() / 2 - playerSurroundingBox.width() / 2);
                             }
                             isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
-                            y = playerSurroundingBox.centerY()-currentAnimation.getAbsoluteFrameHeight()/2;
+                            y = playerSurroundingBox.centerY() - currentAnimation.getAbsoluteFrameHeight() / 2;
 //                            System.out.println("is moving forward " + isMovingForward);
 
                             MoveToDestination(new PointF(x, y), Constants.PHANTOM_V);
@@ -151,7 +149,7 @@ public class Phantom extends Enemy {
                     break;
                 case Appear:
                     ChangeState(State.Appear);
-                    if(this.currentAnimation.isLastFrame()){
+                    if (this.currentAnimation.isLastFrame()) {
                         ChangeState(State.Move);
                     }
                     break;
@@ -162,6 +160,7 @@ public class Phantom extends Enemy {
             currentAnimation.update();
         }
     }
+
     public void reset(float newX, float newY) {
         this.currentAnimation = appearAnimation;
         this.isActive = this.isAlive = true;

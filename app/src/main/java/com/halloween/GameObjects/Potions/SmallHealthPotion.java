@@ -14,9 +14,9 @@ import com.halloween.R;
 import java.util.ArrayList;
 
 public class SmallHealthPotion extends Potion {
+    private static float scale = 0.35f * Constants.SCREEN_HEIGHT / 578f;
     private Bitmap smallHealthPotion;
     private PointF droppingPosition;
-    private static float scale = 0.35f * Constants.SCREEN_HEIGHT / 578f;
 
     public SmallHealthPotion(PointF position, ArrayList<RectF> boxes) {
         surroundingBox = new RectF();

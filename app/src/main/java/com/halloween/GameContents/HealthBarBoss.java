@@ -14,8 +14,6 @@ import com.halloween.GameObjects.GameObject;
 import com.halloween.R;
 
 public class HealthBarBoss implements GameObject {
-    private enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
-
     private PointF healthBarBase = new PointF();
     private double scale;
     private int healthBarWidth;
@@ -31,7 +29,6 @@ public class HealthBarBoss implements GameObject {
     private HealthBarBoss.HEALTH_STATE healthBarState;
     private Bitmap healthBarBorder;
     private Paint paint;
-
     public HealthBarBoss() {
         this.healthBarBorder = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.health_bar_border_boss);
         scale = Constants.SCREEN_WIDTH * 0.4 / this.healthBarBorder.getWidth();
@@ -181,4 +178,6 @@ public class HealthBarBoss implements GameObject {
     public void setNewHealth(int newHealth) {
         this.newHealth = newHealth;
     }
+
+    private enum HEALTH_STATE {INCREASING, DECREASING, NORMAL}
 }

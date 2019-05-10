@@ -34,18 +34,18 @@ public class Gargoyle extends Enemy {
         this.isMovingForward = false;
 
         this.damage = Constants.GARGOYLE_DAMAGE;
-        this.attack  = Constants.GARGOYLE_ATTACK;
+        this.attack = Constants.GARGOYLE_ATTACK;
     }
 
     public void LoadAnimation() {
         this.moveAnimation = new Animation(R.drawable.gargoyle_move_103x118x4_10x20, 103 * Constants.GARGOYLE_SCALE, 118 * Constants.GARGOYLE_SCALE, 4, 100,
-                new PointF(15 *Constants.GARGOYLE_SCALE, 47*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
+                new PointF(15 * Constants.GARGOYLE_SCALE, 47 * Constants.GARGOYLE_SCALE), new PointF(40 * Constants.GARGOYLE_SCALE, 0 * Constants.GARGOYLE_SCALE));
         this.diedAnimation = new Animation(R.drawable.gargoyle_died_103x118x6_0x0, 103 * Constants.GARGOYLE_SCALE,
                 118 * Constants.GARGOYLE_SCALE, 6, 100,
-                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
+                new PointF(10 * Constants.GARGOYLE_SCALE, 60 * Constants.GARGOYLE_SCALE), new PointF(40 * Constants.GARGOYLE_SCALE, 0 * Constants.GARGOYLE_SCALE));
         this.hurtAnimation = new Animation(R.drawable.gargoyly_hurt_103x118x1_0x0, 103 * Constants.GARGOYLE_SCALE,
                 118 * Constants.GARGOYLE_SCALE, 1, 100,
-                new PointF(10 *Constants.GARGOYLE_SCALE, 60*Constants.GARGOYLE_SCALE), new PointF(40 *Constants.GARGOYLE_SCALE, 0*Constants.GARGOYLE_SCALE));
+                new PointF(10 * Constants.GARGOYLE_SCALE, 60 * Constants.GARGOYLE_SCALE), new PointF(40 * Constants.GARGOYLE_SCALE, 0 * Constants.GARGOYLE_SCALE));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Gargoyle extends Enemy {
 //                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 //                System.out.println(attack);;
 //                System.out.println("current Position "+ currentPosition);
-                if(attack !=null){
+                if (attack != null) {
                     canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
                 }
 

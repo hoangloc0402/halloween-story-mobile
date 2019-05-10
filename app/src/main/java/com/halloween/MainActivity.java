@@ -2,13 +2,9 @@ package com.halloween;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 
 import com.halloween.GameScreens.GamePanel;
 

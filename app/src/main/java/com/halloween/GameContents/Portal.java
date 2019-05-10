@@ -1,11 +1,8 @@
 package com.halloween.GameContents;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.support.annotation.ColorInt;
-import android.util.Log;
 import android.util.Pair;
 
 import com.halloween.Animation;
@@ -19,7 +16,7 @@ public class Portal implements GameObject {
     private PointF portalPosition;
 
     public Portal() {
-        this.portalAnimation = new Animation(R.drawable.portal_300x300x12, 300, 300, 12, 100, new PointF(0,0), new PointF(0, 0));
+        this.portalAnimation = new Animation(R.drawable.portal_300x300x12, 300, 300, 12, 100, new PointF(0, 0), new PointF(0, 0));
         this.portalAnimation.play();
         this.portalPosition = new PointF(9810f, Constants.SCREEN_HEIGHT * 0.8f - portalAnimation.getAbsoluteAnimationHeight() * 0.8f);
     }
@@ -28,7 +25,7 @@ public class Portal implements GameObject {
         return Constants.isInScreenRange(this.portalPosition.x, this.portalAnimation.getAbsoluteAnimationWidth(), Constants.GAME_STATE.PLAY);
     }
 
-    public Pair<Boolean, PointF> isInSuckingRange(RectF box){
+    public Pair<Boolean, PointF> isInSuckingRange(RectF box) {
         float left = this.portalPosition.x - this.portalAnimation.getAbsoluteAnimationWidth();
         float top = this.portalPosition.y - this.portalAnimation.getAbsoluteAnimationHeight();
         float right = this.portalPosition.x + this.portalAnimation.getAbsoluteAnimationWidth() * 2;
@@ -36,9 +33,9 @@ public class Portal implements GameObject {
         Boolean isInRange = false;
         PointF point = new PointF(0.0f, 0.0f);
         if (((left <= box.left && box.left <= right) || (left <= box.right && box.right <= right))
-                && ((top <= box.top && box.top <= bottom)||(top <= box.bottom && box.bottom <= bottom)) & !isInTransitionRange(box)) {
+                && ((top <= box.top && box.top <= bottom) || (top <= box.bottom && box.bottom <= bottom)) & !isInTransitionRange(box)) {
             isInRange = true;
-            PointF centerPortal = new PointF(left + Math.abs(right - left) / 2, top + this.portalAnimation.getAbsoluteAnimationHeight()  / 2);
+            PointF centerPortal = new PointF(left + Math.abs(right - left) / 2, top + this.portalAnimation.getAbsoluteAnimationHeight() / 2);
             PointF centerObject = new PointF(box.left + Math.abs(box.right - box.left) / 2, box.top + Math.abs(box.bottom - box.top) / 2);
             float x = (centerPortal.x > centerObject.x ? 1f : -1f);
             float y = (centerPortal.y > centerPortal.y ? 1f : -1f);
@@ -55,12 +52,12 @@ public class Portal implements GameObject {
 //        Log.d("portal", left + " " + top + " " + right + " " + bottom);
 //        Log.d("main", box.toShortString());
         return ((left <= box.left && box.left <= right) || (left <= box.right && box.right <= right))
-                && ((top <= box.top && box.top <= bottom)||(top <= box.bottom && box.bottom <= bottom));
+                && ((top <= box.top && box.top <= bottom) || (top <= box.bottom && box.bottom <= bottom));
     }
 
     @Override
     public void draw(Canvas canvas) {
-        this.portalAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.portalPosition.x),this.portalPosition.y));
+        this.portalAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.portalPosition.x), this.portalPosition.y));
     }
 
     @Override

@@ -6,27 +6,23 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
 import com.halloween.GameObjects.GameObject;
 import com.halloween.R;
 
-import java.util.zip.CheckedOutputStream;
-
 public class JoyStick implements GameObject {
-    private Bitmap joystickBase, joystickButton;
-
     public boolean isPressedJoyStick = false, isPressedPause = false, isPressedTransform = false;
-    private float offset = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.05);
-    private float baseSize = (float)(Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.32);
-    private float buttonSize = (float)(baseSize * 0.5);
+    private Bitmap joystickBase, joystickButton;
+    private float offset = (float) (Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.05);
+    private float baseSize = (float) (Math.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT) * 0.32);
+    private float buttonSize = (float) (baseSize * 0.5);
     private Paint paintLeft = new Paint(), paintRight = new Paint();
     private PointF joystickBasePosition = new PointF(offset * 2, (float) (Constants.SCREEN_HEIGHT - offset - baseSize * 0.8));
-    private PointF joystickCenterPosition = new PointF((float)(joystickBasePosition.x + 0.5*baseSize), (float) (joystickBasePosition.y + 0.5*baseSize));
-    private PointF joystickButtonPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
-    private PointF joystickButtonOriginalPosition = new PointF((float)(joystickCenterPosition.x - 0.5*buttonSize), (float) (joystickCenterPosition.y - 0.5*buttonSize));
+    private PointF joystickCenterPosition = new PointF((float) (joystickBasePosition.x + 0.5 * baseSize), (float) (joystickBasePosition.y + 0.5 * baseSize));
+    private PointF joystickButtonPosition = new PointF((float) (joystickCenterPosition.x - 0.5 * buttonSize), (float) (joystickCenterPosition.y - 0.5 * buttonSize));
+    private PointF joystickButtonOriginalPosition = new PointF((float) (joystickCenterPosition.x - 0.5 * buttonSize), (float) (joystickCenterPosition.y - 0.5 * buttonSize));
 
     private Bitmap pauseButton, pauseButtonHover, jumpButton, jumpButtonHover, atkButton, atkButtonHover, transformButton, transformButtonHover;
     private Point pauseButtonPosition, jumpButtonPosition, atkButtonPosition, transformButtonPosition;
@@ -43,32 +39,32 @@ public class JoyStick implements GameObject {
         this.pauseButton = Bitmap.createScaledBitmap(pauseButton, (int) (buttonSize * 0.5f), (int) (buttonSize * 0.5f), false);
         this.pauseButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_button_hover);
         this.pauseButtonHover = Bitmap.createScaledBitmap(pauseButton, (int) (buttonSize * 0.5f), (int) (buttonSize * 0.5f), false);
-        this.pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - pauseButton.getWidth()), 50);
+        this.pauseButtonPosition = new Point((int) (Constants.SCREEN_WIDTH - offset * 2 - pauseButton.getWidth()), 50);
 
         this.jumpButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.jump_button);
         this.jumpButton = Bitmap.createScaledBitmap(jumpButton, (int) buttonSize, (int) buttonSize, false);
         this.jumpButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.jump_button_hover);
         this.jumpButtonHover = Bitmap.createScaledBitmap(jumpButtonHover, (int) buttonSize, (int) buttonSize, false);
-        this.jumpButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - jumpButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - 1.5 * offset - jumpButton.getHeight() * 2));
+        this.jumpButtonPosition = new Point((int) (Constants.SCREEN_WIDTH - offset * 2 - jumpButton.getWidth()), (int) (Constants.SCREEN_HEIGHT - 1.5 * offset - jumpButton.getHeight() * 2));
 
         this.atkButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.attack_button);
-        this.atkButton = Bitmap.createScaledBitmap(atkButton, (int) buttonSize , (int) buttonSize, false);
+        this.atkButton = Bitmap.createScaledBitmap(atkButton, (int) buttonSize, (int) buttonSize, false);
         this.atkButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.attack_button_hover);
-        this.atkButtonHover = Bitmap.createScaledBitmap(atkButtonHover, (int) buttonSize   , (int) buttonSize, false);
-        this.atkButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - jumpButton.getWidth() - atkButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - offset - atkButton.getHeight()));
+        this.atkButtonHover = Bitmap.createScaledBitmap(atkButtonHover, (int) buttonSize, (int) buttonSize, false);
+        this.atkButtonPosition = new Point((int) (Constants.SCREEN_WIDTH - offset * 2 - jumpButton.getWidth() - atkButton.getWidth()), (int) (Constants.SCREEN_HEIGHT - offset - atkButton.getHeight()));
 
         this.transformButton = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.transform_button);
-        this.transformButton = Bitmap.createScaledBitmap(transformButton, (int) (0.7f * buttonSize) , (int) (0.7f * buttonSize), false);
+        this.transformButton = Bitmap.createScaledBitmap(transformButton, (int) (0.7f * buttonSize), (int) (0.7f * buttonSize), false);
         this.transformButtonHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.transform_button_hover);
-        this.transformButtonHover = Bitmap.createScaledBitmap(transformButtonHover, (int)(0.7f * buttonSize)  , (int) (0.7f * buttonSize), false);
-        this.transformButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 3.5f - jumpButton.getWidth() - atkButton.getWidth() - transformButton.getWidth()), (int)(Constants.SCREEN_HEIGHT - offset - atkButton.getHeight() + 0.5f * (atkButton.getHeight() - transformButton.getHeight())));
+        this.transformButtonHover = Bitmap.createScaledBitmap(transformButtonHover, (int) (0.7f * buttonSize), (int) (0.7f * buttonSize), false);
+        this.transformButtonPosition = new Point((int) (Constants.SCREEN_WIDTH - offset * 3.5f - jumpButton.getWidth() - atkButton.getWidth() - transformButton.getWidth()), (int) (Constants.SCREEN_HEIGHT - offset - atkButton.getHeight() + 0.5f * (atkButton.getHeight() - transformButton.getHeight())));
 
         this.paintLeft.setAlpha(255);
         this.paintRight.setAlpha(255);
     }
 
     public boolean isInRangeOfJoyStick(float x, float y) {
-        float range = (float) (Math.sqrt(Math.pow(x-joystickCenterPosition.x, 2) + Math.pow(y-joystickCenterPosition.y, 2)));
+        float range = (float) (Math.sqrt(Math.pow(x - joystickCenterPosition.x, 2) + Math.pow(y - joystickCenterPosition.y, 2)));
         if (range <= (baseSize + buttonSize + Constants.SCREEN_WIDTH / 2) / 2) {
             return true;
         } else {
@@ -76,9 +72,9 @@ public class JoyStick implements GameObject {
         }
     }
 
-    public boolean isInRangeOfPauseButton(float x, float y){
+    public boolean isInRangeOfPauseButton(float x, float y) {
         if (
-                x >pauseButtonPosition.x &&
+                x > pauseButtonPosition.x &&
                         x < pauseButtonPosition.x + pauseButton.getWidth() &&
                         y > pauseButtonPosition.y &&
                         y < pauseButtonPosition.y + pauseButton.getHeight())
@@ -87,7 +83,7 @@ public class JoyStick implements GameObject {
     }
 
     public boolean isInRangeOfAtkButton(float x, float y) {
-        if ( x > atkButtonPosition.x && x < atkButtonPosition.x + atkButton.getWidth() &&
+        if (x > atkButtonPosition.x && x < atkButtonPosition.x + atkButton.getWidth() &&
                 y > atkButtonPosition.y && y < atkButtonPosition.y + atkButton.getHeight())
             return true;
         else
@@ -95,15 +91,16 @@ public class JoyStick implements GameObject {
     }
 
     public boolean isInRangeOfJumpButton(float x, float y) {
-        if ( x > jumpButtonPosition.x && x < jumpButtonPosition.x + jumpButton.getWidth() &&
+        if (x > jumpButtonPosition.x && x < jumpButtonPosition.x + jumpButton.getWidth() &&
                 y > jumpButtonPosition.y && y < jumpButtonPosition.y + jumpButton.getHeight())
             return true;
         else
             return false;
     }
+
     public boolean isInRangeOfTransformButton(float x, float y) {
-        if ( x > transformButtonPosition.x && x < transformButtonPosition.x +  transformButton.getWidth() &&
-                y > transformButtonPosition.y && y < transformButtonPosition.y +  transformButton.getHeight())
+        if (x > transformButtonPosition.x && x < transformButtonPosition.x + transformButton.getWidth() &&
+                y > transformButtonPosition.y && y < transformButtonPosition.y + transformButton.getHeight())
             return true;
         else
             return false;
@@ -149,17 +146,17 @@ public class JoyStick implements GameObject {
         float angleRadians = (float) Math.toRadians(angle);
         float xBound = (float) Math.abs(Math.cos(angleRadians) * baseSize * 0.5);
         float yBound = (float) Math.abs(Math.sin(angleRadians) * baseSize * 0.5);
-        float newX = (float) (x - buttonSize*0.5), newY = (float) (y - buttonSize*0.5);
+        float newX = (float) (x - buttonSize * 0.5), newY = (float) (y - buttonSize * 0.5);
         if (Math.abs(x - joystickCenterPosition.x) > xBound)
             if (x > joystickCenterPosition.x)
-                newX = (float) (joystickCenterPosition.x + xBound - buttonSize*0.5);
+                newX = (float) (joystickCenterPosition.x + xBound - buttonSize * 0.5);
             else
-                newX = (float) (joystickCenterPosition.x - xBound - buttonSize*0.5);
+                newX = (float) (joystickCenterPosition.x - xBound - buttonSize * 0.5);
         if (Math.abs(y - joystickCenterPosition.y) > yBound)
             if (y > joystickCenterPosition.y)
-                newY = (float) (joystickCenterPosition.y + yBound - buttonSize*0.5);
+                newY = (float) (joystickCenterPosition.y + yBound - buttonSize * 0.5);
             else
-                newY = (float) (joystickCenterPosition.y - yBound - buttonSize*0.5);
+                newY = (float) (joystickCenterPosition.y - yBound - buttonSize * 0.5);
         joystickButtonPosition.set(newX, newY);
         if (angle > 90 && angle < 270) {
             Constants.CURRENT_JOYSTICK_STATE = Constants.JOYSTICK_STATE.LEFT;
@@ -325,10 +322,10 @@ public class JoyStick implements GameObject {
     @Override
     public void update() {
         if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PLAY) {
-            pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH - offset * 2 - pauseButton.getWidth()), 50);
+            pauseButtonPosition = new Point((int) (Constants.SCREEN_WIDTH - offset * 2 - pauseButton.getWidth()), 50);
         }
         if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.BOSS) {
-            pauseButtonPosition = new Point((int)(Constants.SCREEN_WIDTH * 0.5f - pauseButton.getWidth() * 0.5f), 55);
+            pauseButtonPosition = new Point((int) (Constants.SCREEN_WIDTH * 0.5f - pauseButton.getWidth() * 0.5f), 55);
         }
     }
 }
