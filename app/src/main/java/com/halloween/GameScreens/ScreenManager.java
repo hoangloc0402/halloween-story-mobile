@@ -15,12 +15,12 @@ public class ScreenManager {
     private WinningScreen winningScreen;
 
     public ScreenManager() {
-//        mainMenuScreen = new MainMenuScreen();
-//        graveyardScreen = new GraveyardScreen();
-//        pauseScreen = new PauseScreen();
+        mainMenuScreen = new MainMenuScreen();
+        graveyardScreen = new GraveyardScreen();
+        pauseScreen = new PauseScreen();
         bossScreen = new BossScreen();
-//        gameOverScreen = new GameOverScreen();
-//        winningScreen = new WinningScreen();
+        gameOverScreen = new GameOverScreen();
+        winningScreen = new WinningScreen();
     }
 
     public GameScreen getActiveScreen(){

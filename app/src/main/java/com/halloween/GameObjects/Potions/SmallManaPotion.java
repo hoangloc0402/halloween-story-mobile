@@ -24,8 +24,8 @@ public class SmallManaPotion extends Potion {
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
         getPotionPosition(boxes);
-        this.healthVolume = Constants.SMALL_MANA_POTION_VOLUME;
-
+        this.volume = Constants.SMALL_MANA_POTION_VOLUME;
+        this.isHealth = false;
         this.smallManaPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.mana_potion);
         this.potionHeight = (int) (this.smallManaPotion.getHeight() * scale);
         this.potionWidth = (int) (this.smallManaPotion.getWidth() * scale);

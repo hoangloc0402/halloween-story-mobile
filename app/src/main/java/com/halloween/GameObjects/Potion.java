@@ -5,11 +5,12 @@ import android.graphics.RectF;
 
 public abstract class Potion implements GameObject {
     protected boolean isActive;
-    protected int healthVolume;
+    protected int volume;
     protected PointF position;
     protected RectF surroundingBox;
     protected int potionHeight;
     protected int potionWidth;
+    public boolean isHealth;
 
     public RectF getSurroundingBox(){
         return null;
@@ -19,7 +20,11 @@ public abstract class Potion implements GameObject {
         return isActive;
     }
 
-    public int getHealthVolume() {
-        return healthVolume;
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public int getVolume() {
+        return volume;
     }
 }

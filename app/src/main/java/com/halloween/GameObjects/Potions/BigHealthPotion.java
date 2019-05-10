@@ -28,8 +28,8 @@ public class BigHealthPotion extends Potion {
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
         getPotionPosition(boxes);
-        this.healthVolume = Constants.BIG_HEALTH_POTION_VOLUME;
-
+        this.volume = Constants.BIG_HEALTH_POTION_VOLUME;
+        this.isHealth = true;
         this.bigHealthPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.big_health_potion);
         this.potionHeight = (int) (this.bigHealthPotion.getHeight() * scale);
         this.potionWidth = (int) (this.bigHealthPotion.getWidth() * scale);

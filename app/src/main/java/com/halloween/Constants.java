@@ -97,6 +97,9 @@ public class Constants {
     public static final int SPEAR_HORIZONTAL_DAMAGE = 30;
     public static final int SPEAR_VERTICAL_DAMAGE = 30;
 
+    public  static  final int HEALTH_POTION_PROB = 15;
+    public  static  final int MANA_POTION_PROB = 80;
+
 
     public static float getRelativeXPosition(float x, GAME_STATE game_state)  {
         return getRelativeXPosition(x);
