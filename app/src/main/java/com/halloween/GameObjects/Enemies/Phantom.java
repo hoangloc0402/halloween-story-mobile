@@ -129,7 +129,6 @@ public class Phantom extends Enemy {
                         if (IsPlayerInRange(playerSurroundingBox, attackDistance)) {
                             ChangeState(State.Attack);
                         } else {
-
                             float x, y;
                             if (isMovingForward) {
                                 x = playerSurroundingBox.centerX() - (currentAnimation.getAbsoluteFrameWidth() / 2 + playerSurroundingBox.width() / 2);

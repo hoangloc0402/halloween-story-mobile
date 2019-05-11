@@ -16,16 +16,13 @@ public class Dragon extends Enemy {
 
 
     public Dragon(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.ZOMBIE_STARTING_HP, leftLandMark, rightLandMark, Constants.DRAGON_FOLLOW_DISTANCE, Constants.DRAGON_ATTACK_DISTANCE);
+        super(Constants.DRAGON_STARTING_HP, leftLandMark, rightLandMark, Constants.DRAGON_FOLLOW_DISTANCE, Constants.DRAGON_ATTACK_DISTANCE);
 
         LoadAnimation();
 
-        this.v_x = Constants.DRAGON_V;
-        this.v_y = 0;
+        currentState = previousState = State.Appear;
 
-        currentState = previousState = State.Hurt;
-
-        currentAnimation = hurtAnimation;
+        currentAnimation = appearAnimation;
 
         this.surroundingBox = new RectF();
 
@@ -46,8 +43,8 @@ public class Dragon extends Enemy {
         this.moveAnimation = new Animation(R.drawable.dragon_move_188x176x6, 188 * Constants.DRAGON_SCALE, 176 * Constants.DRAGON_SCALE, 6, 100,
                 new PointF(22 * Constants.DRAGON_SCALE, 60 * Constants.DRAGON_SCALE), new PointF(65 * Constants.DRAGON_SCALE, 20 * Constants.DRAGON_SCALE));
         this.attackAnimation = new Animation(R.drawable.dragon_attack_227x187x6, 227 * Constants.DRAGON_SCALE,
-                187 * Constants.DRAGON_SCALE, 6, 100, new PointF(30 * Constants.DRAGON_SCALE, 25 * Constants.DRAGON_SCALE),
-                new PointF(0, 0 * Constants.DRAGON_SCALE));
+                187 * Constants.DRAGON_SCALE, 6, 100, new PointF(10 * Constants.DRAGON_SCALE, 30 * Constants.DRAGON_SCALE),
+                new PointF(20 * Constants.DRAGON_SCALE, 0 * Constants.DRAGON_SCALE));
         this.diedAnimation = new Animation(R.drawable.dragon_died_175x176x5, 175 * Constants.DRAGON_SCALE,
                 176 * Constants.DRAGON_SCALE, 5, 100, new PointF(22 * Constants.DRAGON_SCALE, 60 * Constants.DRAGON_SCALE),
                 new PointF(50 * Constants.DRAGON_SCALE, 20 * Constants.DRAGON_SCALE));
@@ -71,8 +68,8 @@ public class Dragon extends Enemy {
         if (isActive) {
             if (this.IsInScreen()) {
                 RectF attack = getAttackRange();
-                RectF sur = getSurroundingBox();
-                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+//                RectF sur = getSurroundingBox();
+//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 //                System.out.println(attack);;
 //                System.out.println("current Position "+ currentPosition);
                 if (attack != null) {
@@ -91,16 +88,17 @@ public class Dragon extends Enemy {
         }
         int frameIndex = currentAnimation.getCurrentFrameIndex();
         if (frameIndex >= 1 && frameIndex <= 5) {
-            float top = this.currentPosition.y;
-            float bottom = this.currentPosition.y + 4*this.currentAnimation.getAbsoluteFrameHeight()/5;
+            float top = this.currentPosition.y - currentAnimation.getAbsoluteOffsetTopLeftY()/2;
+            float bottom = this.currentPosition.y +4 *this.currentAnimation.getAbsoluteFrameHeight()/5;
             float left, right;
             float width = currentAnimation.getAbsoluteFrameWidth();
             if (currentAnimation.isFlip) {
-                left = this.currentPosition.x + width /4;
+                left = this.currentPosition.x + currentAnimation.getAbsoluteFrameWidth()/2  - currentAnimation.getAbsoluteOffsetBottomRightX();
             } else {
                 left = this.currentPosition.x - currentAnimation.getAbsoluteOffsetTopLeftX();
             }
-            right = left + 3 * currentAnimation.getAbsoluteFrameWidth() / 4;
+            right = left + currentAnimation.getAbsoluteFrameWidth() / 2;
+            System.out.println("offsetX" + currentAnimation.getAbsoluteOffsetBottomRightX() + " sa" + currentAnimation.getAbsoluteOffsetTopLeftX());
             this.attackRect.set(left, top, right, bottom);
             return this.attackRect;
         } else return null;
@@ -109,63 +107,126 @@ public class Dragon extends Enemy {
     @Override
     public void update(RectF playerSurroundingBox) {
         super.update();
-        if (isActive) {
-            if (currentHP <= 0) {
-                isAlive = false;
-                ChangeState(State.Died);
-            }
-            System.out.println("current state "+ currentState);
-            switch (currentState) {
-                case Died:
-                    ChangeState(State.Died);
-                    if (this.currentAnimation.isLastFrame())
-                        isActive = false;
-                    break;
-                case Hurt:
-                    ChangeState(State.Hurt);
-                    break;
-                case Attack:
-                    if (!IsPlayerInRange(playerSurroundingBox, attackDistance)) {
-                        ChangeState(State.Move);
-                    } else
-                        ChangeState(State.Attack);
-                    isMovingForward = playerSurroundingBox.centerX() > this.currentPosition.x;
-                    break;
-                case Move:
-                    ChangeState(State.Move);
-                    if (isAlive) {
-                        if (IsPlayerInRange(playerSurroundingBox, attackDistance)) {
-                            ChangeState(State.Attack);
-                        } else {
-
-                            float x, y;
-                            if (isMovingForward) {
-                                x = playerSurroundingBox.centerX() - (currentAnimation.getAbsoluteFrameWidth() / 2 + playerSurroundingBox.width() / 2);
-                            } else {
-                                x = playerSurroundingBox.centerX() + (currentAnimation.getAbsoluteFrameWidth() / 2 - playerSurroundingBox.width() / 2);
-                            }
-                            isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
-                            y = playerSurroundingBox.centerY() - currentAnimation.getAbsoluteFrameHeight() / 2;
-//                            System.out.println("is moving forward " + isMovingForward);
-
-                            MoveToDestination(new PointF(x, y), Constants.PHANTOM_V);
-                        }
-                    }
-                    break;
-                case Idle:
-                    ChangeState(State.Idle);
-                    break;
-                case Appear:
-                    ChangeState(State.Appear);
-                    if (this.currentAnimation.isLastFrame()) {
-                        ChangeState(State.Move);
-                    }
-                    break;
-                default:
-                    break;
-            }
+        if(isActive){
+            UpdateStage2(playerSurroundingBox);
             this.currentAnimation.flip(isMovingForward);
             currentAnimation.update();
+        }
+
+
+    }
+
+    public void UpdateStage1(RectF playerSurroundingBox){
+
+        if (currentHP <= 0) {
+            isAlive = false;
+            ChangeState(State.Died);
+        }
+        switch (currentState) {
+            case Died:
+                ChangeState(State.Died);
+                if (this.currentAnimation.isLastFrame())
+                    isActive = false;
+                break;
+            case Hurt:
+                ChangeState(State.Hurt);
+                break;
+            case Move:
+                ChangeState(State.Move);
+                if (isAlive) {
+                    if (isMovingForward) {
+                        MoveToDestination(rightLandMark, Constants.DRAGON_V);
+                    } else {
+                        MoveToDestination(leftLandMark, Constants.DRAGON_V);
+                    }
+                    if (currentPosition.x <= leftLandMark.x) {
+                        isMovingForward = true;
+                    } else if (currentPosition.x >= rightLandMark.x) {
+                        isMovingForward = false;
+                    }
+                }
+                break;
+            case Idle:
+                ChangeState(State.Idle);
+                if(currentAnimation.isLastFrame()){
+                    ChangeState(State.Move);
+                }
+                isMovingForward = playerSurroundingBox.centerX() > this.currentPosition.x;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void UpdateStage2(RectF playerSurroundingBox){
+        if (currentHP <= 0) {
+            isAlive = false;
+            ChangeState(State.Died);
+        }
+        switch (currentState) {
+            case Died:
+                ChangeState(State.Died);
+                if (this.currentAnimation.isLastFrame())
+                    isActive = false;
+                break;
+            case Hurt:
+                ChangeState(State.Hurt);
+                break;
+            case Attack:
+                if (!IsPlayerInRange(playerSurroundingBox, attackDistance)) {
+                    ChangeState(State.Move);
+                } else
+                    ChangeState(State.Attack);
+                isMovingForward = playerSurroundingBox.centerX() > this.currentPosition.x;
+                break;
+            case Move:
+                ChangeState(State.Move);
+                if (isAlive) {
+                    if (IsPlayerInRange(playerSurroundingBox, attackDistance)){
+                        ChangeState(State.Attack);
+                    }else
+                    if(IsPlayerInRange(playerSurroundingBox, followDistance)){
+                        float x, y;
+                        if (isMovingForward) {
+                            x = playerSurroundingBox.centerX() - (currentAnimation.getAbsoluteFrameWidth() / 2 + 3*playerSurroundingBox.width() / 4);
+                        } else {
+                            x = playerSurroundingBox.centerX() + (currentAnimation.getAbsoluteFrameWidth() / 2 - 3*playerSurroundingBox.width() / 4);
+                        }
+                        isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
+                        y = playerSurroundingBox.centerY() - currentAnimation.getAbsoluteFrameHeight() / 2;
+//                            System.out.println("is moving forward " + isMovingForward);
+
+                        MoveToDestination(new PointF(x, y), Constants.DRAGON_V);
+                    }else{
+                        if (isMovingForward) {
+                            MoveToDestination(rightLandMark, Constants.DRAGON_V);
+                        } else {
+                            MoveToDestination(leftLandMark, Constants.DRAGON_V);
+                        }
+                        if (currentPosition.x <= leftLandMark.x) {
+                            isMovingForward = true;
+                        } else if (currentPosition.x >= rightLandMark.x) {
+                            isMovingForward = false;
+                        }
+                    }
+
+                }
+                break;
+            case Idle:
+                ChangeState(State.Idle);
+                if(currentAnimation.isLastFrame()){
+                    ChangeState(State.Move);
+                }
+                isMovingForward = playerSurroundingBox.centerX() > this.currentPosition.x;
+                break;
+            case Appear:
+                ChangeState(State.Appear);
+                if (this.currentAnimation.isLastFrame()) {
+                    ChangeState(State.Move);
+                }
+                break;
+            default:
+                break;
         }
     }
 

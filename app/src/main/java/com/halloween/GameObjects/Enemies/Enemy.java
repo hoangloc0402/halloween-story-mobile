@@ -20,8 +20,7 @@ public class Enemy implements GameObject {
     Animation appearAnimation;
     Animation moveAnimation;
     Animation attackAnimation;
-    Animation powerAnimation;
-    Animation powerHitAnimation;
+    Animation defenseAnimation;
     Animation hurtAnimation;
     Animation ultimateAttackAnimation;
     boolean isAlive;
@@ -84,11 +83,12 @@ public class Enemy implements GameObject {
         float dy3 = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
         float dy = Math.min(Math.abs(dy1), Math.abs(dy2));
         dy = Math.min(dy, Math.abs(dy3));
-        if (currentAnimation.isFlip) {
-            dx = playerSurroundingBox.left - getSurroundingBox().left - currentAnimation.getAbsoluteAnimationWidth();
-        } else {
-            dx = playerSurroundingBox.right - getSurroundingBox().left;
-        }
+//        if (currentAnimation.isFlip) {
+//
+//        } else {
+//            dx = playerSurroundingBox.right - getSurroundingBox().left;
+//        }
+        dx = playerSurroundingBox.left - getSurroundingBox().left - currentAnimation.getAbsoluteAnimationWidth();
         float d = dx * dx + dy * dy;
         return d < maxDistance;
     }
@@ -159,6 +159,8 @@ public class Enemy implements GameObject {
                 case Appear:
                     currentAnimation = appearAnimation;
                     break;
+                case Defense:
+                    currentAnimation = defenseAnimation;
                 default:
                     break;
 
@@ -176,7 +178,7 @@ public class Enemy implements GameObject {
     }
 
     public void decreaseHealth(int damage) {
-        if (this.isInvincible)
+        if (this.isInvincible || currentState == State.Defense)
             return;
         else {
             currentHP -= damage;
@@ -217,7 +219,7 @@ public class Enemy implements GameObject {
 
     }
 
-    public enum State {Appear, Idle, Move, Attack, UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
+    public enum State {Appear, Idle, Move, Attack, UltimateAttack, Hurt, Died, Defense} //Các state có thể có của Enemy
 
 
 }
