@@ -20,7 +20,8 @@ public class Enemy implements GameObject {
     Animation appearAnimation;
     Animation moveAnimation;
     Animation attackAnimation;
-    Animation defenseAnimation;
+    Animation powerAnimation;
+    Animation powerHitAnimation;
     Animation hurtAnimation;
     Animation ultimateAttackAnimation;
     boolean isAlive;
@@ -89,9 +90,7 @@ public class Enemy implements GameObject {
             dx = playerSurroundingBox.right - getSurroundingBox().left;
         }
         float d = dx * dx + dy * dy;
-        if (d < maxDistance)
-            return true;
-        return false;
+        return d < maxDistance;
     }
 
 //    public boolean IsAlive(){
@@ -147,9 +146,6 @@ public class Enemy implements GameObject {
                     break;
                 case Attack:
                     currentAnimation = attackAnimation;
-                    break;
-                case Defense:
-                    currentAnimation = defenseAnimation;
                     break;
                 case Hurt:
                     currentAnimation = hurtAnimation;
@@ -221,7 +217,7 @@ public class Enemy implements GameObject {
 
     }
 
-    public enum State {Appear, Idle, Move, Attack, Defense, UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
+    public enum State {Appear, Idle, Move, Attack, UltimateAttack, Hurt, Died} //Các state có thể có của Enemy
 
 
 }

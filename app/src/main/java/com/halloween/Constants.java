@@ -67,6 +67,17 @@ public class Constants {
     public final static float PHANTOM_HEIGHT = 91;
     public final static int MAX_PHANTOM_COUNT = 3;
 
+    public final static int DRAGON_ATTACK= 100;
+    public final static int DRAGON_DAMAGE = 100;
+    public final static float DRAGON_STARTING_HP = 10;
+    public final static int DRAGON_POINT = 100;
+    public final static float DRAGON_V = 3;
+    public final static float DRAGON_SCALE = 1.3f;
+    public final static float DRAGON_FOLLOW_DISTANCE = 1000;
+    public final static float DRAGON_ATTACK_DISTANCE = 300000000 *DRAGON_SCALE*DRAGON_SCALE;
+    public final static float DRAGON_HEIGHT = 91;
+    public final static int MAX_DRAGON_COUNT = 3;
+
     public static final float MAIN_CHARACTER_V_X = 15f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
     public static final float GRAVITY = 2.5f;
