@@ -106,7 +106,15 @@ public class Dragon extends Enemy {
     public void update(RectF playerSurroundingBox) {
         super.update();
         if(isActive){
-            UpdateStage2(playerSurroundingBox);
+            if (currentHP > 70*Constants.DRAGON_STARTING_HP/100){
+                UpdateStage1(playerSurroundingBox);
+            }else
+            if (currentHP >40 *Constants.DRAGON_STARTING_HP/100){
+                UpdateStage2(playerSurroundingBox);
+            }
+            else{
+                UpdateStage3(playerSurroundingBox);
+            }
             this.currentAnimation.flip(isMovingForward);
             currentAnimation.update();
         }
@@ -189,12 +197,12 @@ public class Dragon extends Enemy {
                     if (IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_ATTACK_DISTANCE_X, Constants.DRAGON_ATTACK_DISTANCE_Y)){
                         ChangeState(State.Attack);
                     }else
-                    if(IsPlayerInRange(playerSurroundingBox, followDistance)){
+                    if(IsPlayerInRange(playerSurroundingBox, followDistance) && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))){
                         float x, y;
                         if (isMovingForward) {
-                            x = playerSurroundingBox.centerX() - (currentAnimation.getAbsoluteFrameWidth() / 2 + 3*playerSurroundingBox.width() / 4);
+                            x = playerSurroundingBox.centerX() - ( 5*playerSurroundingBox.width() / 4);
                         } else {
-                            x = playerSurroundingBox.centerX() + (currentAnimation.getAbsoluteFrameWidth() / 2 - 3*playerSurroundingBox.width() / 4);
+                            x = playerSurroundingBox.centerX() + 1*playerSurroundingBox.width() / 4;
                         }
                         isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
                         y = playerSurroundingBox.centerY() - currentAnimation.getAbsoluteFrameHeight() / 4;
@@ -247,23 +255,37 @@ public class Dragon extends Enemy {
             case Hurt:
                 ChangeState(State.Hurt);
                 break;
+            case Attack:
+                if (!IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_ATTACK_DISTANCE_X, Constants.DRAGON_ATTACK_DISTANCE_Y)) {
+                    ChangeState(State.UltimateAttack);
+                } else
+                    ChangeState(State.Attack);
+                isMovingForward = playerSurroundingBox.left > this.currentPosition.x;
+                break;
             default:
                 ChangeState(State.UltimateAttack);
-                if (isMovingForward) {
-                    MoveToDestination(rightLandMark, Constants.DRAGON_V);
-                } else {
-                    MoveToDestination(leftLandMark, Constants.DRAGON_V);
+                if(IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top)) &&
+                        IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_ATTACK_DISTANCE_X, Constants.DRAGON_ATTACK_DISTANCE_Y)){
+                    ChangeState(State.Attack);
                 }
-                if (currentPosition.x <= leftLandMark.x) {
-                    isMovingForward = true;
-                } else if (currentPosition.x >= rightLandMark.x) {
-                    isMovingForward = false;
+                else{
+                    if (isMovingForward) {
+                        MoveToDestination(rightLandMark, Constants.DRAGON_V);
+                    } else {
+                        MoveToDestination(leftLandMark, Constants.DRAGON_V);
+                    }
+                    if (currentPosition.x <= leftLandMark.x) {
+                        isMovingForward = true;
+                    } else if (currentPosition.x >= rightLandMark.x) {
+                        isMovingForward = false;
+                    }
+                    offSet = currentAnimation.getSurroundingBox(currentPosition);
+                    bullet.update(playerSurroundingBox, isMovingForward,
+                            new PointF(currentAnimation.getSurroundingBox(currentPosition).centerX(), currentAnimation.getSurroundingBox(currentPosition).centerY()) );
                 }
-                offSet = currentAnimation.getSurroundingBox(currentPosition);
-                bullet.update(playerSurroundingBox, isMovingForward,
-                        new PointF(currentAnimation.getSurroundingBox(currentPosition).centerX(), currentAnimation.getSurroundingBox(currentPosition).centerY()) );
                 break;
         }
+        currentAnimation.update();
     }
 
     @Override
@@ -275,17 +297,29 @@ public class Dragon extends Enemy {
     }
 
     public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxX, float maxY) {
-        float dx;
+        float dx4, dx1, dx2, dx3, dx5;
         float dy1 = playerSurroundingBox.top - getSurroundingBox().top;
         float dy2 = playerSurroundingBox.bottom - getSurroundingBox().bottom;
         float dy3 = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
+        float dy4 = playerSurroundingBox.bottom - getSurroundingBox().top;
+        float dy5 = playerSurroundingBox.top - getSurroundingBox().bottom;
         float dy = Math.min(Math.abs(dy1), Math.abs(dy2));
         dy = Math.abs(Math.min(dy, Math.abs(dy3)));
-        if(isMovingForward){
-            dx = Math.abs(playerSurroundingBox.left - getSurroundingBox().right);
-        }else{
-            dx = Math.abs(playerSurroundingBox.right - getSurroundingBox().left);
-        }
+        dy = Math.abs(Math.min(dy, Math.abs(dy4)));
+        dy = Math.abs(Math.min(dy, Math.abs(dy5)));
+
+        dx1 = playerSurroundingBox.left - getSurroundingBox().left;
+        dx2 = playerSurroundingBox.right - getSurroundingBox().right;
+        dx3 = playerSurroundingBox.left - getSurroundingBox().right;
+        dx4 = playerSurroundingBox.right - getSurroundingBox().left;
+        dx5 = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
+        float dx = Math.min(Math.abs(dx1), Math.abs(dx2));
+        dx = Math.abs(Math.min(dx, Math.abs(dx3)));
+        dx = Math.abs(Math.min(dx, Math.abs(dx4)));
+        dx = Math.abs(Math.min(dx, Math.abs(dx5)));
+
+        System.out.println(dx);
+        System.out.println(dy);
 
         return dx < maxX && dy<maxY;
     }

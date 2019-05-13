@@ -73,16 +73,13 @@ public class Constants {
     public final static int DRAGON_POINT = 100;
     public final static float DRAGON_V = 8;
     public final static float DRAGON_SCALE = 1.3f;
-    public final static float DRAGON_FOLLOW_DISTANCE = 1000000;
+    public final static float DRAGON_FOLLOW_DISTANCE = 90000*DRAGON_SCALE*DRAGON_SCALE;
     public final static float DRAGON_ATTACK_DISTANCE = 2500 *DRAGON_SCALE*DRAGON_SCALE;
     public final static float DRAGON_ATTACK_DISTANCE_X = 10 *DRAGON_SCALE;
     public final static float DRAGON_ATTACK_DISTANCE_Y = 10 *DRAGON_SCALE;
     public final static float BULLET_V = 7;
     public final static float BULLET_SCALE = 1f;
 
-
-    public final static float DRAGON_HEIGHT = 91;
-    public final static int MAX_DRAGON_COUNT = 3;
 
     public static final float MAIN_CHARACTER_V_X = 15f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
