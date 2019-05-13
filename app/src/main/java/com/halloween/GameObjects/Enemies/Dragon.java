@@ -11,7 +11,7 @@ import com.halloween.GameObjects.Bullet;
 import com.halloween.R;
 
 public class Dragon extends Enemy {
-    Bullet bullet;
+    public Bullet bullet;
     RectF offSet;
 
 

@@ -79,6 +79,8 @@ public class Constants {
     public final static float DRAGON_ATTACK_DISTANCE_Y = 10 *DRAGON_SCALE;
     public final static float BULLET_V = 7;
     public final static float BULLET_SCALE = 1f;
+    public final static float BULLET_DAMAGE = 10f;
+
 
 
     public static final float MAIN_CHARACTER_V_X = 15f;
