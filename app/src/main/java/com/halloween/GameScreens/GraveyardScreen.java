@@ -14,8 +14,10 @@ import com.halloween.Constants;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
 import com.halloween.GameContents.Portal;
+import com.halloween.GameObjects.Enemies.Dragon;
 import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.GameObjects.Enemies.Gargoyle;
+import com.halloween.GameObjects.Enemies.Skeleton;
 import com.halloween.GameObjects.Enemies.Zombie;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.GameObjects.Potion;
@@ -144,9 +146,63 @@ public class GraveyardScreen implements GameScreen {
 
     private void initEnemies() {
 //        enemies.add(new Gargoyle(new PointF(500, 700), new PointF(800, 200)));
+        enemies.add(new Zombie(new PointF(400, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(850, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(900, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(1600, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(1710, 0.575f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(2330, 0.575f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(2400, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(2900, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(3500, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(4000, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(4050, 0.65f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(4450, 0.65f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(6830, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(7330, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(7130, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(7750, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(8360, 0.575f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(8700, 0.575f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+
+        enemies.add(new Gargoyle(new PointF(1100, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(1500, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(2400, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(2900, 0.3f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(2300, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(3400, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(2850, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(3250, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(5340, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(5600, 0.3f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(6420, 0.575f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(7100, 0.40f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(6800, 0.7f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(7300, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(8900, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(9900, 0.7f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+
+        enemies.add(new Skeleton(new PointF(370, 0.575f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
+                new PointF(800, 0.575f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
+        enemies.add(new Skeleton(new PointF(2470, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
+                new PointF(3900, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
+        enemies.add(new Skeleton(new PointF(3450, 0.35f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
+                new PointF(3700, 0.35f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
+        enemies.add(new Skeleton(new PointF(4110, 0.65f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
+                new PointF(4460, 0.65f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
+        enemies.add(new Skeleton(new PointF(4580, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
+                new PointF(5500, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
+        enemies.add(new Skeleton(new PointF(8820, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
+                new PointF(9520, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
+        enemies.add(new Skeleton(new PointF(9130, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
+                new PointF(9950, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
 //        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
-//        enemies.add(new Skeleton(new PointF(100, 865.5f - 127*Constants.SKELETON_SCALE), new PointF(700, 865.5f - 127*Constants.SKELETON_SCALE)));
+//        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
+//        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
+//        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
+
 //        enemies.add(new Phantom(new PointF(100, 800), new PointF(700, 200)));
+//        enemies.add(new Dragon(new PointF(100, 100), new PointF(700, 800)));
     }
 
     @Override

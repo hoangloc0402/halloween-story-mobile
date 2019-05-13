@@ -25,9 +25,6 @@ public class Bullet implements GameObject {
     PointF target;
     float DAMAGE;
 
-    public float getDAMAGE() {
-        return DAMAGE;
-    }
 
     public PointF getTarget() {
         return target;

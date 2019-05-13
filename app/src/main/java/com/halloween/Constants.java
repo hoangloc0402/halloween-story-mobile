@@ -38,8 +38,8 @@ public class Constants {
     public final static int SKELETON_DAMAGE = 10;
     public final static float SKELETON_STARTING_HP = 20;
     public final static int SKELETON_POINT = 100;
-    public final static int SKELETON_V = 5;
-    public final static float SKELETON_SCALE = 1.5f;
+    public final static int SKELETON_V = 3;
+    public final static float SKELETON_SCALE = 1.3f;
     public final static float SKELETON_FOLLOW_DISTANCE = 40000;
     public final static float SKELETON_ATTACK_DISTANCE = 5000 *SKELETON_SCALE*SKELETON_SCALE;
     public final static float SKELETON_HEIGHT = 127;
