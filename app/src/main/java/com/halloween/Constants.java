@@ -10,7 +10,7 @@ public class Constants {
     public static Context CURRENT_CONTEXT;
     public static Activity MAIN_ACTIVITY;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS, WIN}
-    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
+    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.BOSS;
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
     public static GAME_STATE PREVIOUS_GAME_STATE;
@@ -23,9 +23,7 @@ public class Constants {
     public static float BACKGROUND_X_AXIS = 0.0f;
 
     public static final int MAX_HEALTH_BOSS = 1000;
-
     public final static int INVINCIBLE_TIME_ENEMY = 500;
-
     public final static int ZOMBIE_ATTACK = 50;
     public final static int ZOMBIE_DAMAGE = 10;
     public final static float ZOMBIE_STARTING_HP = 20;
@@ -56,11 +54,11 @@ public class Constants {
     public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
     public final static float GARGOYLE_HEIGHT = 118;
 
-    public final static int PHANTOM_ATTACK= 100;
-    public final static int PHANTOM_DAMAGE = 100;
+    public final static int PHANTOM_ATTACK= 1;
+    public final static int PHANTOM_DAMAGE = 1;
     public final static float PHANTOM_STARTING_HP = 10;
-    public final static int PHANTOM_POINT = 100;
-    public final static float PHANTOM_V = 3;
+    public final static int PHANTOM_POINT = 10;
+    public final static float PHANTOM_V = 2;
     public final static float PHANTOM_SCALE = 1.5f;
     public final static float PHANTOM_FOLLOW_DISTANCE = 4000000;
     public final static float PHANTOM_ATTACK_DISTANCE = 300 *PHANTOM_SCALE*PHANTOM_SCALE;
@@ -71,8 +69,8 @@ public class Constants {
     public final static int DRAGON_DAMAGE = 100;
     public final static float DRAGON_STARTING_HP = 1000;
     public final static int DRAGON_POINT = 100;
-    public final static float DRAGON_V = 8;
-    public final static float DRAGON_SCALE = 1.3f;
+    public final static float DRAGON_V = 4;
+    public final static float DRAGON_SCALE = 2f;
     public final static float DRAGON_FOLLOW_DISTANCE = 90000*DRAGON_SCALE*DRAGON_SCALE;
     public final static float DRAGON_ATTACK_DISTANCE = 2500 *DRAGON_SCALE*DRAGON_SCALE;
     public final static float DRAGON_ATTACK_DISTANCE_X = 10 *DRAGON_SCALE;
@@ -81,9 +79,7 @@ public class Constants {
     public final static float BULLET_SCALE = 1f;
     public final static float BULLET_DAMAGE = 10f;
 
-
-
-    public static final float MAIN_CHARACTER_V_X = 15f;
+    public static final float MAIN_CHARACTER_V_X = 5f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
     public static final float GRAVITY = 2.5f;
     public static final int  MAIN_CHARACTER_ATTACK_POWER = 10;
@@ -95,8 +91,8 @@ public class Constants {
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final long INVINCIBLE_TIME = 1500;
     public static final long BLINK_TIME = 150;
-    public static final int MAX_SCORE = 100;
-    public static final int CURRENT_SCORE = 100;
+    public static final int MAX_SCORE = 10000;
+    public static int CURRENT_SCORE = 0;
     public static final int SMALL_HEALTH_POTION_VOLUME = 100;
     public static final int BIG_HEALTH_POTION_VOLUME = 500;
     public static final int SMALL_MANA_POTION_VOLUME = 100;

@@ -82,7 +82,7 @@ public class MainCharacter {
         this.idleAnimationUlti = new Animation(R.drawable.main_character_ulti_idle_139x181x8, 139 * SCALE2, 181 * SCALE2, 8, 100, new PointF(29 * SCALE2, 44 * SCALE2), new PointF(45 * SCALE2, 0));
         this.walkAnimationUlti = new Animation(R.drawable.main_character_ulti_walk_133x179x8, 133 * SCALE2, 179 * SCALE2, 8, 100, new PointF(24 * SCALE2, 44 * SCALE2), new PointF(45 * SCALE2, 0));
         this.jumpAnimationUlti = idleAnimationUlti;
-        this.attackAnimationUlti = new Animation(R.drawable.main_character_ulti_attack_772x348x20_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 20, 50, new PointF(492 * SCALE2, 140 * SCALE2), new PointF(214 * SCALE2, 83 * SCALE2));
+        this.attackAnimationUlti = new Animation(R.drawable.main_character_ulti_attack_772x348x20_488x135_564x265, 772 * SCALE2, 348 * SCALE2, 20, 40, new PointF(492 * SCALE2, 140 * SCALE2), new PointF(214 * SCALE2, 83 * SCALE2));
         this.appearAnimationUtil = new Animation(R.drawable.main_character_ulti_appear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73 * SCALE2, 69 * SCALE2), new PointF(63 * SCALE2, 26 * SCALE2));
         this.disappearAnimationUlti = new Animation(R.drawable.main_character_ulti_disappear_215x247x7, 215 * SCALE2, 247 * SCALE2, 7, 75, new PointF(73 * SCALE2, 69 * SCALE2), new PointF(63 * SCALE2, 26 * SCALE2));
     }
@@ -93,12 +93,11 @@ public class MainCharacter {
 
 
     public void draw(Canvas canvas) {
-        RectF sur = currentAnimation.getSurroundingBox(position);
-
-        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, this.paint);
-        RectF atk = getAttackRange();
-        if (atk != null)
-            canvas.drawRect(Constants.getRelativeXPosition(atk.left), atk.top, Constants.getRelativeXPosition(atk.right), atk.bottom, this.redPaint);
+//        RectF sur = currentAnimation.getSurroundingBox(position);
+//        canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, this.paint);
+//        RectF atk = getAttackRange();
+//        if (atk != null)
+//            canvas.drawRect(Constants.getRelativeXPosition(atk.left), atk.top, Constants.getRelativeXPosition(atk.right), atk.bottom, this.redPaint);
         this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x), this.position.y), this.paint);
     }
 
@@ -107,6 +106,7 @@ public class MainCharacter {
         this.updateInvincibleState();
         this.updateAnimation();
         this.updateMana();
+        Constants.CURRENT_SCORE = this.currentScore;
         if (!this.isActive)
             Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.GAME_OVER;
     }
@@ -384,7 +384,9 @@ public class MainCharacter {
         return attackPower;
     }
 
-    //    public Boolean collide(Rect targetBox){
-//        return targetBox.intersect(this.getSurroundingBox());
-//    }
+    public void increaseScore(int score){
+        currentScore+=score;
+        currentScore = currentScore > Constants.MAX_SCORE?Constants.MAX_SCORE:currentScore;
+    }
+
 }
