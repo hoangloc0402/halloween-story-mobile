@@ -1,7 +1,6 @@
 package com.halloween.GameScreens;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
@@ -23,8 +22,8 @@ public class ScreenManager {
         winningScreen = new WinningScreen();
     }
 
-    public GameScreen getActiveScreen(){
-        switch (Constants.CURRENT_GAME_STATE){
+    public GameScreen getActiveScreen() {
+        switch (Constants.CURRENT_GAME_STATE) {
             case PLAY:
                 Constants.isInGraveyard = true;
                 return graveyardScreen;
@@ -44,23 +43,22 @@ public class ScreenManager {
         }
     }
 
-    public void receiveTouch(MotionEvent event){
+    public void receiveTouch(MotionEvent event) {
         this.getActiveScreen().receiveTouch(event);
     }
 
-    public void update(){
+    public void update() {
         this.getActiveScreen().update();
     }
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
         if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PAUSE || Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.GAME_OVER || Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.WIN) {
             if (Constants.isInGraveyard)
                 graveyardScreen.draw(canvas);
             else
                 bossScreen.draw(canvas);
             this.getActiveScreen().draw(canvas);
-        }
-        else
+        } else
             this.getActiveScreen().draw(canvas);
     }
 

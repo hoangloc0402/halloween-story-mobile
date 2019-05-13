@@ -1,16 +1,13 @@
 package com.halloween.GameScreens;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.MotionEvent;
+
 import com.halloween.Constants;
-import com.halloween.MainActivity;
 import com.halloween.R;
 
 public class PauseScreen implements GameScreen {
@@ -21,17 +18,14 @@ public class PauseScreen implements GameScreen {
     private Point buttonMainMenuPosition;
     private Point buttonResumePosition;
     private Point buttonExitPosition;
-
-    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, RESUME, EXIT}
     private MENU_STATE currentMenuState;
     private Paint paint;
-
     public PauseScreen() {
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause_screen);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
 
-        int width = Constants.SCREEN_WIDTH/4;
-        int height = Constants.SCREEN_HEIGHT/10;
+        int width = Constants.SCREEN_WIDTH / 4;
+        int height = Constants.SCREEN_HEIGHT / 10;
 
         this.buttonMainMenu = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.menu);
         this.buttonMainMenu = Bitmap.createScaledBitmap(buttonMainMenu, width, height, false);
@@ -48,8 +42,8 @@ public class PauseScreen implements GameScreen {
         this.buttonExitHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.exit_hover);
         this.buttonExitHover = Bitmap.createScaledBitmap(buttonExitHover, width, height, false);
 
-        this.buttonMainMenuPosition = new Point((Constants.SCREEN_WIDTH - buttonMainMenu.getWidth())/2, 4*Constants.SCREEN_HEIGHT/9);
-        this.buttonResumePosition = new Point(buttonMainMenuPosition.x, buttonMainMenuPosition.y + height+ 50);
+        this.buttonMainMenuPosition = new Point((Constants.SCREEN_WIDTH - buttonMainMenu.getWidth()) / 2, 4 * Constants.SCREEN_HEIGHT / 9);
+        this.buttonResumePosition = new Point(buttonMainMenuPosition.x, buttonMainMenuPosition.y + height + 50);
         this.buttonExitPosition = new Point(buttonMainMenuPosition.x, buttonResumePosition.y + height + 50);
         this.paint = new Paint();
         this.reset();
@@ -66,26 +60,26 @@ public class PauseScreen implements GameScreen {
 
     @Override
     public void update() {
-        switch (currentMenuState){
+        switch (currentMenuState) {
             case WAITING:
                 break;
             case LOADING:
                 this.paint.setAlpha(this.paint.getAlpha() + 40);
-                if (this.paint.getAlpha() >= 225){
+                if (this.paint.getAlpha() >= 225) {
                     this.paint.setAlpha(255);
                     this.currentMenuState = MENU_STATE.WAITING;
                 }
                 break;
             case BACK_TO_MAIN:
                 this.paint.setAlpha(this.paint.getAlpha() - 50);
-                if (this.paint.getAlpha() <= 50){
+                if (this.paint.getAlpha() <= 50) {
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.MAIN_MENU;
                     this.reset();
                 }
                 break;
             case RESUME:
                 this.paint.setAlpha(this.paint.getAlpha() - 50);
-                if (this.paint.getAlpha() <= 50){
+                if (this.paint.getAlpha() <= 50) {
                     if (Constants.isInGraveyard)
                         Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.PLAY;
                     else Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.BOSS;
@@ -94,7 +88,7 @@ public class PauseScreen implements GameScreen {
                 break;
             case EXIT:
                 this.paint.setAlpha(this.paint.getAlpha() - 30);
-                if (this.paint.getAlpha() <= 30){
+                if (this.paint.getAlpha() <= 30) {
                     Constants.MAIN_ACTIVITY.finish();
                 }
                 break;
@@ -137,49 +131,48 @@ public class PauseScreen implements GameScreen {
         else
             currentButtonExit = buttonExit;
 
-        switch(event.getAction())
-        {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 if (isInRangeOfMainMenuButton(x, y)) {
                     currentMenuState = MENU_STATE.BACK_TO_MAIN;
-                }
-                else if (isInRangeOfResumeButton(x, y)) {
+                } else if (isInRangeOfResumeButton(x, y)) {
                     currentMenuState = MENU_STATE.RESUME;
-                }
-                else if (isInRangeOfExitButton(x, y)) {
+                } else if (isInRangeOfExitButton(x, y)) {
                     currentMenuState = MENU_STATE.EXIT;
                 }
                 break;
         }
     }
 
-    public boolean isInRangeOfMainMenuButton(float x, float y){
+    public boolean isInRangeOfMainMenuButton(float x, float y) {
         if (
                 x > buttonMainMenuPosition.x &&
-                x < buttonMainMenuPosition.x + currentButtonMainMenu.getWidth() &&
-                y > buttonMainMenuPosition.y &&
-                y < buttonMainMenuPosition.y + currentButtonMainMenu.getHeight())
+                        x < buttonMainMenuPosition.x + currentButtonMainMenu.getWidth() &&
+                        y > buttonMainMenuPosition.y &&
+                        y < buttonMainMenuPosition.y + currentButtonMainMenu.getHeight())
             return true;
         else return false;
     }
 
-    public boolean isInRangeOfResumeButton(float x, float y){
+    public boolean isInRangeOfResumeButton(float x, float y) {
         if (
                 x > buttonResumePosition.x &&
-                x < buttonResumePosition.x + currentButtonResume.getWidth() &&
-                y > buttonResumePosition.y &&
-                y < buttonResumePosition.y + currentButtonResume.getHeight())
+                        x < buttonResumePosition.x + currentButtonResume.getWidth() &&
+                        y > buttonResumePosition.y &&
+                        y < buttonResumePosition.y + currentButtonResume.getHeight())
             return true;
         else return false;
     }
 
-    public boolean isInRangeOfExitButton(float x, float y){
+    public boolean isInRangeOfExitButton(float x, float y) {
         if (
                 x > buttonExitPosition.x &&
-                x < buttonExitPosition.x + currentButtonExit.getWidth() &&
-                y > buttonExitPosition.y &&
-                y < buttonExitPosition.y + currentButtonExit.getHeight())
+                        x < buttonExitPosition.x + currentButtonExit.getWidth() &&
+                        y > buttonExitPosition.y &&
+                        y < buttonExitPosition.y + currentButtonExit.getHeight())
             return true;
         else return false;
     }
+
+    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, RESUME, EXIT}
 }

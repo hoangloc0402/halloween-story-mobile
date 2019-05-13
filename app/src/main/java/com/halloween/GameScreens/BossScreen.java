@@ -13,6 +13,7 @@ import com.halloween.Constants;
 import com.halloween.GameContents.HealthBarBoss;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
+import com.halloween.GameObjects.Enemies.Dragon;
 import com.halloween.GameObjects.Enemies.Phantom;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.GameObjects.Potion;
@@ -25,13 +26,14 @@ import java.util.Random;
 
 public class BossScreen implements GameScreen {
 
+    ArrayList<Phantom> phantoms = new ArrayList<>();
+    ArrayList<Potion> potions = new ArrayList<>();
+    Dragon dragon;
     //for transition
     private boolean isStarting;
     private long startingTime;
     private int startingAlpha;
-
     private MainCharacter mainCharacter;
-
     private HealthBarMainCharacter healthBarMainCharacter;
     private JoyStick joyStick;
     private HealthBarBoss healthBarBoss;
@@ -40,14 +42,10 @@ public class BossScreen implements GameScreen {
     private RectF backgroundBlockWhere;
     private float backgroundCloudOffset, backgroundCloudSmallOffset;
     private int backgroundCloudCount, backgroundCloudSmallCount;
-
     private ArrayList<RectF> boxes;
     private RectF tempSurrounding, tempSurroundingMain;
     private RectF tempAttackRange, tempAttackRangeMain;
-
     private Paint paint;
-    ArrayList<Phantom> phamtoms = new ArrayList<>();
-    ArrayList<Potion> potions = new ArrayList<>();
     private Random rand = new Random();
 
     public BossScreen() {
@@ -88,8 +86,9 @@ public class BossScreen implements GameScreen {
         for (int i = 0; i < Constants.MAX_PHANTOM_COUNT; i++) {
             PointF newPoint = new PointF(rand.nextInt(Constants.SCREEN_WIDTH), rand.nextInt(Constants.SCREEN_HEIGHT));
             newPoint.x = Constants.getAbsoluteXLength(newPoint.x) + Constants.BACKGROUND_X_AXIS;
-            this.phamtoms.add(new Phantom(newPoint));
+            this.phantoms.add(new Phantom(newPoint));
         }
+        dragon = new Dragon(new PointF(100,100), new PointF(1700,100));
     }
 
     private void initBoxes() {
@@ -129,7 +128,7 @@ public class BossScreen implements GameScreen {
 
         tempSurroundingMain = mainCharacter.getSurroundingBox();
         tempAttackRangeMain = mainCharacter.getAttackRange();
-        for (Phantom phantom : phamtoms) {
+        for (Phantom phantom : phantoms) {
             if (!phantom.isActive()) {
                 phantom.reset(Constants.getAbsoluteXLength(rand.nextInt(Constants.SCREEN_WIDTH)) + Constants.BACKGROUND_X_AXIS, rand.nextInt(Constants.SCREEN_HEIGHT));
                 continue;
@@ -148,6 +147,7 @@ public class BossScreen implements GameScreen {
             phantom.update(tempSurroundingMain);
 
             if (!phantom.isActive()) {
+                mainCharacter.increaseScore(Constants.PHANTOM_POINT);
                 if (Constants.HEALTH_POTION_PROB > rand.nextInt(100))
                     potions.add(new SmallHealthPotion(phantom.getCurrentPosition(), boxes));
                 else if (Constants.MANA_POTION_PROB > rand.nextInt(100))
@@ -167,6 +167,11 @@ public class BossScreen implements GameScreen {
             }
             potion.update();
         }
+
+        dragon.update(tempSurroundingMain);
+        if (!dragon.isActive())
+            Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.WIN;
+        healthBarBoss.setNewHealth((int)dragon.getHealth());
 
         this.healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
         this.healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
@@ -214,7 +219,12 @@ public class BossScreen implements GameScreen {
         } else {
             this.mainCharacter.draw(canvas);
         }
-        for (Phantom phantom : phamtoms)
+
+        dragon.draw(canvas);
+        if (tempAttackRangeMain!=null && tempAttackRangeMain.intersect(dragon.getSurroundingBox()))
+            dragon.decreaseHealth(mainCharacter.getAttackPower());
+
+        for (Phantom phantom : phantoms)
             phantom.draw(canvas);
 
         for (Potion potion : potions)

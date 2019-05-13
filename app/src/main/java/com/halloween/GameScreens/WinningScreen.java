@@ -1,19 +1,15 @@
 package com.halloween.GameScreens;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.MotionEvent;
+
 import com.halloween.Constants;
-import com.halloween.MainActivity;
 import com.halloween.R;
 
 public class WinningScreen implements GameScreen {
@@ -29,11 +25,8 @@ public class WinningScreen implements GameScreen {
     private boolean isFill = true;
     private Rect whatToDraw;
     private RectF whereToDraw;
-
-    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, EXIT}
     private MENU_STATE currentMenuState;
     private Paint paint;
-
     public WinningScreen() {
         this.background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.winning_bg);
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
@@ -41,8 +34,8 @@ public class WinningScreen implements GameScreen {
         this.scoreBar = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.score);
         this.scoreBar = Bitmap.createScaledBitmap(scoreBar, (int) (0.26135f * Constants.SCREEN_WIDTH), (int) (0.036458f * Constants.SCREEN_HEIGHT), false);
 
-        int width = Constants.SCREEN_WIDTH/4;
-        int height = Constants.SCREEN_HEIGHT/10;
+        int width = Constants.SCREEN_WIDTH / 4;
+        int height = Constants.SCREEN_HEIGHT / 10;
 
         this.buttonRestart = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.menu);
         this.buttonRestart = Bitmap.createScaledBitmap(buttonRestart, width, height, false);
@@ -54,9 +47,9 @@ public class WinningScreen implements GameScreen {
         this.buttonExitHover = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.exit_hover);
         this.buttonExitHover = Bitmap.createScaledBitmap(buttonExitHover, width, height, false);
 
-        this.buttonRestartPosition = new Point((Constants.SCREEN_WIDTH - buttonRestart.getWidth())/2, (int) (0.61f *Constants.SCREEN_HEIGHT));
+        this.buttonRestartPosition = new Point((Constants.SCREEN_WIDTH - buttonRestart.getWidth()) / 2, (int) (0.61f * Constants.SCREEN_HEIGHT));
         this.buttonExitPosition = new Point(buttonRestartPosition.x, buttonRestartPosition.y + height + 25);
-        this.scoreBarPosition = new Point((int)(0.36896f * Constants.SCREEN_WIDTH),(int)(0.52865f * Constants.SCREEN_HEIGHT));
+        this.scoreBarPosition = new Point((int) (0.36896f * Constants.SCREEN_WIDTH), (int) (0.52865f * Constants.SCREEN_HEIGHT));
         this.paint = new Paint();
         this.reset();
     }
@@ -86,26 +79,26 @@ public class WinningScreen implements GameScreen {
             }
         }
 
-        switch (currentMenuState){
+        switch (currentMenuState) {
             case WAITING:
                 break;
             case LOADING:
                 this.paint.setAlpha(this.paint.getAlpha() + 10);
-                if (this.paint.getAlpha() >= 225){
+                if (this.paint.getAlpha() >= 225) {
                     this.paint.setAlpha(255);
                     this.currentMenuState = MENU_STATE.WAITING;
                 }
                 break;
             case BACK_TO_MAIN:
                 this.paint.setAlpha(this.paint.getAlpha() - 10);
-                if (this.paint.getAlpha() <= 50){
+                if (this.paint.getAlpha() <= 50) {
                     Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.MAIN_MENU;
                     this.reset();
                 }
                 break;
             case EXIT:
                 this.paint.setAlpha(this.paint.getAlpha() - 10);
-                if (this.paint.getAlpha() <= 30){
+                if (this.paint.getAlpha() <= 30) {
                     Constants.MAIN_ACTIVITY.finish();
                 }
                 break;
@@ -143,20 +136,18 @@ public class WinningScreen implements GameScreen {
         else
             currentButtonExit = buttonExit;
 
-        switch(event.getAction())
-        {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 if (isInRangeOfRestartButton(x, y)) {
                     currentMenuState = MENU_STATE.BACK_TO_MAIN;
-                }
-                else if (isInRangeOfExitButton(x, y)) {
+                } else if (isInRangeOfExitButton(x, y)) {
                     currentMenuState = MENU_STATE.EXIT;
                 }
                 break;
         }
     }
 
-    public boolean isInRangeOfRestartButton(float x, float y){
+    public boolean isInRangeOfRestartButton(float x, float y) {
         if (
                 x > buttonRestartPosition.x &&
                         x < buttonRestartPosition.x + currentButtonRestart.getWidth() &&
@@ -166,7 +157,7 @@ public class WinningScreen implements GameScreen {
         else return false;
     }
 
-    public boolean isInRangeOfExitButton(float x, float y){
+    public boolean isInRangeOfExitButton(float x, float y) {
         if (
                 x > buttonExitPosition.x &&
                         x < buttonExitPosition.x + currentButtonExit.getWidth() &&
@@ -175,4 +166,6 @@ public class WinningScreen implements GameScreen {
             return true;
         else return false;
     }
+
+    private enum MENU_STATE {LOADING, WAITING, BACK_TO_MAIN, EXIT}
 }

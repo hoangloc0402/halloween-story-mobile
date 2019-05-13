@@ -23,6 +23,15 @@ public class Bullet implements GameObject {
     float V_Y;
     boolean isPower, isPowerHit;
     PointF target;
+    float DAMAGE;
+
+    public float getDAMAGE() {
+        return DAMAGE;
+    }
+
+    public PointF getTarget() {
+        return target;
+    }
 
     public boolean isPower() {
         return isPower;
@@ -50,6 +59,7 @@ public class Bullet implements GameObject {
         V_Y = 0;
         isPower = false;
         isPowerHit = false;
+        this.DAMAGE = Constants.BULLET_DAMAGE;
     }
 
     public void LoadAnimation() {
@@ -144,6 +154,10 @@ public class Bullet implements GameObject {
             return -1f;
         else
             return 1f;
+    }
+
+    public RectF getSurroundingBox() {
+        return currentAnimation.getSurroundingBox(this.currentPosition);
     }
 
 

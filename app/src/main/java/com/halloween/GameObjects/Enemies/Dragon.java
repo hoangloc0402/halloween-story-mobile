@@ -11,7 +11,7 @@ import com.halloween.GameObjects.Bullet;
 import com.halloween.R;
 
 public class Dragon extends Enemy {
-    Bullet bullet;
+    public Bullet bullet;
     RectF offSet;
 
 
@@ -49,7 +49,7 @@ public class Dragon extends Enemy {
                 176 * Constants.DRAGON_SCALE, 5, 100, new PointF(22 * Constants.DRAGON_SCALE, 60 * Constants.DRAGON_SCALE),
                 new PointF(50 * Constants.DRAGON_SCALE, 20 * Constants.DRAGON_SCALE));
         this.hurtAnimation = new Animation(R.drawable.dragon_hurt_175x176x1, 175 * Constants.DRAGON_SCALE,
-                176 * Constants.DRAGON_SCALE, 1, 1000, new PointF(22 * Constants.DRAGON_SCALE, 60 * Constants.DRAGON_SCALE),
+                176 * Constants.DRAGON_SCALE, 1, 300, new PointF(22 * Constants.DRAGON_SCALE, 60 * Constants.DRAGON_SCALE),
                 new PointF(65 * Constants.DRAGON_SCALE, 15 * Constants.DRAGON_SCALE));
         this.ultimateAttackAnimation = new Animation(R.drawable.dragon_ultimate_280x185x12, 280 * Constants.DRAGON_SCALE,
                 185 * Constants.DRAGON_SCALE, 12, 100,
@@ -106,6 +106,7 @@ public class Dragon extends Enemy {
     public void update(RectF playerSurroundingBox) {
         super.update();
         if(isActive){
+//            System.out.println("current HP = " + currentHP);
             if (currentHP > 70*Constants.DRAGON_STARTING_HP/100){
                 UpdateStage1(playerSurroundingBox);
             }else
@@ -324,5 +325,7 @@ public class Dragon extends Enemy {
         return dx < maxX && dy<maxY;
     }
 
-
+     public float getHealth(){
+        return this.currentHP;
+     }
 }

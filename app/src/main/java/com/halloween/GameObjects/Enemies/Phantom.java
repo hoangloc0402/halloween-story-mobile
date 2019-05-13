@@ -41,19 +41,19 @@ public class Phantom extends Enemy {
         this.moveAnimation = new Animation(R.drawable.phantom_move_114x91x6, 114 * Constants.PHANTOM_SCALE, 91 * Constants.PHANTOM_SCALE, 6, 100,
                 new PointF(40 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.diedAnimation = new Animation(R.drawable.phantom_died_114x91x6, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 6, 100,
+                91 * Constants.PHANTOM_SCALE, 6, 150,
                 new PointF(40 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.hurtAnimation = new Animation(R.drawable.phantom_hurt_114x91x1, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 1, 100,
+                91 * Constants.PHANTOM_SCALE, 1, 200,
                 new PointF(30 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.attackAnimation = new Animation(R.drawable.phantom_attack_114x91x12, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 12, 100,
+                91 * Constants.PHANTOM_SCALE, 12, 200,
                 new PointF(30 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.idleAnimation = new Animation(R.drawable.phantom_idle_114x91x4, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 4, 100,
+                91 * Constants.PHANTOM_SCALE, 4, 200,
                 new PointF(40 * Constants.PHANTOM_SCALE, 5 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 5 * Constants.PHANTOM_SCALE));
         this.appearAnimation = new Animation(R.drawable.phantom_appear_114x91x6, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 6, 100,
+                91 * Constants.PHANTOM_SCALE, 6, 150,
                 new PointF(30 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(0 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
     }
 
