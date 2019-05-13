@@ -106,6 +106,7 @@ public class Dragon extends Enemy {
     public void update(RectF playerSurroundingBox) {
         super.update();
         if(isActive){
+//            System.out.println("current HP = " + currentHP);
             if (currentHP > 70*Constants.DRAGON_STARTING_HP/100){
                 UpdateStage1(playerSurroundingBox);
             }else
