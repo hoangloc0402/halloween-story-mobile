@@ -141,9 +141,10 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initEnemies() {
-        enemies.add(new Gargoyle(new PointF(500, 700), new PointF(800, 200)));
         enemies.add(new Zombie(new PointF(400, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
                 new PointF(850, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(200, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(550, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
         enemies.add(new Zombie(new PointF(900, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
                 new PointF(1600, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
         enemies.add(new Zombie(new PointF(1710, 0.575f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
@@ -192,13 +193,6 @@ public class GraveyardScreen implements GameScreen {
                 new PointF(9520, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
         enemies.add(new Skeleton(new PointF(9130, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE),
                 new PointF(9950, 0.8f * Constants.SCREEN_HEIGHT - Constants.SKELETON_HEIGHT * Constants.SKELETON_SCALE)));
-        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
-        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
-        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
-        enemies.add(new Zombie(new PointF(300, 0.8f*Constants.SCREEN_HEIGHT - 97*Constants.ZOMBIE_SCALE), new PointF(800, 865.5f - 97*Constants.ZOMBIE_SCALE)));
-
-//        enemies.add(new Phantom(new PointF(100, 800), new PointF(700, 200)));
-//        enemies.add(new Dragon(new PointF(100, 100), new PointF(700, 800)));
     }
 
     @Override
