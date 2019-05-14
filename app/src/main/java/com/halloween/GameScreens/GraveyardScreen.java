@@ -161,21 +161,23 @@ public class GraveyardScreen implements GameScreen {
                 new PointF(7750, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
         enemies.add(new Zombie(new PointF(8360, 0.575f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
                 new PointF(8700, 0.575f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
+        enemies.add(new Zombie(new PointF(8400, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE),
+                new PointF(8800, 0.8f * Constants.SCREEN_HEIGHT - Constants.ZOMBIE_HEIGHT * Constants.ZOMBIE_SCALE)));
 
-        enemies.add(new Gargoyle(new PointF(1100, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
-                new PointF(1500, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
-        enemies.add(new Gargoyle(new PointF(2400, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
-                new PointF(2900, 0.3f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
-        enemies.add(new Gargoyle(new PointF(2300, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
-                new PointF(3400, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
-        enemies.add(new Gargoyle(new PointF(2850, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
-                new PointF(3250, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
-        enemies.add(new Gargoyle(new PointF(5340, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
-                new PointF(5600, 0.3f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
-        enemies.add(new Gargoyle(new PointF(6420, 0.575f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
-                new PointF(7100, 0.40f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
-        enemies.add(new Gargoyle(new PointF(6800, 0.7f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
-                new PointF(7300, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(950, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(1400, 0.15f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(2200, 0.6f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(2600, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(2500, 0.79f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(3100, 0.79f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(2900, 0.2f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(3350, 0.75f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(5000, 0.65f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(5300, 0.25f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(6500, 0.45f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(7000, 0.44f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
+        enemies.add(new Gargoyle(new PointF(7000, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
+                new PointF(7600, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
         enemies.add(new Gargoyle(new PointF(8900, 0.8f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE),
                 new PointF(9900, 0.7f * Constants.SCREEN_HEIGHT - Constants.GARGOYLE_HEIGHT * Constants.GARGOYLE_SCALE)));
 
