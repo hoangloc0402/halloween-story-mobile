@@ -178,7 +178,7 @@ public class BossScreen implements GameScreen {
 
         if (manaPotion.isActive()){
             if (tempSurroundingMain.intersect(manaPotion.getSurroundingBox())) {
-                mainCharacter.increaseHealth(manaPotion.getVolume());
+                mainCharacter.increaseMana(manaPotion.getVolume());
                 manaPotion.setActive(false);
             }
             manaPotion.update();
@@ -186,8 +186,12 @@ public class BossScreen implements GameScreen {
 
 
         dragon.update(tempSurroundingMain);
-        if (tempAttackRangeMain!=null && tempAttackRangeMain.intersect(dragon.getSurroundingBox()))
+        if (tempAttackRangeMain!=null && tempAttackRangeMain.intersect(dragon.getSurroundingBox())){
             dragon.decreaseHealth(mainCharacter.getAttackPower());
+            if (!dragon.isAlive())
+                mainCharacter.increaseScore(Constants.DRAGON_POINT);
+        }
+
 
         tempAttackRange = dragon.getAttackRange();
         tempSurrounding = dragon.getSurroundingBox();

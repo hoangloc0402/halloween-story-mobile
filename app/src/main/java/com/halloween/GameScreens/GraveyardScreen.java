@@ -282,7 +282,12 @@ public class GraveyardScreen implements GameScreen {
                         mainCharacter.decreaseHealth(enemy.getDamage());
                 }
                 if (!enemy.isAlive()){
-                    mainCharacter.increaseScore(Constants.ZOMBIE_POINT);
+                    if (enemy instanceof Zombie)
+                        mainCharacter.increaseScore(Constants.ZOMBIE_POINT);
+                    else if (enemy instanceof Skeleton)
+                        mainCharacter.increaseScore(Constants.SKELETON_POINT);
+                    else if (enemy instanceof Gargoyle)
+                        mainCharacter.increaseScore(Constants.GARGOYLE_POINT);
                 }
             }
         }
