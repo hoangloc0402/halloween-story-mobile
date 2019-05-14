@@ -27,4 +27,8 @@ public abstract class Potion implements GameObject {
     public int getVolume() {
         return volume;
     }
+
+    public void setPosition(float x, float y){
+        this.position.set(x, y);
+    }
 }

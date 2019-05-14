@@ -27,7 +27,8 @@ import java.util.Random;
 public class BossScreen implements GameScreen {
 
     ArrayList<Phantom> phantoms = new ArrayList<>();
-    ArrayList<Potion> potions = new ArrayList<>();
+    SmallHealthPotion healthPotion;
+    SmallManaPotion manaPotion;
     Dragon dragon;
     //for transition
     private boolean isStarting;
@@ -89,6 +90,10 @@ public class BossScreen implements GameScreen {
             this.phantoms.add(new Phantom(newPoint));
         }
         dragon = new Dragon(new PointF(100,100), new PointF(1700,100));
+        healthPotion = new SmallHealthPotion(new PointF(0,0), boxes);
+        healthPotion.setActive(false);
+        manaPotion = new SmallManaPotion(new PointF(0,0), boxes);
+        manaPotion.setActive(false);
     }
 
     private void initBoxes() {
@@ -148,27 +153,53 @@ public class BossScreen implements GameScreen {
 
             if (!phantom.isActive()) {
                 mainCharacter.increaseScore(Constants.PHANTOM_POINT);
-                if (Constants.HEALTH_POTION_PROB > rand.nextInt(100))
-                    potions.add(new SmallHealthPotion(phantom.getCurrentPosition(), boxes));
-                else if (Constants.MANA_POTION_PROB > rand.nextInt(100))
-                    potions.add(new SmallManaPotion(phantom.getCurrentPosition(), boxes));
+                if (Constants.HEALTH_POTION_PROB > rand.nextInt(100) && !healthPotion.isActive()){
+                    healthPotion.setActive(true);
+                    healthPotion.setPosition(phantom.getCurrentPosition().x, phantom.getCurrentPosition().y);
+                    healthPotion.getPotionPosition(boxes);
+                }
+
+                else if (Constants.MANA_POTION_PROB > rand.nextInt(100) && !manaPotion.isActive()){
+                    manaPotion.setActive(true);
+                    manaPotion.setPosition(phantom.getCurrentPosition().x, phantom.getCurrentPosition().y);
+                    manaPotion.getPotionPosition(boxes);
+                }
             }
         }
 
-        for (Potion potion : potions) {
-            if (!potion.isActive())
-                continue;
-            if (tempSurroundingMain.intersect(potion.getSurroundingBox())) {
-                if (potion.isHealth)
-                    mainCharacter.increaseHealth(potion.getVolume());
-                else
-                    mainCharacter.increaseMana(potion.getVolume());
-                potion.setActive(false);
+
+        if (healthPotion.isActive()){
+            if (tempSurroundingMain.intersect(healthPotion.getSurroundingBox())) {
+                mainCharacter.increaseHealth(healthPotion.getVolume());
+                healthPotion.setActive(false);
             }
-            potion.update();
+            healthPotion.update();
         }
+
+        if (manaPotion.isActive()){
+            if (tempSurroundingMain.intersect(manaPotion.getSurroundingBox())) {
+                mainCharacter.increaseHealth(manaPotion.getVolume());
+                manaPotion.setActive(false);
+            }
+            manaPotion.update();
+        }
+
 
         dragon.update(tempSurroundingMain);
+        if (tempAttackRangeMain!=null && tempAttackRangeMain.intersect(dragon.getSurroundingBox()))
+            dragon.decreaseHealth(mainCharacter.getAttackPower());
+
+        tempAttackRange = dragon.getAttackRange();
+        tempSurrounding = dragon.getSurroundingBox();
+        if (tempAttackRange!=null && tempAttackRange.intersect(tempSurroundingMain))
+            mainCharacter.decreaseHealth(dragon.getAttack());
+        if (tempSurrounding!=null && tempSurrounding.intersect(tempSurroundingMain))
+            mainCharacter.decreaseHealth(dragon.getDamage());
+
+        tempSurrounding = dragon.bullet.getSurroundingBox();
+        if (tempSurrounding!=null && tempSurrounding.intersect(tempSurroundingMain))
+            mainCharacter.decreaseHealth(dragon.getAttack());
+
         if (!dragon.isActive())
             Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.WIN;
         healthBarBoss.setNewHealth((int)dragon.getHealth());
@@ -221,15 +252,14 @@ public class BossScreen implements GameScreen {
         }
 
         dragon.draw(canvas);
-        if (tempAttackRangeMain!=null && tempAttackRangeMain.intersect(dragon.getSurroundingBox()))
-            dragon.decreaseHealth(mainCharacter.getAttackPower());
 
         for (Phantom phantom : phantoms)
             phantom.draw(canvas);
 
-        for (Potion potion : potions)
-            if (potion.isActive())
-                potion.draw(canvas);
+        if (healthPotion.isActive())
+            healthPotion.draw(canvas);
+        if (manaPotion.isActive())
+            manaPotion.draw(canvas);
 
         this.healthBarBoss.draw(canvas);
         this.healthBarMainCharacter.draw(canvas);

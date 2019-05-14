@@ -66,7 +66,7 @@ public class MainCharacter {
     }
 
     private void loadAnimation() {
-        float SCALE = 1.75f;
+        float SCALE = 1.5f;
 //        this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103*SCALE,97*SCALE,8, 100);
         this.idleAnimation = new Animation(R.drawable.main_character_idle_103x97x8, 103 * SCALE, 97 * SCALE, 8, 100, new PointF(60 * SCALE, 26 * SCALE));
         this.walkAnimation = new Animation(R.drawable.main_character_walk_103x97x4, 103 * SCALE, 97 * SCALE, 4, 100, new PointF(60 * SCALE, 26 * SCALE));
@@ -275,6 +275,7 @@ public class MainCharacter {
     }
 
     public void decreaseHealth(int damage) {
+        if (damage==0) return;
         if (this.isInvincible)
             return;
         else {
