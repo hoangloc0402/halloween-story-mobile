@@ -13,7 +13,7 @@ public class Skeleton extends Enemy {
 
 
     public Skeleton(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.SKELETON_STARTING_HP, leftLandMark, rightLandMark);
+        super(Constants.SKELETON_STARTING_HP, leftLandMark, rightLandMark, Constants.SKELETON_FOLLOW_DISTANCE, Constants.SKELETON_ATTACK_DISTANCE);
 
         LoadAnimation();
 

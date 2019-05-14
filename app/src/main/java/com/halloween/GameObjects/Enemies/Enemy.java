@@ -67,10 +67,14 @@ public class Enemy implements GameObject {
     }
 
     public int getDamage() {
+        if (currentAnimation == diedAnimation)
+            return 0;
         return this.damage;
     }
 
     public int getAttack() {
+        if (currentAnimation == diedAnimation)
+            return 0;
         return this.attack;
     }
 
@@ -224,5 +228,8 @@ public class Enemy implements GameObject {
 
     public enum State {Appear, Idle, Move, Attack, UltimateAttack, Hurt, Died, Defense} //Các state có thể có của Enemy
 
+    public boolean isAlive(){
+        return this.isAlive;
+    }
 
 }

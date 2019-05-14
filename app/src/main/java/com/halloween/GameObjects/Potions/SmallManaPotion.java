@@ -23,7 +23,7 @@ public class SmallManaPotion extends Potion {
         this.isActive = false;
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
-        getPotionPosition(boxes);
+//        getPotionPosition(boxes);
         this.volume = Constants.SMALL_MANA_POTION_VOLUME;
         this.isHealth = false;
         this.smallManaPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.mana_potion);
@@ -64,5 +64,11 @@ public class SmallManaPotion extends Potion {
         if (this.droppingPosition.y < this.position.y) {
             this.droppingPosition.y += 10f;
         }
+    }
+
+    @Override
+    public void setPosition(float x, float y){
+        super.setPosition(x, y);
+        this.droppingPosition.set(x, y);
     }
 }

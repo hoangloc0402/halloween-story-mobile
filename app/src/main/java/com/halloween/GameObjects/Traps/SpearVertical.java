@@ -56,15 +56,15 @@ public class SpearVertical extends Trap {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint burningFirePaint = new Paint();
-        burningFirePaint.setColor(Color.WHITE);
-        burningFirePaint.setAlpha(100);
-        Paint effectPaint = new Paint();
-        effectPaint.setColor(Color.RED);
-        effectPaint.setAlpha(100);
+//        Paint burningFirePaint = new Paint();
+//        burningFirePaint.setColor(Color.WHITE);
+//        burningFirePaint.setAlpha(100);
+//        Paint effectPaint = new Paint();
+//        effectPaint.setColor(Color.RED);
+//        effectPaint.setAlpha(100);
         this.burningFire.draw(canvas, new PointF(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y));
-        canvas.drawRect(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y, Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE) + frameWidth, this.position.y + frameHeight, burningFirePaint);
-        canvas.drawRect(getSurroundingBox(), effectPaint);
+//        canvas.drawRect(Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE), this.position.y, Constants.getRelativeXPosition(this.position.x, Constants.CURRENT_GAME_STATE) + frameWidth, this.position.y + frameHeight, burningFirePaint);
+//        canvas.drawRect(getSurroundingBox(), effectPaint);
     }
 
     @Override

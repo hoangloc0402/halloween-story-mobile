@@ -55,10 +55,6 @@ public class GraveyardScreen implements GameScreen {
     private RectF tempSurrounding, tempSurroundingMain;
     private RectF tempAttackRange, tempAttackRangeMain;
 
-    private Zombie zombie;
-    private Gargoyle gargoyle;
-//    private Zombie zombie;
-
     private ArrayList<Trap> traps;
     private ArrayList<Enemy> enemies;
     private ArrayList<Potion> potions;
@@ -107,8 +103,8 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initPotions() {
-        this.potions.add(new BigHealthPotion(new PointF(200f, 200f), this.boxes));
-        this.potions.add(new BigManaPotion(new PointF(300f, 200f), this.boxes));
+//        this.potions.add(new BigHealthPotion(new PointF(200f, 200f), this.boxes));
+//        this.potions.add(new BigManaPotion(new PointF(300f, 200f), this.boxes));
     }
 
     private void initTraps() {
@@ -207,10 +203,9 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void reset() {
-//        this.gargoyle = new Gargoyle(new PointF(500, 700), new PointF(800, 200));
         this.mainCharacter = MainCharacter.getInstance(200, 600);
         this.mainCharacter.resetAllValue();
-//        this.zombie = new Zombie(new PointF(100, 700), new PointF(900, 700));
+
     }
 
     @Override
@@ -286,6 +281,14 @@ public class GraveyardScreen implements GameScreen {
                     if (tempSurrounding.intersect(tempSurroundingMain))
                         mainCharacter.decreaseHealth(enemy.getDamage());
                 }
+                if (!enemy.isAlive()){
+                    if (enemy instanceof Zombie)
+                        mainCharacter.increaseScore(Constants.ZOMBIE_POINT);
+                    else if (enemy instanceof Skeleton)
+                        mainCharacter.increaseScore(Constants.SKELETON_POINT);
+                    else if (enemy instanceof Gargoyle)
+                        mainCharacter.increaseScore(Constants.GARGOYLE_POINT);
+                }
             }
         }
 
@@ -351,13 +354,9 @@ public class GraveyardScreen implements GameScreen {
             healthPotion.draw(canvas);
         }
 
-//        for (Enemy enemy:enemies){
-//            enemy.draw(canvas);
-//        }
         for (Enemy enemy : enemies) {
             enemy.draw(canvas);
         }
-
 
         if (this.isStarting) {
             this.mainCharacter.draw(canvas, paint);
@@ -370,7 +369,6 @@ public class GraveyardScreen implements GameScreen {
 
     @Override
     public void terminate() {
-
     }
 
     private void initBoxes() {

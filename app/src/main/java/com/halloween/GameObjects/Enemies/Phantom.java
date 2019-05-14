@@ -41,7 +41,7 @@ public class Phantom extends Enemy {
         this.moveAnimation = new Animation(R.drawable.phantom_move_114x91x6, 114 * Constants.PHANTOM_SCALE, 91 * Constants.PHANTOM_SCALE, 6, 100,
                 new PointF(40 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.diedAnimation = new Animation(R.drawable.phantom_died_114x91x6, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 6, 150,
+                91 * Constants.PHANTOM_SCALE, 6, 100,
                 new PointF(40 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
         this.hurtAnimation = new Animation(R.drawable.phantom_hurt_114x91x1, 114 * Constants.PHANTOM_SCALE,
                 91 * Constants.PHANTOM_SCALE, 1, 200,
@@ -53,7 +53,7 @@ public class Phantom extends Enemy {
                 91 * Constants.PHANTOM_SCALE, 4, 200,
                 new PointF(40 * Constants.PHANTOM_SCALE, 5 * Constants.PHANTOM_SCALE), new PointF(5 * Constants.PHANTOM_SCALE, 5 * Constants.PHANTOM_SCALE));
         this.appearAnimation = new Animation(R.drawable.phantom_appear_114x91x6, 114 * Constants.PHANTOM_SCALE,
-                91 * Constants.PHANTOM_SCALE, 6, 150,
+                91 * Constants.PHANTOM_SCALE, 6, 100,
                 new PointF(30 * Constants.PHANTOM_SCALE, 10 * Constants.PHANTOM_SCALE), new PointF(0 * Constants.PHANTOM_SCALE, 0 * Constants.PHANTOM_SCALE));
     }
 
@@ -161,6 +161,8 @@ public class Phantom extends Enemy {
 
     public void reset(float newX, float newY) {
         this.currentAnimation = appearAnimation;
+        this.currentAnimation.reset();
+        this.diedAnimation.reset();
         this.isActive = this.isAlive = true;
         this.currentHP = Constants.PHANTOM_STARTING_HP;
         this.currentPosition.set(newX, newY);

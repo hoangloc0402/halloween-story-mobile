@@ -23,7 +23,7 @@ public class SmallHealthPotion extends Potion {
         this.isActive = false;
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
-        getPotionPosition(boxes);
+//        getPotionPosition(boxes);
         this.volume = Constants.SMALL_HEALTH_POTION_VOLUME;
         this.isHealth = true;
         this.smallHealthPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.health_potion);
@@ -64,5 +64,11 @@ public class SmallHealthPotion extends Potion {
         if (this.droppingPosition.y < this.position.y) {
             this.droppingPosition.y += 10f;
         }
+    }
+
+    @Override
+    public void setPosition(float x, float y){
+        super.setPosition(x, y);
+        this.droppingPosition.set(x, y);
     }
 }
