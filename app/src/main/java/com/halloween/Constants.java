@@ -10,7 +10,7 @@ public class Constants {
     public static Context CURRENT_CONTEXT;
     public static Activity MAIN_ACTIVITY;
     public static enum GAME_STATE {MAIN_MENU, PLAY, PAUSE, GAME_OVER, BOSS, WIN}
-    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.BOSS;
+    public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
     public static GAME_STATE PREVIOUS_GAME_STATE;
@@ -30,18 +30,22 @@ public class Constants {
     public final static int ZOMBIE_POINT = 100;
     public final static int ZOMBIE_V = 2;
     public final static float ZOMBIE_SCALE = 1.3f;
-    public final static float ZOMBIE_FOLLOW_DISTANCE = 40000;
-    public final static float ZOMBIE_ATTACK_DISTANCE = 100 * ZOMBIE_SCALE *ZOMBIE_SCALE;
+    public final static float ZOMBIE_FOLLOW_DISTANCE_X = 200*ZOMBIE_SCALE;
+    public final static float ZOMBIE_FOLLOW_DISTANCE_Y = 20*ZOMBIE_SCALE;
+    public final static float ZOMBIE_ATTACK_DISTANCE_X = 10 *ZOMBIE_SCALE;
+    public final static float ZOMBIE_ATTACK_DISTANCE_Y = 10 *ZOMBIE_SCALE;
     public final static float ZOMBIE_HEIGHT = 97;
 
-    public final static int SKELETON_ATTACK = 50;
-    public final static int SKELETON_DAMAGE = 10;
+    public final static int SKELETON_ATTACK = 150;
+    public final static int SKELETON_DAMAGE = 50;
     public final static float SKELETON_STARTING_HP = 20;
     public final static int SKELETON_POINT = 100;
     public final static int SKELETON_V = 3;
     public final static float SKELETON_SCALE = 1.3f;
-    public final static float SKELETON_FOLLOW_DISTANCE = 40000;
-    public final static float SKELETON_ATTACK_DISTANCE = 5000 *SKELETON_SCALE*SKELETON_SCALE;
+    public final static float SKELETON_FOLLOW_DISTANCE_X = 200*SKELETON_SCALE;
+    public final static float SKELETON_FOLLOW_DISTANCE_Y = 20*SKELETON_SCALE;
+    public final static float SKELETON_ATTACK_DISTANCE_X = 20 *SKELETON_SCALE;
+    public final static float SKELETON_ATTACK_DISTANCE_Y = 20 *SKELETON_SCALE;
     public final static float SKELETON_HEIGHT = 127;
 
     public final static int GARGOYLE_ATTACK= 100;
@@ -50,18 +54,16 @@ public class Constants {
     public final static int GARGOYLE_POINT = 100;
     public final static float GARGOYLE_V = 5;
     public final static float GARGOYLE_SCALE = 1.5f;
-    public final static float GARGOYLE_FOLLOW_DISTANCE = 4000000;
-    public final static float GARGOYLE_ATTACK_DISTANCE = 10000;
     public final static float GARGOYLE_HEIGHT = 118;
 
-    public final static int PHANTOM_ATTACK= 1;
-    public final static int PHANTOM_DAMAGE = 1;
+    public final static int PHANTOM_ATTACK= 50;
+    public final static int PHANTOM_DAMAGE = 20;
     public final static float PHANTOM_STARTING_HP = 10;
     public final static int PHANTOM_POINT = 10;
     public final static float PHANTOM_V = 2;
     public final static float PHANTOM_SCALE = 1.5f;
-    public final static float PHANTOM_FOLLOW_DISTANCE = 4000000;
-    public final static float PHANTOM_ATTACK_DISTANCE = 300 *PHANTOM_SCALE*PHANTOM_SCALE;
+    public final static float PHANTOM_ATTACK_DISTANCE_X = 20 *PHANTOM_SCALE;
+    public final static float PHANTOM_ATTACK_DISTANCE_Y = 20 *PHANTOM_SCALE;
     public final static float PHANTOM_HEIGHT = 91;
     public final static int MAX_PHANTOM_COUNT = 3;
 
@@ -71,10 +73,10 @@ public class Constants {
     public final static int DRAGON_POINT = 100;
     public final static float DRAGON_V = 4;
     public final static float DRAGON_SCALE = 2f;
-    public final static float DRAGON_FOLLOW_DISTANCE = 90000*DRAGON_SCALE*DRAGON_SCALE;
-    public final static float DRAGON_ATTACK_DISTANCE = 2500 *DRAGON_SCALE*DRAGON_SCALE;
-    public final static float DRAGON_ATTACK_DISTANCE_X = 10 *DRAGON_SCALE;
-    public final static float DRAGON_ATTACK_DISTANCE_Y = 10 *DRAGON_SCALE;
+    public final static float DRAGON_FOLLOW_DISTANCE_X = 200*DRAGON_SCALE;
+    public final static float DRAGON_FOLLOW_DISTANCE_Y = 200*DRAGON_SCALE;
+    public final static float DRAGON_ATTACK_DISTANCE_X = 15 *DRAGON_SCALE;
+    public final static float DRAGON_ATTACK_DISTANCE_Y = 15 *DRAGON_SCALE;
     public final static float BULLET_V = 7;
     public final static float BULLET_SCALE = 1f;
     public final static float BULLET_DAMAGE = 10f;

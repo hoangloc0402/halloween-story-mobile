@@ -16,7 +16,7 @@ public class Dragon extends Enemy {
 
 
     public Dragon(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.DRAGON_STARTING_HP, leftLandMark, rightLandMark, Constants.DRAGON_FOLLOW_DISTANCE, Constants.DRAGON_ATTACK_DISTANCE);
+        super(Constants.DRAGON_STARTING_HP, leftLandMark, rightLandMark);
 
         LoadAnimation();
 
@@ -64,17 +64,17 @@ public class Dragon extends Enemy {
     @Override
     public void draw(Canvas canvas) {
         if (isActive) {
-            if (this.IsInScreen()) {
-                RectF attack = getAttackRange();
-//                RectF sur = getSurroundingBox();
-//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
-//                System.out.println(attack);;
-//                System.out.println("current Position "+ currentPosition);
-//                if (attack != null) {
-//                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
-//                }
-
-            }
+//            if (this.IsInScreen()) {
+////                RectF attack = getAttackRange();
+////                RectF sur = getSurroundingBox();
+////                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+////                System.out.println(attack);;
+////                System.out.println("current Position "+ currentPosition);
+////                if (attack != null) {
+////                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
+////                }
+//
+//            }
             bullet.draw(canvas);
         }
         super.draw(canvas);
@@ -198,7 +198,7 @@ public class Dragon extends Enemy {
                     if (IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_ATTACK_DISTANCE_X, Constants.DRAGON_ATTACK_DISTANCE_Y)){
                         ChangeState(State.Attack);
                     }else
-                    if(IsPlayerInRange(playerSurroundingBox, followDistance) && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))){
+                    if(IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_FOLLOW_DISTANCE_X, Constants.DRAGON_FOLLOW_DISTANCE_Y) && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))){
                         float x, y;
                         if (isMovingForward) {
                             x = playerSurroundingBox.centerX() - ( 5*playerSurroundingBox.width() / 4);

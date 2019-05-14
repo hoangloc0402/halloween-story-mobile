@@ -39,15 +39,13 @@ public class Enemy implements GameObject {
     float v_x, v_y;
     RectF attackRect;
 
-    float followDistance, attackDistance;
+//    float followDistance, attackDistance;
     boolean isMovingForward;
 
-    public Enemy(float currentHP, PointF leftLandMark, PointF rightLandMark, float followDistance, float attackDistance) {
+    public Enemy(float currentHP, PointF leftLandMark, PointF rightLandMark) {
         this.currentHP = currentHP;
         this.leftLandMark = leftLandMark;
         this.rightLandMark = rightLandMark;
-        this.followDistance = followDistance;
-        this.attackDistance = attackDistance;
         isAlive = true;
         isActive = true;
         this.isInvincible = false;
@@ -76,26 +74,31 @@ public class Enemy implements GameObject {
         return this.attack;
     }
 
-    public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxDistance) {
-        float dx;
+    public boolean IsPlayerInRange(RectF playerSurroundingBox, float maxX, float maxY) {
+        float dx4, dx1, dx2, dx3, dx5;
         float dy1 = playerSurroundingBox.top - getSurroundingBox().top;
         float dy2 = playerSurroundingBox.bottom - getSurroundingBox().bottom;
         float dy3 = playerSurroundingBox.centerY() - getSurroundingBox().centerY();
+//        float dy4 = playerSurroundingBox.bottom - getSurroundingBox().top;
+//        float dy5 = playerSurroundingBox.top - getSurroundingBox().bottom;
         float dy = Math.min(Math.abs(dy1), Math.abs(dy2));
-        dy = Math.min(dy, Math.abs(dy3));
-//        if (currentAnimation.isFlip) {
-//
-//        } else {
-//            dx = playerSurroundingBox.right - getSurroundingBox().left;
-//        }
-        dx = playerSurroundingBox.left - getSurroundingBox().left - currentAnimation.getAbsoluteAnimationWidth();
-        float d = dx * dx + dy * dy;
-        return d < maxDistance;
+        dy = Math.abs(Math.min(dy, Math.abs(dy3)));
+//        dy = Math.abs(Math.min(dy, Math.abs(dy4)));
+//        dy = Math.abs(Math.min(dy, Math.abs(dy5)));
+
+        dx1 = playerSurroundingBox.left - getSurroundingBox().left;
+        dx2 = playerSurroundingBox.right - getSurroundingBox().right;
+        dx3 = playerSurroundingBox.left - getSurroundingBox().right;
+        dx4 = playerSurroundingBox.right - getSurroundingBox().left;
+        dx5 = playerSurroundingBox.centerX() - getSurroundingBox().centerX();
+        float dx = Math.min(Math.abs(dx1), Math.abs(dx2));
+        dx = Math.abs(Math.min(dx, Math.abs(dx3)));
+        dx = Math.abs(Math.min(dx, Math.abs(dx4)));
+        dx = Math.abs(Math.min(dx, Math.abs(dx5)));
+
+        return Math.abs(dx)<maxX && Math.abs(dy) <maxY;
     }
 
-//    public boolean IsAlive(){
-//        return currentHP > 0;
-//    }
 
     public PointF getCurrentPosition() {
         return currentPosition;

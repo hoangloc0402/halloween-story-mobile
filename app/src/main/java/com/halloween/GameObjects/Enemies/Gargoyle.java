@@ -12,7 +12,7 @@ import com.halloween.R;
 public class Gargoyle extends Enemy {
 
     public Gargoyle(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.GARGOYLE_STARTING_HP, leftLandMark, rightLandMark, Constants.GARGOYLE_FOLLOW_DISTANCE, Constants.GARGOYLE_ATTACK_DISTANCE);
+        super(Constants.GARGOYLE_STARTING_HP, leftLandMark, rightLandMark);
 
         LoadAnimation();
 
@@ -50,19 +50,19 @@ public class Gargoyle extends Enemy {
 
     @Override
     public void draw(Canvas canvas) {
-        if (isActive) {
-            if (this.IsInScreen()) {
-                RectF attack = getAttackRange();
-//                RectF sur = getSurroundingBox();
-//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
-//                System.out.println(attack);;
-//                System.out.println("current Position "+ currentPosition);
-                if (attack != null) {
-                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
-                }
-
-            }
-        }
+//        if (isActive) {
+//            if (this.IsInScreen()) {
+//                RectF attack = getAttackRange();
+////                RectF sur = getSurroundingBox();
+////                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+////                System.out.println(attack);;
+////                System.out.println("current Position "+ currentPosition);
+//                if (attack != null) {
+//                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
+//                }
+//
+//            }
+//        }
         super.draw(canvas);
     }
 
@@ -86,13 +86,6 @@ public class Gargoyle extends Enemy {
                 case Move:
                     ChangeState(State.Move);
                     if (isAlive) {
-//                        if(IsInScreen() && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))){
-//                            if (IsPlayerInRange(playerSurroundingBox, followDistance)) {
-//                                isMovingForward = playerSurroundingBox.centerX() > getSurroundingBox().centerX();
-//                            }
-//                            MoveToDestination(new PointF(playerSurroundingBox.left + 200 , playerSurroundingBox.top), Constants.GARGOYLE_V);
-//                        }
-//                        else {
                         if (isMovingForward) {
                             MoveToDestination(rightLandMark, Constants.GARGOYLE_V);
                         } else {

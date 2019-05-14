@@ -12,7 +12,7 @@ import com.halloween.R;
 public class Phantom extends Enemy {
 
     public Phantom(PointF position) {
-        super(Constants.PHANTOM_STARTING_HP, null, null, Constants.PHANTOM_FOLLOW_DISTANCE, Constants.PHANTOM_ATTACK_DISTANCE);
+        super(Constants.PHANTOM_STARTING_HP, null, null);
 
         LoadAnimation();
 
@@ -59,19 +59,19 @@ public class Phantom extends Enemy {
 
     @Override
     public void draw(Canvas canvas) {
-        if (isActive) {
-            if (this.IsInScreen()) {
-                RectF attack = getAttackRange();
-//                RectF sur = getSurroundingBox();
-//                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
-//                System.out.println(attack);;
-//                System.out.println("current Position "+ currentPosition);
-                if (attack != null) {
-                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
-                }
-
-            }
-        }
+//        if (isActive) {
+//            if (this.IsInScreen()) {
+//                RectF attack = getAttackRange();
+////                RectF sur = getSurroundingBox();
+////                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+////                System.out.println(attack);;
+////                System.out.println("current Position "+ currentPosition);
+//                if (attack != null) {
+//                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
+//                }
+//
+//            }
+//        }
         super.draw(canvas);
     }
 
@@ -117,7 +117,7 @@ public class Phantom extends Enemy {
                     ChangeState(State.Hurt);
                     break;
                 case Attack:
-                    if (!IsPlayerInRange(playerSurroundingBox, attackDistance)) {
+                    if (!IsPlayerInRange(playerSurroundingBox, Constants.PHANTOM_ATTACK_DISTANCE_X, Constants.PHANTOM_ATTACK_DISTANCE_Y)) {
                         ChangeState(State.Move);
                     } else
                         ChangeState(State.Attack);
@@ -126,7 +126,7 @@ public class Phantom extends Enemy {
                 case Move:
                     ChangeState(State.Move);
                     if (isAlive) {
-                        if (IsPlayerInRange(playerSurroundingBox, attackDistance)) {
+                        if (IsPlayerInRange(playerSurroundingBox, Constants.PHANTOM_ATTACK_DISTANCE_X, Constants.PHANTOM_ATTACK_DISTANCE_Y)) {
                             ChangeState(State.Attack);
                         } else {
                             float x, y;
@@ -137,7 +137,6 @@ public class Phantom extends Enemy {
                             }
                             isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
                             y = playerSurroundingBox.centerY() - currentAnimation.getAbsoluteFrameHeight() / 2;
-//                            System.out.println("is moving forward " + isMovingForward);
 
                             MoveToDestination(new PointF(x, y), Constants.PHANTOM_V);
                         }
