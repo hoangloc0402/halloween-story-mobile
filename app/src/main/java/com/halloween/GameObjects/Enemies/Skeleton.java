@@ -13,7 +13,7 @@ public class Skeleton extends Enemy {
 
 
     public Skeleton(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.SKELETON_STARTING_HP, leftLandMark, rightLandMark, Constants.SKELETON_FOLLOW_DISTANCE, Constants.SKELETON_ATTACK_DISTANCE);
+        super(Constants.SKELETON_STARTING_HP, leftLandMark, rightLandMark);
 
         LoadAnimation();
 
@@ -53,19 +53,6 @@ public class Skeleton extends Enemy {
 
     @Override
     public void draw(Canvas canvas) {
-//        if (isActive) {
-//            if (this.IsInScreen()) {
-//                RectF attack = getAttackRange();
-////                RectF sur = getSurroundingBox();
-////                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
-////                System.out.println(attack);;
-////                System.out.println("current Position "+ currentPosition);
-//                if (attack != null) {
-//                    canvas.drawRect(Constants.getRelativeXPosition(attack.left), attack.top, Constants.getRelativeXPosition(attack.right), attack.bottom, new Paint());
-//                }
-//
-//            }
-//        }
         super.draw(canvas);
     }
 
