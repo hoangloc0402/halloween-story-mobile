@@ -34,8 +34,6 @@ public class HealthBarMainCharacter implements GameObject {
     private int decreasingMana;
     private int increasingMana;
     private int blueMana;
-    private int greyMana;
-    private int yellowMana;
     private MANA_STATE manaBarState;
     private HEALTH_STATE healthBarState;
     private Bitmap healthBarBorder;
@@ -103,11 +101,8 @@ public class HealthBarMainCharacter implements GameObject {
         drawRectWithOneRounded(healthBarBase.x, healthBarBase.y, healthBarBase.x + redHeathWidth, healthBarBase.y + this.healthBarHeight, redHealthBarPaint, canvas);
 
         Paint blueManaBarPaint = new Paint();
-        Paint greyManaBarPaint = new Paint();
 
         blueManaBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(218, 255, 187), Color.rgb(77, 170, 0), Shader.TileMode.CLAMP));
-        greyManaBarPaint.setShader(new LinearGradient(0, 0, healthBarWidth, 0, Color.rgb(230, 214, 255), Color.rgb(122, 118, 119), Shader.TileMode.CLAMP));
-
         float blueManaWidth = this.manaBarWidth * this.blueMana / Constants.MAIN_CHARACTER_MAX_MANA;
 
         drawRectWithOneRounded(manaBarBase.x, manaBarBase.y, manaBarBase.x + blueManaWidth, manaBarBase.y + this.manaBarHeight, blueManaBarPaint, canvas);
@@ -135,26 +130,7 @@ public class HealthBarMainCharacter implements GameObject {
     }
 
     public void updateManaBar() {
-        switch (this.manaBarState) {
-            case INCREASING:
-                this.increasingMana -= Constants.MANA_INCREASE_SPEED;
-                this.blueMana += Constants.MANA_INCREASE_SPEED;
-                this.greyMana = this.increasingMana;
-                this.yellowMana = this.decreasingMana;
-                if (this.increasingMana == 0) this.manaBarState = MANA_STATE.NORMAL;
-                break;
-            case DECREASING:
-                this.decreasingMana -= Constants.MANA_DECREASE_SPEED;
-                this.blueMana = this.currentMana;
-                this.yellowMana = this.decreasingMana;
-                this.greyMana = this.increasingMana;
-                if (this.decreasingMana == 0) this.manaBarState = MANA_STATE.NORMAL;
-                break;
-            case NORMAL:
-                break;
-            default:
-                break;
-        }
+        this.blueMana = this.currentMana;
     }
 
     public void updateHealthBar() {
@@ -181,53 +157,7 @@ public class HealthBarMainCharacter implements GameObject {
     }
 
     public void updateNewMana() {
-        switch (this.manaBarState) {
-            case NORMAL:
-                if (this.newMana > this.currentMana) {
-                    this.increasingMana = this.newMana - this.currentMana;
-                    this.currentMana = this.newMana;
-                    this.manaBarState = MANA_STATE.INCREASING;
-                } else {
-                    this.decreasingMana = this.currentMana - this.newMana;
-                    this.currentMana = this.newMana;
-                    this.manaBarState = MANA_STATE.DECREASING;
-                }
-                break;
-            case DECREASING:
-                if (this.newMana > this.currentMana) {
-                    if (this.newMana - this.currentMana >= this.decreasingMana) {
-                        this.increasingMana = this.newMana - this.currentMana;
-                        this.currentMana = this.newMana;
-                        this.decreasingMana = 0;
-                        this.manaBarState = MANA_STATE.INCREASING;
-                    } else {
-                        this.decreasingMana -= this.newMana - this.currentMana;
-                        this.currentMana = this.newMana;
-                    }
-                } else {
-                    this.decreasingMana += this.currentMana - this.newMana;
-                    this.currentMana = this.newMana;
-                }
-                break;
-            case INCREASING:
-                if (this.newMana > this.currentMana) {
-                    this.increasingMana += this.newMana - this.currentMana;
-                    this.currentMana = this.newMana;
-                } else {
-                    if (this.currentMana - this.newMana <= this.increasingMana) {
-                        this.increasingMana -= this.currentMana - this.newMana;
-                        this.currentMana = this.newMana;
-                    } else {
-                        this.decreasingMana = this.currentMana - this.newMana;
-                        this.increasingMana = 0;
-                        this.currentMana = this.newMana;
-                        this.manaBarState = MANA_STATE.DECREASING;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
+        this.currentMana = this.newMana;
     }
 
     public void updateNewHealth() {
