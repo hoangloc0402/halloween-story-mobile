@@ -230,8 +230,10 @@ public class Enemy implements GameObject {
         this.isActive = true;
         this.isAlive = true;
         this.isInvincible = false;
+        if (this.diedAnimation != null)
+            this.diedAnimation.reset();
         if (rightLandMark != null){
-            this.currentPosition = new PointF(rightLandMark.x, rightLandMark.y);
+            this.currentPosition.set(rightLandMark.x, rightLandMark.y);
         }
     }
 
