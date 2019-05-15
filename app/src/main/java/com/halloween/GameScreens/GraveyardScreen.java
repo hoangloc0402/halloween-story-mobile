@@ -103,7 +103,7 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initPotions() {
-        this.potions.add(new BigHealthPotion(new PointF(300f, 100f), this.boxes));
+        this.potions.add(new BigHealthPotion(new PointF(600f, 100f), this.boxes));
 //        this.potions.add(new BigManaPotion(new PointF(300f, 200f), this.boxes));
     }
 
@@ -253,8 +253,16 @@ public class GraveyardScreen implements GameScreen {
             trap.update();
         }
 
-        for (Potion healthPotion : potions) {
-            healthPotion.update();
+        for (Potion potion : potions) {
+
+            if (potion.getSurroundingBox().intersect(tempSurroundingMain)){
+                if (potion.isHealth)
+                    mainCharacter.increaseHealth(potion.getVolume());
+                else
+                    mainCharacter.increaseMana(potion.getVolume());
+                potion.setActive(false);
+            }
+            potion.update();
         }
 
         for (Enemy enemy : enemies) {
@@ -349,8 +357,9 @@ public class GraveyardScreen implements GameScreen {
             trap.draw(canvas);
         }
 
-        for (Potion healthPotion : potions) {
-            healthPotion.draw(canvas);
+        for (Potion potion : potions) {
+            if (potion.isActive())
+                potion.draw(canvas);
         }
 
         for (Enemy enemy : enemies) {
