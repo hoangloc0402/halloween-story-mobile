@@ -242,10 +242,6 @@ public class GraveyardScreen implements GameScreen {
 
         mainCharacter.update(boxes);
 
-        healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
-        healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
-        healthBarMainCharacter.update();
-
         tempSurroundingMain = mainCharacter.getSurroundingBox();
         tempAttackRangeMain = mainCharacter.getAttackRange();
         for (Trap trap : traps) {
@@ -280,6 +276,7 @@ public class GraveyardScreen implements GameScreen {
                         mainCharacter.decreaseHealth(enemy.getDamage());
                 }
                 if (!enemy.isAlive()){
+                    mainCharacter.increaseMana(Constants.MANA_WHEN_KILL_ENEMY);
                     if (enemy instanceof Zombie)
                         mainCharacter.increaseScore(Constants.ZOMBIE_POINT);
                     else if (enemy instanceof Skeleton)
@@ -289,6 +286,10 @@ public class GraveyardScreen implements GameScreen {
                 }
             }
         }
+//        System.out.println(mainCharacter.getManaPoint());
+        healthBarMainCharacter.setNewHealth(mainCharacter.getHealthPoint());
+        healthBarMainCharacter.setNewMana(mainCharacter.getManaPoint());
+        healthBarMainCharacter.update();
 
         PointF mainPosition = mainCharacter.getCurrentPosition();
         if (mainPosition.x < Constants.BACKGROUND_X_AXIS + (Constants.SCREEN_WIDTH * backgroundBlock.getHeight() / Constants.SCREEN_HEIGHT) * 0.3) {

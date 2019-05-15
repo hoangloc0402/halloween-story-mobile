@@ -136,7 +136,7 @@ public class BossScreen implements GameScreen {
         tempAttackRangeMain = mainCharacter.getAttackRange();
         for (Phantom phantom : phantoms) {
             if (!phantom.isActive()) {
-                phantom.reset(Constants.getAbsoluteXLength(rand.nextInt(Constants.SCREEN_WIDTH)) + Constants.BACKGROUND_X_AXIS, rand.nextInt(Constants.SCREEN_HEIGHT));
+                phantom.reset(Constants.getAbsoluteXLength(rand.nextInt(Constants.SCREEN_WIDTH)) + Constants.BACKGROUND_X_AXIS, 0.7f * rand.nextInt(Constants.SCREEN_HEIGHT));
                 continue;
             }
             tempSurrounding = phantom.getSurroundingBox();
@@ -153,6 +153,7 @@ public class BossScreen implements GameScreen {
             phantom.update(tempSurroundingMain);
 
             if (!phantom.isActive()) {
+                mainCharacter.increaseMana(Constants.MANA_WHEN_KILL_ENEMY);
                 mainCharacter.increaseScore(Constants.PHANTOM_POINT);
                 if (Constants.HEALTH_POTION_PROB > rand.nextInt(100) && !healthPotion.isActive()){
                     healthPotion.setActive(true);
