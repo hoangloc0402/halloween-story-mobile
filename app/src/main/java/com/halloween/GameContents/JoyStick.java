@@ -213,11 +213,6 @@ public class JoyStick implements GameObject {
         int maskedAction = event.getActionMasked();
         float x = event.getX(pointerIndex);
         float y = event.getY(pointerIndex);
-        if (Constants.JOYSTICK_ATK_STATE){
-            if(!attackSound.isPlaying()) {
-                attackSound.start();
-            }
-        }
 
         switch (maskedAction) {
             case MotionEvent.ACTION_UP:
@@ -328,6 +323,11 @@ public class JoyStick implements GameObject {
 
     @Override
     public void update() {
+        if (Constants.JOYSTICK_ATK_STATE){
+            if(!attackSound.isPlaying()) {
+                attackSound.start();
+            }
+        }
         if (Constants.CURRENT_GAME_STATE == Constants.GAME_STATE.PLAY) {
             pauseButtonPosition = new Point((int) (Constants.SCREEN_WIDTH - offset * 2 - pauseButton.getWidth()), 50);
         }
