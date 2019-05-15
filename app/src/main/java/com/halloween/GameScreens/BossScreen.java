@@ -244,11 +244,13 @@ public class BossScreen implements GameScreen {
             canvas.drawBitmap(backgroundCloudSmall, -backgroundCloudSmallOffset + backgroundCloudSmall.getWidth() * i, Constants.SCREEN_HEIGHT * 0.8f - backgroundCloudSmall.getHeight(), paint);
         }
         canvas.drawBitmap(backgroundBlock, backgroundBlockWhat, backgroundBlockWhere, paint);
+
 //        RectF temp = new RectF();
 //        for (RectF box: boxes){
 //            temp.set(Constants.getRelativeXPosition(box.left,Constants.CURRENT_GAME_STATE), box.top, Constants.getRelativeXPosition(box.right,Constants.CURRENT_GAME_STATE), box.bottom);
 //            canvas.drawRect(temp, paint);
 //        }
+
         if (this.isStarting) {
             this.mainCharacter.draw(canvas);
         } else {

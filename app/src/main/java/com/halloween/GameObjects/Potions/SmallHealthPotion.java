@@ -3,9 +3,11 @@ package com.halloween.GameObjects.Potions;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.halloween.Constants;
 import com.halloween.GameObjects.Potion;
@@ -13,8 +15,10 @@ import com.halloween.R;
 
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 public class SmallHealthPotion extends Potion {
-    private static float scale = 0.35f * Constants.SCREEN_HEIGHT / 578f;
+    private static float scale = 0.35f * Constants.SCREEN_HEIGHT / Constants.backgroundBossMapAssetHeight;
     private Bitmap smallHealthPotion;
     private PointF droppingPosition;
 
@@ -23,7 +27,7 @@ public class SmallHealthPotion extends Potion {
         this.isActive = false;
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
-//        getPotionPosition(boxes);
+        getPotionPosition(boxes);
         this.volume = Constants.SMALL_HEALTH_POTION_VOLUME;
         this.isHealth = true;
         this.smallHealthPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.health_potion);
@@ -56,18 +60,21 @@ public class SmallHealthPotion extends Potion {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(this.smallHealthPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y - this.potionHeight, new Paint());
+        canvas.drawBitmap(this.smallHealthPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y, new Paint());
     }
 
     @Override
     public void update() {
         if (this.droppingPosition.y < this.position.y) {
-            this.droppingPosition.y += 10f;
+            if (this.position.y - this.droppingPosition.y >= 10f)
+                this.droppingPosition.y += 10f;
+            else
+                this.droppingPosition.y += this.position.y - this.droppingPosition.y;
         }
     }
 
     @Override
-    public void setPosition(float x, float y){
+    public void setPosition(float x, float y) {
         super.setPosition(x, y);
         this.droppingPosition.set(x, y);
     }

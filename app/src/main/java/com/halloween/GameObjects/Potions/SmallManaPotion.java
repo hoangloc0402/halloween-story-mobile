@@ -14,7 +14,7 @@ import com.halloween.R;
 import java.util.ArrayList;
 
 public class SmallManaPotion extends Potion {
-    private static float scale = 0.35f * Constants.SCREEN_HEIGHT / 578f;
+    private static float scale = 0.35f * Constants.SCREEN_HEIGHT / Constants.backgroundBossMapAssetHeight;
     private Bitmap smallManaPotion;
     private PointF droppingPosition;
 
@@ -23,7 +23,7 @@ public class SmallManaPotion extends Potion {
         this.isActive = false;
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
-//        getPotionPosition(boxes);
+        getPotionPosition(boxes);
         this.volume = Constants.SMALL_MANA_POTION_VOLUME;
         this.isHealth = false;
         this.smallManaPotion = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.mana_potion);
@@ -56,13 +56,17 @@ public class SmallManaPotion extends Potion {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(this.smallManaPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y - this.potionHeight, new Paint());
+        canvas.drawBitmap(this.smallManaPotion, Constants.getRelativeXPosition(this.droppingPosition.x, Constants.CURRENT_GAME_STATE), this.droppingPosition.y, new Paint());
     }
 
     @Override
     public void update() {
+
         if (this.droppingPosition.y < this.position.y) {
-            this.droppingPosition.y += 10f;
+            if (this.position.y - this.droppingPosition.y >= 10f)
+                this.droppingPosition.y += 10f;
+            else
+                this.droppingPosition.y += this.position.y - this.droppingPosition.y;
         }
     }
 
