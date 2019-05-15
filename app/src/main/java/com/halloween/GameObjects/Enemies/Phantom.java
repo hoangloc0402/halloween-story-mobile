@@ -106,7 +106,6 @@ public class Phantom extends Enemy {
                 isAlive = false;
                 ChangeState(State.Died);
             }
-//            System.out.println("current state "+ currentState);
             switch (currentState) {
                 case Died:
                     ChangeState(State.Died);

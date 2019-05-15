@@ -2,6 +2,7 @@ package com.halloween;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 public class Constants {
@@ -14,7 +15,7 @@ public class Constants {
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
     public static GAME_STATE PREVIOUS_GAME_STATE;
-    public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE};
+    public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE}
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
     public static boolean JOYSTICK_ATK_STATE = false;
     public static boolean JOYSTICK_JUMP_STATE = false;
@@ -115,6 +116,9 @@ public class Constants {
 
     public  static  final int HEALTH_POTION_PROB = 60;
     public  static  final int MANA_POTION_PROB = 80;
+
+    public static final int BG_SONG_VOLUME = 50;
+
 
 
     public static float getRelativeXPosition(float x, GAME_STATE game_state)  {

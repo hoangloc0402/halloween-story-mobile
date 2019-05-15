@@ -6,6 +6,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 
 import com.halloween.Animation;
 import com.halloween.Constants;
@@ -27,6 +28,7 @@ public class MainCharacter {
     private Random rand = new Random();
     private RectF attackRect;
     private long invincibleStartTime, blinkTime, jumpTime;
+    MediaPlayer hitSound;
 
     private MainCharacter(int positionX, int positionY) {
         this.loadAnimation();
@@ -38,6 +40,7 @@ public class MainCharacter {
         this.redPaint.setColor(Color.RED);
         this.attackRect = new RectF();
         this.paint = this.normalPaint;
+        this.hitSound = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.hit_sound);
     }
 
     public static MainCharacter getInstance() {
@@ -276,6 +279,9 @@ public class MainCharacter {
 
     public void decreaseHealth(int damage) {
         if (damage==0) return;
+        if (!this.hitSound.isPlaying()){
+            this.hitSound.start();
+        }
         if (this.isInvincible)
             return;
         else {
