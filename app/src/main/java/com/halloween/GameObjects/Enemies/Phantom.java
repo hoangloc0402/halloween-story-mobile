@@ -76,6 +76,16 @@ public class Phantom extends Enemy {
     }
 
     @Override
+    public void reset(){
+        super.reset();
+        this.currentAnimation = appearAnimation;
+        this.isMovingForward = false;
+        this.currentState = State.Appear;
+        this.currentAnimation.play();
+        this.currentHP = Constants.PHANTOM_STARTING_HP;
+    }
+
+    @Override
     public RectF getAttackRange() {
         if (currentAnimation != attackAnimation) {
             return null;

@@ -60,6 +60,15 @@ public class Dragon extends Enemy {
         this.appearAnimation = this.moveAnimation;
     }
 
+    @Override
+    public void reset(){
+        super.reset();
+        this.currentAnimation = appearAnimation;
+        this.isMovingForward = false;
+        this.currentState = State.Appear;
+        this.currentAnimation.play();
+        this.currentHP = Constants.DRAGON_STARTING_HP;
+    }
 
     @Override
     public void draw(Canvas canvas) {

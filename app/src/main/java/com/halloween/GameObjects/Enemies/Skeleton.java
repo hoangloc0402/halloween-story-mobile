@@ -50,6 +50,15 @@ public class Skeleton extends Enemy {
                 new PointF(33 * Constants.SKELETON_SCALE, 0), new PointF(28 * Constants.SKELETON_SCALE, 0));
     }
 
+    @Override
+    public void reset(){
+        super.reset();
+        this.currentAnimation = moveAnimation;
+        this.isMovingForward = false;
+        this.currentState = State.Move;
+        this.currentAnimation.play();
+        this.currentHP = Constants.SKELETON_STARTING_HP;
+    }
 
     @Override
     public void draw(Canvas canvas) {

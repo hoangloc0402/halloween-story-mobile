@@ -47,6 +47,15 @@ public class Zombie extends Enemy {
                 97 * Constants.ZOMBIE_SCALE, 1, 1000, new PointF(22 * Constants.ZOMBIE_SCALE, 0), new PointF(0, 0));
     }
 
+    @Override
+    public void reset(){
+        super.reset();
+        this.currentAnimation = moveAnimation;
+        this.isMovingForward = false;
+        this.currentState = State.Move;
+        this.currentAnimation.play();
+        this.currentHP = Constants.ZOMBIE_STARTING_HP;
+    }
 
     @Override
     public void draw(Canvas canvas) {

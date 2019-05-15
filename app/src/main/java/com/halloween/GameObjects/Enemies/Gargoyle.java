@@ -49,6 +49,16 @@ public class Gargoyle extends Enemy {
     }
 
     @Override
+    public void reset(){
+        super.reset();
+        this.currentAnimation = moveAnimation;
+        this.isMovingForward = false;
+        this.currentState = State.Move;
+        this.currentAnimation.play();
+        this.currentHP = Constants.GARGOYLE_STARTING_HP;
+    }
+
+    @Override
     public void draw(Canvas canvas) {
 //        if (isActive) {
 //            if (this.IsInScreen()) {

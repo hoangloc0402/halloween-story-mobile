@@ -14,6 +14,7 @@ import com.halloween.GameContents.HealthBarBoss;
 import com.halloween.GameContents.HealthBarMainCharacter;
 import com.halloween.GameContents.JoyStick;
 import com.halloween.GameObjects.Enemies.Dragon;
+import com.halloween.GameObjects.Enemies.Enemy;
 import com.halloween.GameObjects.Enemies.Phantom;
 import com.halloween.GameObjects.MainCharacter;
 import com.halloween.GameObjects.Potion;
@@ -283,6 +284,10 @@ public class BossScreen implements GameScreen {
         if (!this.mainCharacter.isActive) {
             this.mainCharacter.resetAllValue();
         }
+        for(Phantom phantom : phantoms){
+            phantom.reset();
+        }
+        dragon.reset();
     }
 
     @Override

@@ -84,7 +84,6 @@ public class GraveyardScreen implements GameScreen {
         this.backgroundCloudSmall = Bitmap.createScaledBitmap(backgroundCloudSmall, (int) (Constants.SCREEN_HEIGHT * 1818 * 0.3 / 158), (int) (Constants.SCREEN_HEIGHT * 0.3), false);
         this.backgroundCloudSmallCount = Math.round((float) Constants.SCREEN_WIDTH / this.backgroundCloudSmall.getWidth()) + 2;
 
-        this.reset();
         this.joyStick = new JoyStick();
         this.portal = new Portal();
 
@@ -100,6 +99,7 @@ public class GraveyardScreen implements GameScreen {
         this.tempSurrounding = new RectF();
         this.tempAttackRange = new RectF();
         this.tempAttackRangeMain = new RectF();
+        this.reset();
     }
 
     private void initPotions() {
@@ -201,7 +201,9 @@ public class GraveyardScreen implements GameScreen {
     public void reset() {
         this.mainCharacter = MainCharacter.getInstance(200, 600);
         this.mainCharacter.resetAllValue();
-
+        for(Enemy enemy : enemies){
+            enemy.reset();
+        }
     }
 
     @Override

@@ -226,6 +226,15 @@ public class Enemy implements GameObject {
 
     }
 
+    public void reset(){
+        this.isActive = true;
+        this.isAlive = true;
+        this.isInvincible = false;
+        if (rightLandMark != null){
+            this.currentPosition = new PointF(rightLandMark.x, rightLandMark.y);
+        }
+    }
+
     public enum State {Appear, Idle, Move, Attack, UltimateAttack, Hurt, Died, Defense} //Các state có thể có của Enemy
 
     public boolean isAlive(){
