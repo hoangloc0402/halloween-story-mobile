@@ -68,7 +68,7 @@ public class Constants {
     public final static float PHANTOM_ATTACK_DISTANCE_X = 20 *PHANTOM_SCALE;
     public final static float PHANTOM_ATTACK_DISTANCE_Y = 20 *PHANTOM_SCALE;
     public final static float PHANTOM_HEIGHT = 91;
-    public final static int MAX_PHANTOM_COUNT = 3;
+    public final static int MAX_PHANTOM_COUNT = 2;
 
     public final static int DRAGON_ATTACK = 150;
     public final static int DRAGON_DAMAGE = 75;
@@ -91,8 +91,9 @@ public class Constants {
     public static final int  MAIN_CHARACTER_ULTIMATE_ATTACK_POWER = 100;
     public static final int MAIN_CHARACTER_MAX_MANA = 10000;
     public static boolean MAIN_CHARACTER_IS_FULL_MANA = false;
-    public static final int MANA_INCREASE_SPEED = 5;
+    public static final int MANA_INCREASE_SPEED = 1;
     public static final int MANA_DECREASE_SPEED = 25;
+    public static final int MANA_WHEN_KILL_ENEMY = 100;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final long INVINCIBLE_TIME = 1500;
     public static final long BLINK_TIME = 150;
