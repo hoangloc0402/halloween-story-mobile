@@ -1,6 +1,7 @@
 package com.halloween;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
@@ -43,6 +44,10 @@ public class MainActivity extends Activity {
 //        myThread.start();
         GamePanel gamePanel = new GamePanel(this);
         setContentView(gamePanel);
+        MediaPlayer bg_song = MediaPlayer.create(this, R.raw.bg_song);
+        bg_song.start();
+        bg_song.setLooping(true);
+        bg_song.setVolume(Constants.BG_SONG_VOLUME, Constants.BG_SONG_VOLUME);
 //        setContentView(R.layout.activity_main);
 //        while (true) {
 //            Log.d("game", Constants.THREAD_IS_RUNNING + "");

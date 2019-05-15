@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
 import com.halloween.Constants;
@@ -26,6 +27,7 @@ public class JoyStick implements GameObject {
 
     private Bitmap pauseButton, pauseButtonHover, jumpButton, jumpButtonHover, atkButton, atkButtonHover, transformButton, transformButtonHover;
     private Point pauseButtonPosition, jumpButtonPosition, atkButtonPosition, transformButtonPosition;
+    MediaPlayer attackSound;
 
     public JoyStick() {
 //        this.joystickBase = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.joystick_base);
@@ -61,6 +63,7 @@ public class JoyStick implements GameObject {
 
         this.paintLeft.setAlpha(255);
         this.paintRight.setAlpha(255);
+        this.attackSound = MediaPlayer.create(Constants.CURRENT_CONTEXT, R.raw.attack_sound);
     }
 
     public boolean isInRangeOfJoyStick(float x, float y) {
@@ -210,7 +213,11 @@ public class JoyStick implements GameObject {
         int maskedAction = event.getActionMasked();
         float x = event.getX(pointerIndex);
         float y = event.getY(pointerIndex);
-
+        if (Constants.JOYSTICK_ATK_STATE){
+            if(!attackSound.isPlaying()) {
+                attackSound.start();
+            }
+        }
 
         switch (maskedAction) {
             case MotionEvent.ACTION_UP:
