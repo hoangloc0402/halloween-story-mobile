@@ -120,11 +120,13 @@ public class Skeleton extends Enemy {
                         if (IsPlayerInRange(playerSurroundingBox, Constants.SKELETON_ATTACK_DISTANCE_X, Constants.SKELETON_ATTACK_DISTANCE_Y)) {
                             ChangeState(State.Attack);
                         } else {
+                            temp.set(playerSurroundingBox.left, playerSurroundingBox.top);
                             if (currentPosition.x <= leftLandMark.x) {
                                 isMovingForward = true;
                             } else if (currentPosition.x >= rightLandMark.x) {
                                 isMovingForward = false;
-                            } else if (IsPlayerInRange(playerSurroundingBox, Constants.SKELETON_FOLLOW_DISTANCE_X, Constants.SKELETON_FOLLOW_DISTANCE_Y) && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))) {
+                            } else if (IsPlayerInRange(playerSurroundingBox, Constants.SKELETON_FOLLOW_DISTANCE_X, Constants.SKELETON_FOLLOW_DISTANCE_Y)
+                                    && IsInReach(temp)) {
                                 isMovingForward = playerSurroundingBox.left > getSurroundingBox().left;
                             }
                             if (isMovingForward) {

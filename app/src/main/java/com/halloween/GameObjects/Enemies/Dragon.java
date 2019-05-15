@@ -14,7 +14,7 @@ public class Dragon extends Enemy {
     public Bullet bullet;
     RectF offSet;
 
-
+    PointF temp;
     public Dragon(PointF leftLandMark, PointF rightLandMark) {
         super(Constants.DRAGON_STARTING_HP, leftLandMark, rightLandMark);
 
@@ -32,8 +32,8 @@ public class Dragon extends Enemy {
 
         this.isMovingForward = false;
 
+        this.temp = new PointF(0,0);
         this.bullet = new Bullet(new PointF(0, 0));
-
         this.damage = Constants.DRAGON_DAMAGE;
         this.attack = Constants.DRAGON_ATTACK;
     }
@@ -204,10 +204,12 @@ public class Dragon extends Enemy {
             case Move:
                 ChangeState(State.Move);
                 if (isAlive) {
+                    temp.set(playerSurroundingBox.left, playerSurroundingBox.top);
                     if (IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_ATTACK_DISTANCE_X, Constants.DRAGON_ATTACK_DISTANCE_Y)){
                         ChangeState(State.Attack);
                     }else
-                    if(IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_FOLLOW_DISTANCE_X, Constants.DRAGON_FOLLOW_DISTANCE_Y) && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))){
+                    if(IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_FOLLOW_DISTANCE_X, Constants.DRAGON_FOLLOW_DISTANCE_Y)
+                            && IsInReach(temp)){
                         float x, y;
                         if (isMovingForward) {
                             x = playerSurroundingBox.centerX() - ( 5*playerSurroundingBox.width() / 4);
@@ -216,8 +218,8 @@ public class Dragon extends Enemy {
                         }
                         isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
                         y = playerSurroundingBox.centerY() - currentAnimation.getAbsoluteFrameHeight() / 4;
-
-                        MoveToDestination(new PointF(x, y), Constants.DRAGON_V);
+                        temp.set(x, y);
+                        MoveToDestination(temp, Constants.DRAGON_V);
                     }else{
                         if (isMovingForward) {
                             MoveToDestination(rightLandMark, Constants.DRAGON_V);
@@ -274,7 +276,8 @@ public class Dragon extends Enemy {
                 break;
             default:
                 ChangeState(State.UltimateAttack);
-                if(IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top)) &&
+                temp.set(playerSurroundingBox.left, playerSurroundingBox.top);
+                if(IsInReach(temp) &&
                         IsPlayerInRange(playerSurroundingBox, Constants.DRAGON_ATTACK_DISTANCE_X, Constants.DRAGON_ATTACK_DISTANCE_Y)){
                     ChangeState(State.Attack);
                 }
@@ -290,8 +293,8 @@ public class Dragon extends Enemy {
                         isMovingForward = false;
                     }
                     offSet = currentAnimation.getSurroundingBox(currentPosition);
-                    bullet.update(playerSurroundingBox, isMovingForward,
-                            new PointF(currentAnimation.getSurroundingBox(currentPosition).centerX(), currentAnimation.getSurroundingBox(currentPosition).centerY()) );
+                    temp.set(currentAnimation.getSurroundingBox(currentPosition).centerX(), currentAnimation.getSurroundingBox(currentPosition).centerY());
+                    bullet.update(playerSurroundingBox, isMovingForward, temp );
                 }
                 break;
         }
@@ -327,9 +330,6 @@ public class Dragon extends Enemy {
         dx = Math.abs(Math.min(dx, Math.abs(dx3)));
         dx = Math.abs(Math.min(dx, Math.abs(dx4)));
         dx = Math.abs(Math.min(dx, Math.abs(dx5)));
-
-        System.out.println(dx);
-        System.out.println(dy);
 
         return dx < maxX && dy<maxY;
     }
