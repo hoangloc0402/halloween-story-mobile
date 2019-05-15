@@ -103,8 +103,11 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initPotions() {
-        this.potions.add(new BigHealthPotion(new PointF(600f, 100f), this.boxes));
-//        this.potions.add(new BigManaPotion(new PointF(300f, 200f), this.boxes));
+        this.potions.add(new BigHealthPotion(new PointF(2765f, 0f), this.boxes));
+        this.potions.add(new BigHealthPotion(new PointF(6310f, 0.8f * Constants.SCREEN_HEIGHT * 450f / 578f), this.boxes));
+        this.potions.add(new BigHealthPotion(new PointF(7495f, 0f), this.boxes));
+        this.potions.add(new BigHealthPotion(new PointF(8465f, 0.8f * Constants.SCREEN_HEIGHT * 120f / 578f), this.boxes));
+        this.potions.add(new BigManaPotion(new PointF(8410f, 0.8f * Constants.SCREEN_HEIGHT * 275f / 578f), this.boxes));
     }
 
     private void initTraps() {
@@ -201,8 +204,11 @@ public class GraveyardScreen implements GameScreen {
     public void reset() {
         this.mainCharacter = MainCharacter.getInstance(200, 600);
         this.mainCharacter.resetAllValue();
-        for(Enemy enemy : enemies){
+        for (Enemy enemy : enemies) {
             enemy.reset();
+        }
+        for (Potion potion : potions) {
+            potion.setActive(true);
         }
     }
 
@@ -254,8 +260,8 @@ public class GraveyardScreen implements GameScreen {
         }
 
         for (Potion potion : potions) {
-
-            if (potion.getSurroundingBox().intersect(tempSurroundingMain)){
+            if (!potion.isActive()) continue;
+            if (potion.getSurroundingBox().intersect(tempSurroundingMain)) {
                 if (potion.isHealth)
                     mainCharacter.increaseHealth(potion.getVolume());
                 else
@@ -283,7 +289,7 @@ public class GraveyardScreen implements GameScreen {
                     if (tempSurrounding.intersect(tempSurroundingMain))
                         mainCharacter.decreaseHealth(enemy.getDamage());
                 }
-                if (!enemy.isAlive()){
+                if (!enemy.isAlive()) {
                     mainCharacter.increaseMana(Constants.MANA_WHEN_KILL_ENEMY);
                     if (enemy instanceof Zombie)
                         mainCharacter.increaseScore(Constants.ZOMBIE_POINT);
