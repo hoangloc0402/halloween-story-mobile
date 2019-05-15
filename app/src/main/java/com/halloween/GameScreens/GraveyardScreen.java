@@ -103,7 +103,7 @@ public class GraveyardScreen implements GameScreen {
     }
 
     private void initPotions() {
-//        this.potions.add(new BigHealthPotion(new PointF(200f, 200f), this.boxes));
+        this.potions.add(new BigHealthPotion(new PointF(300f, 100f), this.boxes));
 //        this.potions.add(new BigManaPotion(new PointF(300f, 200f), this.boxes));
     }
 
