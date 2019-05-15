@@ -128,12 +128,13 @@ public class Zombie extends Enemy {
                         if (IsPlayerInRange(playerSurroundingBox, Constants.ZOMBIE_ATTACK_DISTANCE_X, Constants.ZOMBIE_ATTACK_DISTANCE_Y)) {
                             ChangeState(State.Attack);
                         } else {
+                            temp.set(playerSurroundingBox.left, playerSurroundingBox.top);
                             if (currentPosition.x <= leftLandMark.x) {
                                 isMovingForward = true;
                             } else if (currentPosition.x >= rightLandMark.x) {
                                 isMovingForward = false;
                             } else if (IsPlayerInRange(playerSurroundingBox, Constants.ZOMBIE_FOLLOW_DISTANCE_X, Constants.ZOMBIE_FOLLOW_DISTANCE_Y)
-                                    && IsInReach(new PointF(playerSurroundingBox.left, playerSurroundingBox.top))) {
+                                    && IsInReach(temp)) {
                                 isMovingForward = playerSurroundingBox.left > getSurroundingBox().left;
 //                                    System.out.println("isMovingForward "+ isMovingForward);
                             }

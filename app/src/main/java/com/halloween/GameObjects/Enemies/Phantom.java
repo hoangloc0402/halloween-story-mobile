@@ -146,8 +146,8 @@ public class Phantom extends Enemy {
                             }
                             isMovingForward = playerSurroundingBox.centerX() > currentPosition.x;
                             y = playerSurroundingBox.centerY() - currentAnimation.getAbsoluteFrameHeight() / 2;
-
-                            MoveToDestination(new PointF(x, y), Constants.PHANTOM_V);
+                            temp.set(x,y);
+                            MoveToDestination(temp, Constants.PHANTOM_V);
                         }
                     }
                     break;
