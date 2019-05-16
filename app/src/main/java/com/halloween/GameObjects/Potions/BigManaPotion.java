@@ -14,13 +14,13 @@ import com.halloween.R;
 import java.util.ArrayList;
 
 public class BigManaPotion extends Potion {
-    private static float scale = 0.25f * Constants.SCREEN_HEIGHT / 578f;
+    private static float scale = 0.2f * Constants.SCREEN_HEIGHT / 578f;
     private Bitmap bigManaPotion;
     private PointF droppingPosition;
 
     public BigManaPotion(PointF position, ArrayList<RectF> boxes) {
         surroundingBox = new RectF();
-        this.isActive = false;
+        this.isActive = true;
         this.position = position;
         this.droppingPosition = new PointF(position.x, position.y);
         getPotionPosition(boxes);
@@ -30,6 +30,8 @@ public class BigManaPotion extends Potion {
         this.potionHeight = (int) (this.bigManaPotion.getHeight() * scale);
         this.potionWidth = (int) (this.bigManaPotion.getWidth() * scale);
         this.bigManaPotion = Bitmap.createScaledBitmap(this.bigManaPotion, potionWidth, potionHeight, false);
+
+
     }
 
     public void getPotionPosition(ArrayList<RectF> boxes) {
@@ -50,7 +52,7 @@ public class BigManaPotion extends Potion {
 
     @Override
     public RectF getSurroundingBox() {
-        surroundingBox.set(this.position.x, this.position.y, this.position.x + Constants.getAbsoluteXLength(this.potionWidth), this.potionHeight + this.position.y);
+        surroundingBox.set(this.position.x, this.position.y - this.potionHeight, this.position.x + Constants.getAbsoluteXLength(this.potionWidth), this.position.y);
         return surroundingBox;
     }
 
