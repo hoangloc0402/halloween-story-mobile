@@ -254,15 +254,22 @@ public class BossScreen implements GameScreen {
 //        }
 
         if (this.isStarting) {
-            this.mainCharacter.draw(canvas);
+            this.mainCharacter.draw(canvas, paint);
+            dragon.draw(canvas,paint);
         } else {
             this.mainCharacter.draw(canvas);
+            dragon.draw(canvas);
         }
 
-        dragon.draw(canvas);
+
 
         for (Phantom phantom : phantoms)
+        {
+            if(this.isStarting){
+                phantom.draw(canvas, paint);
+            }else
             phantom.draw(canvas);
+        }
 
         if (healthPotion.isActive())
             healthPotion.draw(canvas);

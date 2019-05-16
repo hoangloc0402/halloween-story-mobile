@@ -1,6 +1,7 @@
 package com.halloween.GameObjects.Enemies;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -116,6 +117,18 @@ public class Enemy implements GameObject {
             if (this.IsInScreen()) {
                 temp.set(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y);
                 this.currentAnimation.draw(canvas, temp);
+//                RectF sur = getAttackRange();
+//                if(sur!=null)
+//                    canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+            }
+        }
+    }
+
+    public void draw(Canvas canvas, Paint paint) {
+        if (isActive) {
+            if (this.IsInScreen()) {
+                temp.set(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y);
+                this.currentAnimation.draw(canvas, temp, paint);
 //                RectF sur = getAttackRange();
 //                if(sur!=null)
 //                    canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());

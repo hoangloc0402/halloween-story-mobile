@@ -363,7 +363,10 @@ public class GraveyardScreen implements GameScreen {
         }
 
         for (Enemy enemy : enemies) {
-            enemy.draw(canvas);
+            if (this.isStarting){
+                enemy.draw(canvas, paint);
+            }else enemy.draw(canvas);
+
         }
 
         if (this.isStarting) {
