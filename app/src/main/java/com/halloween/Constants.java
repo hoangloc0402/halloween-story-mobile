@@ -93,7 +93,7 @@ public class Constants {
     public static boolean MAIN_CHARACTER_IS_FULL_MANA = false;
     public static final int MANA_INCREASE_SPEED = 1;
     public static final int MANA_DECREASE_SPEED = 25;
-    public static final int MANA_WHEN_KILL_ENEMY = 100;
+    public static final int MANA_WHEN_KILL_ENEMY = 20;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final long INVINCIBLE_TIME = 1500;
     public static final long BLINK_TIME = 150;

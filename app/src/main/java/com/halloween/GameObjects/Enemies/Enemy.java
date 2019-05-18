@@ -1,6 +1,7 @@
 package com.halloween.GameObjects.Enemies;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -32,6 +33,7 @@ public class Enemy implements GameObject {
     PointF currentPosition;
     PointF leftLandMark;
     PointF rightLandMark;
+    PointF temp;
     RectF surroundingBox;
 
     int damage, attack;
@@ -50,6 +52,7 @@ public class Enemy implements GameObject {
         isActive = true;
         this.isInvincible = false;
         this.attackRect = new RectF();
+        temp = new PointF(0,0);
     }
 
     public boolean isActive() {
@@ -112,7 +115,20 @@ public class Enemy implements GameObject {
     public void draw(Canvas canvas) {
         if (isActive) {
             if (this.IsInScreen()) {
-                this.currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y));
+                temp.set(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y);
+                this.currentAnimation.draw(canvas, temp);
+//                RectF sur = getAttackRange();
+//                if(sur!=null)
+//                    canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
+            }
+        }
+    }
+
+    public void draw(Canvas canvas, Paint paint) {
+        if (isActive) {
+            if (this.IsInScreen()) {
+                temp.set(Constants.getRelativeXPosition(this.currentPosition.x, Constants.CURRENT_GAME_STATE), this.currentPosition.y);
+                this.currentAnimation.draw(canvas, temp, paint);
 //                RectF sur = getAttackRange();
 //                if(sur!=null)
 //                    canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
