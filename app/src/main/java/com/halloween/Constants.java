@@ -14,7 +14,6 @@ public class Constants {
     public static GAME_STATE CURRENT_GAME_STATE = GAME_STATE.MAIN_MENU;
     public static boolean isInGraveyard;
     public static boolean IS_SWITCH_GAME_STATE = false;
-    public static GAME_STATE PREVIOUS_GAME_STATE;
     public static enum JOYSTICK_STATE {LEFT, RIGHT, MIDDLE}
     public static JOYSTICK_STATE CURRENT_JOYSTICK_STATE = JOYSTICK_STATE.MIDDLE;
     public static boolean JOYSTICK_ATK_STATE = false;
@@ -93,7 +92,7 @@ public class Constants {
     public static boolean MAIN_CHARACTER_IS_FULL_MANA = false;
     public static final int MANA_INCREASE_SPEED = 1;
     public static final int MANA_DECREASE_SPEED = 25;
-    public static final int MANA_WHEN_KILL_ENEMY = 20;
+    public static final int MANA_WHEN_KILL_ENEMY = 200;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
     public static final long INVINCIBLE_TIME = 1500;
     public static final long BLINK_TIME = 150;
@@ -115,8 +114,8 @@ public class Constants {
     public static final int SPEAR_HORIZONTAL_DAMAGE = 30;
     public static final int SPEAR_VERTICAL_DAMAGE = 30;
 
-    public  static  final int HEALTH_POTION_PROB = 60;
-    public  static  final int MANA_POTION_PROB = 80;
+    public  static  final int HEALTH_POTION_PROB = 20;
+    public  static  final int MANA_POTION_PROB = 30;
 
     public static final int BG_SONG_VOLUME = 50;
 
