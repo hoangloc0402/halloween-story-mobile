@@ -22,7 +22,7 @@ public class Bullet implements GameObject {
     float V_X;
     float V_Y;
     boolean isPower, isPowerHit;
-    PointF target;
+    PointF target, temp;
     float DAMAGE;
 
 
@@ -57,6 +57,8 @@ public class Bullet implements GameObject {
         isPower = false;
         isPowerHit = false;
         this.DAMAGE = Constants.BULLET_DAMAGE;
+        this.temp = new PointF(0,0);
+        this.target = new PointF(0,0);
     }
 
     public void LoadAnimation() {
@@ -74,7 +76,8 @@ public class Bullet implements GameObject {
 //                canvas.drawRect(Constants.getRelativeXPosition(sur.left), sur.top, Constants.getRelativeXPosition(sur.right), sur.bottom, new Paint());
 
         if (isPower || isPowerHit) {
-            currentAnimation.draw(canvas, new PointF(Constants.getRelativeXPosition(currentPosition.x), currentPosition.y));
+            temp.set(Constants.getRelativeXPosition(currentPosition.x), currentPosition.y);
+            currentAnimation.draw(canvas, temp);
         }
     }
 
@@ -101,9 +104,9 @@ public class Bullet implements GameObject {
 
     public void update(RectF playerSurroundingbox, boolean isMovingForward, PointF position) {
         if (!isPower && !isPowerHit) {
-            target = new PointF(playerSurroundingbox.centerX(), playerSurroundingbox.centerY());
+            target.set(playerSurroundingbox.centerX(), playerSurroundingbox.centerY());
             isPower = true;
-            currentPosition = position;
+            currentPosition.set(position.x, position.y);
             ChangeState(State.Power);
         }
         switch (currentState){

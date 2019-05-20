@@ -16,7 +16,7 @@ public class Dragon extends Enemy {
 
     PointF temp;
     public Dragon(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.DRAGON_STARTING_HP, leftLandMark, rightLandMark);
+        super(Constants.DRAGON_STARTING_HP/4, leftLandMark, rightLandMark);
 
         LoadAnimation();
 
@@ -294,7 +294,7 @@ public class Dragon extends Enemy {
                     }
                     offSet = currentAnimation.getSurroundingBox(currentPosition);
                     temp.set(currentAnimation.getSurroundingBox(currentPosition).centerX(), currentAnimation.getSurroundingBox(currentPosition).centerY());
-                    bullet.update(playerSurroundingBox, isMovingForward, temp );
+                    bullet.update(playerSurroundingBox, isMovingForward, temp);
                 }
                 break;
         }
