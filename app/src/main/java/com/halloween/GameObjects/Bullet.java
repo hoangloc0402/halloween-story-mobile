@@ -23,8 +23,14 @@ public class Bullet implements GameObject {
     float V_Y;
     boolean isPower, isPowerHit;
     PointF target, temp;
-    float DAMAGE;
 
+    public int getDAMAGE() {
+        return DAMAGE;
+    }
+
+    int DAMAGE;
+
+    long bullet_time;
 
     public PointF getTarget() {
         return target;
@@ -59,6 +65,7 @@ public class Bullet implements GameObject {
         this.DAMAGE = Constants.BULLET_DAMAGE;
         this.temp = new PointF(0,0);
         this.target = new PointF(0,0);
+        this.bullet_time = - 1000000*Constants.BULLET_WAIT_TIME;
     }
 
     public void LoadAnimation() {
@@ -104,35 +111,41 @@ public class Bullet implements GameObject {
 
     public void update(RectF playerSurroundingbox, boolean isMovingForward, PointF position) {
         if (!isPower && !isPowerHit) {
-            target.set(playerSurroundingbox.centerX(), playerSurroundingbox.centerY());
-            isPower = true;
-            currentPosition.set(position.x, position.y);
-            ChangeState(State.Power);
-        }
-        switch (currentState){
-            case Power:
+            if ((System.nanoTime() - bullet_time)/1000000 > Constants.BULLET_WAIT_TIME){
+                target.set(playerSurroundingbox.centerX(), playerSurroundingbox.centerY());
+                isPower = true;
+                currentPosition.set(position.x, position.y);
                 ChangeState(State.Power);
-                MoveToTarget(target);
-                if(isPower && ShootPlayer(playerSurroundingbox)){
-                    isPower = false;
-                    isPowerHit = true;
+            }
+
+        }else{
+            switch (currentState){
+                case Power:
+                    ChangeState(State.Power);
                     MoveToTarget(target);
+                    if(isPower && ShootPlayer(playerSurroundingbox)){
+                        isPower = false;
+                        isPowerHit = true;
+                        MoveToTarget(target);
+                        ChangeState(State.PowerHit);
+                    }
+                    else if(IsCloseToTarget(target)){
+                        isPower =false;
+                        ChangeState(State.PowerHit);
+                    }
+                    else{
+                        MoveToTarget(target);
+                    }
+                    break;
+                case PowerHit:
                     ChangeState(State.PowerHit);
-                }
-                else if(IsCloseToTarget(target)){
-                    isPower =false;
-                    ChangeState(State.PowerHit);
-                }
-                else{
-                    MoveToTarget(target);
-                }
-                break;
-            case PowerHit:
-                ChangeState(State.Power);
-                isPowerHit = false;
-                break;
+                    isPowerHit = false;
+                    bullet_time = System.nanoTime();
+                    break;
+            }
+            currentAnimation.update();
         }
-        currentAnimation.update();
+
     }
 
     boolean ShootPlayer(RectF playerSurroundingBox) {

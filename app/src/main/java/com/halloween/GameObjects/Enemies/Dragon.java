@@ -16,7 +16,7 @@ public class Dragon extends Enemy {
 
     PointF temp;
     public Dragon(PointF leftLandMark, PointF rightLandMark) {
-        super(Constants.DRAGON_STARTING_HP/4, leftLandMark, rightLandMark);
+        super(Constants.DRAGON_STARTING_HP, leftLandMark, rightLandMark);
 
         LoadAnimation();
 
@@ -113,7 +113,15 @@ public class Dragon extends Enemy {
 
     @Override
     public void update(RectF playerSurroundingBox) {
-        super.update();
+        long elapseTime = System.nanoTime();
+        if (this.isInvincible) {
+            if ((elapseTime - invincibleStartTime) / 500000 > Constants.INVINCIBLE_TIME_DRAGON) {
+                ChangeState(State.Move);
+            }
+            if ((elapseTime - invincibleStartTime) / 1000000 > Constants.INVINCIBLE_TIME_DRAGON) {
+                this.isInvincible = false;
+            }
+        }
         if(isActive){
 //            System.out.println("current HP = " + currentHP);
             if (currentHP > 70*Constants.DRAGON_STARTING_HP/100){

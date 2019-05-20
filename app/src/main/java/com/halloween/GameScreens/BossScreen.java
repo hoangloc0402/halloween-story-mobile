@@ -203,8 +203,10 @@ public class BossScreen implements GameScreen {
             mainCharacter.decreaseHealth(dragon.getDamage());
 
         tempSurrounding = dragon.bullet.getSurroundingBox();
-        if (tempSurrounding!=null && tempSurrounding.intersect(tempSurroundingMain))
-            mainCharacter.decreaseHealth(dragon.getAttack());
+        if (dragon.bullet.isPowerHit() && tempSurrounding!=null && tempSurrounding.intersect(tempSurroundingMain))
+        {
+            mainCharacter.decreaseHealth(dragon.bullet.getDAMAGE());
+        }
 
         if (!dragon.isActive())
             Constants.CURRENT_GAME_STATE = Constants.GAME_STATE.WIN;

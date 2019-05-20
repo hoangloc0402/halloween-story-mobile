@@ -24,6 +24,7 @@ public class Constants {
 
     public static final int MAX_HEALTH_BOSS = 1000;
     public final static int INVINCIBLE_TIME_ENEMY = 500;
+    public final static int INVINCIBLE_TIME = 500;
     public final static int ZOMBIE_ATTACK = 50;
     public final static int ZOMBIE_DAMAGE = 25;
     public final static float ZOMBIE_STARTING_HP = 150;
@@ -60,9 +61,9 @@ public class Constants {
 
     public final static int PHANTOM_ATTACK = 20;
     public final static int PHANTOM_DAMAGE = 10;
-    public final static float PHANTOM_STARTING_HP = 50;
+    public final static float PHANTOM_STARTING_HP = 30;
     public final static int PHANTOM_POINT = 100;
-    public final static float PHANTOM_V = 1;
+    public final static float PHANTOM_V = 2;
     public final static float PHANTOM_SCALE = 1.5f;
     public final static float PHANTOM_ATTACK_DISTANCE_X = 20 *PHANTOM_SCALE;
     public final static float PHANTOM_ATTACK_DISTANCE_Y = 20 *PHANTOM_SCALE;
@@ -79,22 +80,22 @@ public class Constants {
     public final static float DRAGON_FOLLOW_DISTANCE_Y = 200*DRAGON_SCALE;
     public final static float DRAGON_ATTACK_DISTANCE_X = 15 *DRAGON_SCALE;
     public final static float DRAGON_ATTACK_DISTANCE_Y = 15 *DRAGON_SCALE;
-    public final static float BULLET_V = 7;
-    public final static float BULLET_SCALE = 1f;
-    public final static float BULLET_DAMAGE = 50f;
+    public final static float BULLET_V = 8;
+    public final static float BULLET_SCALE = 0.9f;
+    public final static int BULLET_DAMAGE = 40;
 
     public static final float MAIN_CHARACTER_V_X = 5f;
     public static final float MAIN_CHARACTER_V_Y = -50f;
     public static final float GRAVITY = 2.5f;
     public static final int  MAIN_CHARACTER_ATTACK_POWER = 50;
-    public static final int  MAIN_CHARACTER_ULTIMATE_ATTACK_POWER = 100;
+    public static final int  MAIN_CHARACTER_ULTIMATE_ATTACK_POWER = 80;
     public static final int MAIN_CHARACTER_MAX_MANA = 10000;
     public static boolean MAIN_CHARACTER_IS_FULL_MANA = false;
     public static final int MANA_INCREASE_SPEED = 1;
     public static final int MANA_DECREASE_SPEED = 25;
     public static final int MANA_WHEN_KILL_ENEMY = 200;
     public static final int MAX_HEALTH_MAIN_CHARACTER = 1000;
-    public static final long INVINCIBLE_TIME = 1500;
+    public static final long INVINCIBLE_TIME_DRAGON = 1500;
     public static final long BLINK_TIME = 150;
     public static final int MAX_SCORE = 3000;
     public static int CURRENT_SCORE = 0;
@@ -102,6 +103,8 @@ public class Constants {
     public static final int BIG_HEALTH_POTION_VOLUME = 500;
     public static final int SMALL_MANA_POTION_VOLUME = 100;
     public static final int BIG_MANA_POTION_VOLUME = 500;
+
+    public static final long BULLET_WAIT_TIME = 3000;
 
 //    public static final long JUMP_TIME = 16;
 
